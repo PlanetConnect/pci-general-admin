@@ -19,8 +19,6 @@ import showStatuses from "../data/form/showStatuses";
 
 import { useSnackBar } from "../../../app/templates/snackbar";
 
-import Stack from "@mui/material/Stack";
-
 interface EditShowInfoProps {
   show: Show;
 }

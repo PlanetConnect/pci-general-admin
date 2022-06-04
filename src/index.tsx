@@ -2,8 +2,11 @@ import React from "react";
 
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-
 import { Provider } from "react-redux";
+
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -19,13 +22,15 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <SnackbarProvider maxSnack={3}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </SnackbarProvider>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider maxSnack={3}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </LocalizationProvider>
     </Provider>
   </React.StrictMode>
 );

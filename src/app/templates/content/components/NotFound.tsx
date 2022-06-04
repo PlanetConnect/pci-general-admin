@@ -6,7 +6,7 @@ import Title from "./Title";
 const NotFound = () => {
   return (
     <PaperContent>
-      <Title text="Page Not Found. 404!" />
+      <Title>Page Not Found!</Title>
       <Typography variant="body2">
         The page you're looking for isn't found.
       </Typography>

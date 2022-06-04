@@ -2,10 +2,10 @@ import ConstructionIcon from "@mui/icons-material/Construction";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 
-import { TabItem } from "../../../app/templates/tab/containers/IconedTab";
+import { TabItem } from "../../../../app/templates/tab/containers/IconedTab";
 
-import EditShowInfo from "../components/EditShowInfo";
-import Show from "./Show";
+import EditShowInfo from "../../components/EditShowInfo";
+import Show from "../types/Show";
 
 interface useShowTabInfoItemsProps {
   show: Show;

@@ -27,7 +27,7 @@ const DataTable = (props: DataTableProps) => {
     useState<GridColumnVisibilityModel>(props.settings.columnVisibility);
 
   const handleGetRowId = (row: Row) => {
-    return row[props.settings.rowIdField];
+    return row[props.settings.rowIdField] as number;
   };
 
   return (

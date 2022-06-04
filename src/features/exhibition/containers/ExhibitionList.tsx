@@ -5,7 +5,7 @@ import { PaperContent, Title } from "../../../app/templates/content/";
 function ExhibitionList() {
   return (
     <PaperContent>
-      <Title text="Exhibitions/Booths" />
+      <Title>Exhibitions</Title>
       <Typography variant="body2">
         To address all issues (including breaking changes), run: npm audit fix
         --force Run `npm audit` for details. jamesh@Jameshs-MacBook-Pro

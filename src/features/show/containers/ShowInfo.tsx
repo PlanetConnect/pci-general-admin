@@ -1,9 +1,9 @@
-import { useShowTabInfoItems } from "../data/showInfoTabItems";
+import { useShowTabInfoItems } from "../data/tab/showInfoTabItems";
 
 import { IconedTab } from "../../../app/templates/tab";
 import { PaperContent } from "../../../app/templates/content/";
 
-import Show from "../data/Show";
+import Show from "../data/types/Show";
 
 const show: Show = {
   showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",

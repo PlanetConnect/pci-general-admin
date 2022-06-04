@@ -1,10 +1,12 @@
+import Link from "./Link";
+
 interface Show {
   showId: string;
   name: string;
   year: number;
   startDate: string;
   endDate: string;
-  links?: string[];
+  links?: Link[];
   setup: string;
   isActive: boolean;
   accountId?: string;

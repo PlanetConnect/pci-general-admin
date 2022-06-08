@@ -5,6 +5,8 @@ import TextFieldsIcon from "@mui/icons-material/TextFields";
 import { TabItem } from "../../../../app/templates/tab/containers/IconedTab";
 
 import EditShowInfo from "../../components/EditShowInfo";
+import EditShowConfig from "../../components/EditShowConfig";
+
 import Show from "../types/Show";
 
 interface useShowTabInfoItemsProps {
@@ -23,7 +25,7 @@ export const useShowTabInfoItems = (props: useShowTabInfoItemsProps) => {
       icon: <ConstructionIcon />,
       label: "Show Config",
       value: "showConfig",
-      component: <EditShowInfo show={props.show} />,
+      component: <EditShowConfig show={props.show} />,
     },
     {
       icon: <TextFieldsIcon />,

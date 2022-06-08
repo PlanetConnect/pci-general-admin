@@ -21,13 +21,7 @@ const TextField = ({
 
   return (
     <Stack sx={{ width: "100%" }} spacing={1}>
-      <MuiTextField
-        {...field}
-        type={type}
-        label={label}
-        variant={variant}
-        size="small"
-      />
+      <MuiTextField {...field} type={type} label={label} variant={variant} />
       {meta.touched && meta.error ? (
         <Alert severity="error">{meta.touched && meta.error}</Alert>
       ) : null}

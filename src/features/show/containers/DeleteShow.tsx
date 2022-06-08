@@ -12,18 +12,18 @@ interface DeleteShowProps {
 }
 
 const DeleteShow = (props: DeleteShowProps) => {
-  const [isAppDialogOpen, setIsAppDialogOpen] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { openSnackBar } = useSnackBar();
 
   const title = "Confirm";
   const message = `Delete ${props.showName}?`;
 
   const handleDialogOpen = () => {
-    setIsAppDialogOpen(true);
+    setIsConfirmDialogOpen(true);
   };
 
   const handleConfirm = () => {
-    setIsAppDialogOpen(false);
+    setIsConfirmDialogOpen(false);
 
     openSnackBar({
       message: "Show successfully deleted.",
@@ -36,7 +36,7 @@ const DeleteShow = (props: DeleteShowProps) => {
   };
 
   const handleClose = () => {
-    setIsAppDialogOpen(false);
+    setIsConfirmDialogOpen(false);
   };
 
   return (
@@ -47,7 +47,7 @@ const DeleteShow = (props: DeleteShowProps) => {
       <ConfirmationDialog
         title={title}
         children={message}
-        isOpen={isAppDialogOpen}
+        isOpen={isConfirmDialogOpen}
         handleConfirm={handleConfirm}
         handleClose={handleClose}
       ></ConfirmationDialog>

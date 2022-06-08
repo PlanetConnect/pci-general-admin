@@ -67,7 +67,7 @@ const EditShowInfo = (props: EditShowInfoProps) => {
 
   return (
     <Form
-      size="sm"
+      size="md"
       initialValues={show}
       onSubmit={handleSubmit}
       validationSchema={showSchema}
@@ -135,9 +135,6 @@ const EditShowInfo = (props: EditShowInfoProps) => {
           />
         </FormSection>
       </FormBody>
-      <FormActions>
-        <SaveButton />
-      </FormActions>
     </Form>
   );
 };

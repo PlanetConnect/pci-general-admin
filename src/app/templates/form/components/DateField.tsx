@@ -38,7 +38,14 @@ const DateField = ({
         value={value}
         onChange={handleChange}
         renderInput={(params) => {
-          return <TextField variant={variant} sx={{ width: "100%" }} />;
+          return (
+            <TextField
+              variant={variant}
+              {...params}
+              {...field}
+              sx={{ width: "100%" }}
+            />
+          );
         }}
       />
       {meta.touched && meta.error ? (

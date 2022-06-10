@@ -1,27 +1,20 @@
 import {
   AddressField,
   Form,
-  FormActions,
   FormBody,
   FormHeader,
   FormSection,
   DateField,
-  SaveButton,
   Select,
   TextField,
   Value,
 } from "../../../app/templates/form";
 
-import Show from "../data/types/Show";
 import showSchema from "../data/form/showSchema";
 import showSetups from "../data/form/showSetups";
 import showStatuses from "../data/form/showStatuses";
 
 import { useSnackBar } from "../../../app/templates/snackbar";
-
-interface EditShowInfoProps {
-  show: Show;
-}
 
 const show = {
   showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
@@ -51,7 +44,7 @@ const show = {
   status: "under_construction",
 };
 
-const EditShowInfo = (props: EditShowInfoProps) => {
+const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
   const handleSubmit = (values: Value) => {
     console.log(values);
@@ -67,7 +60,7 @@ const EditShowInfo = (props: EditShowInfoProps) => {
 
   return (
     <Form
-      size="md"
+      size="sm"
       initialValues={show}
       onSubmit={handleSubmit}
       validationSchema={showSchema}
@@ -76,33 +69,17 @@ const EditShowInfo = (props: EditShowInfoProps) => {
 
       <FormBody>
         <FormSection name="General information">
-          <Select
-            label="Status"
-            name="status"
-            variant="filled"
-            options={showStatuses}
-          />
-          <Select
-            label="Setup"
-            name="setup"
-            variant="filled"
-            options={showSetups}
-          />
-          <TextField type="text" label="Name" name="name" variant="filled" />
-          <TextField type="number" label="Year" name="year" variant="filled" />
+          <Select label="Status" name="status" options={showStatuses} />
+          <Select label="Environment" name="setup" options={showSetups} />
+          <TextField type="text" label="Name" name="name" />
+          <TextField type="number" label="Year" name="year" />
 
           <DateField
             label="Start Date"
             dateValue={show.startDate}
             name="startDate"
-            variant="filled"
           />
-          <DateField
-            label="Date Date"
-            dateValue={show.endDate}
-            name="endDate"
-            variant="filled"
-          />
+          <DateField label="End Date" dateValue={show.endDate} name="endDate" />
         </FormSection>
 
         <FormSection name="Links">
@@ -110,20 +87,9 @@ const EditShowInfo = (props: EditShowInfoProps) => {
             type="text"
             label="Virtual Environment"
             name="links[0].virtualEnvironment"
-            variant="filled"
           />
-          <TextField
-            type="text"
-            label="External"
-            name="links[0].external"
-            variant="filled"
-          />
-          <TextField
-            type="text"
-            label="Internal"
-            name="links[0].internal"
-            variant="filled"
-          />
+          <TextField type="text" label="External" name="links[0].external" />
+          <TextField type="text" label="Internal" name="links[0].internal" />
         </FormSection>
 
         <FormSection name="Address">
@@ -131,7 +97,6 @@ const EditShowInfo = (props: EditShowInfoProps) => {
             address={{
               address1: "facility",
             }}
-            variant="filled"
           />
         </FormSection>
       </FormBody>

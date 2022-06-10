@@ -1,37 +1,24 @@
 import ConstructionIcon from "@mui/icons-material/Construction";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import TextFieldsIcon from "@mui/icons-material/TextFields";
 
 import { TabItem } from "../../../../app/templates/tab/containers/IconedTab";
 
-import EditShowInfo from "../../components/EditShowInfo";
-import EditShowConfig from "../../components/EditShowConfig";
+import EditShowInfo from "../../containers/EditShowInfo";
+import EditShowConfig from "../../containers/EditShowConfig";
 
-import Show from "../types/Show";
-
-interface useShowTabInfoItemsProps {
-  show: Show;
-}
-
-export const useShowTabInfoItems = (props: useShowTabInfoItemsProps) => {
+export const useShowTabInfoItems = () => {
   const tabItems: TabItem[] = [
     {
       icon: <EventNoteIcon />,
       label: "General Info",
       value: "generalInfo",
-      component: <EditShowInfo show={props.show} />,
+      component: <EditShowInfo />,
     },
     {
       icon: <ConstructionIcon />,
       label: "Show Config",
       value: "showConfig",
-      component: <EditShowConfig show={props.show} />,
-    },
-    {
-      icon: <TextFieldsIcon />,
-      label: "Forms",
-      value: "forms",
-      component: <EditShowInfo show={props.show} />,
+      component: <EditShowConfig />,
     },
   ];
 

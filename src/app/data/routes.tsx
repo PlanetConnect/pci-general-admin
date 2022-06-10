@@ -6,6 +6,7 @@ import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import Security from "@mui/icons-material/Security";
 import TableBarRoundedIcon from "@mui/icons-material/TableBarRounded";
+import TextFields from "@mui/icons-material/TextFields";
 
 import { MenuItem } from "../../features/navigation";
 
@@ -47,6 +48,11 @@ export const withShowRoutes: MenuItem[] = [
     label: "Exhibitions",
     path: "/exhibitions",
     icon: <TableBarRoundedIcon />,
+  },
+  {
+    label: "Forms",
+    path: "/forms",
+    icon: <TextFields />,
   },
   {
     label: "Reports",

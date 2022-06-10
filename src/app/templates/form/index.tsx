@@ -12,8 +12,6 @@ import SaveButton from "./components/SaveButton";
 import Select from "./components/Select";
 import TextField from "./components/TextField";
 
-import AddFieldForm from "./builder/containers/AddFieldForm";
-
 import Value from "./data/Value";
 
 export {
@@ -30,7 +28,5 @@ export {
   Select,
   TextField,
 };
-
-export { AddFieldForm };
 
 export type { Value };

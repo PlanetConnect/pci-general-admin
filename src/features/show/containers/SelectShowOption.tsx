@@ -9,15 +9,12 @@ const SelectShowOption = () => {
     <FormControl sx={{ minWidth: 250 }} size="small">
       <InputLabel htmlFor="grouped-show-select">Select a Show</InputLabel>
       <Select
-        defaultValue=""
+        defaultValue={1}
         id="grouped-show-select"
         label="Select a show"
         autoWidth
         sx={{ color: "#fff" }}
       >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
         <ListSubheader>Merck</ListSubheader>
         <MenuItem value={1}>2022 Merck Technology Symposium</MenuItem>
         <MenuItem value={2}>2022 Merck Imaging Symposium</MenuItem>

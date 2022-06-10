@@ -4,26 +4,20 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
+import Transition from "./Transition";
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any, any>;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { Form, Value } from "../../form";
 
 interface FormDialogProps {
   title: string;
+  submitButtonText: string;
   children: React.ReactNode;
+  initialValues: Value;
+  validationSchema: object;
   isOpen: boolean;
-  handleConfirm: () => void;
+  handleSubmit: (values: any) => void;
   handleClose: () => void;
 }
 
@@ -38,20 +32,23 @@ const FormDialog = (props: FormDialogProps) => {
       <DialogTitle>{props.title}</DialogTitle>
       <Divider />
       <DialogContent>
-        <DialogContentText>{props.children}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button variant="outlined" onClick={props.handleClose}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={props.handleConfirm}
+        <Form
+          size="md"
+          initialValues={props.initialValues}
+          onSubmit={props.handleSubmit}
+          validationSchema={props.validationSchema}
         >
-          Add
-        </Button>
-      </DialogActions>
+          {props.children}
+          <DialogActions>
+            <Button variant="outlined" onClick={props.handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" color="success">
+              {props.submitButtonText}
+            </Button>
+          </DialogActions>
+        </Form>
+      </DialogContent>
     </Dialog>
   );
 };

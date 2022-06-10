@@ -5,9 +5,7 @@ import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 
-import DeleteShow from "../../containers/DeleteShow";
-
-const dataTableColumns = [
+const showFormListColumns = [
   {
     field: "show_id",
     headerName: "Show ID",
@@ -78,10 +76,9 @@ const dataTableColumns = [
         >
           <EditIcon fontSize="small" />
         </IconButton>
-        <DeleteShow showId={params.row.show_id} showName={params.row.name} />
       </Stack>
     ),
   },
 ];
 
-export default dataTableColumns;
+export default showFormListColumns;

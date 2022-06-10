@@ -8,7 +8,8 @@ import { AbstractList } from "../features/abstract";
 import { AttendeeList } from "../features/attendee";
 import { ContactList } from "../features/contact";
 import { ExhibitionList } from "../features/exhibition";
-import { ShowList, ShowInfo } from "../features/show";
+import { ShowList, ShowInfoTabs } from "../features/show";
+import { FormInfo, FormList } from "../features/form";
 
 function App() {
   return (
@@ -24,7 +25,10 @@ function App() {
         <Route path="exhibitions" element={<ExhibitionList />} />
         {/* Show Routes */}
         <Route path="shows" element={<ShowList />} />
-        <Route path="shows/:showId" element={<ShowInfo />} />
+        <Route path="shows/:showId" element={<ShowInfoTabs />} />
+        {/* Form Routes */}
+        <Route path="forms" element={<FormList />} />
+        <Route path="forms/:formId" element={<FormInfo />} />
         {/* Not Found Route */}
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -1,24 +1,12 @@
 import {
-  AddFieldForm,
-  AddressField,
   Form,
-  FormActions,
   FormBody,
   FormHeader,
-  FormSection,
-  DateField,
-  SaveButton,
-  Select,
   TextField,
   Value,
 } from "../../../app/templates/form";
-import Show from "../data/types/Show";
 
 import showSchema from "../data/form/showSchema";
-
-interface EditShowConfigProps {
-  show: Show;
-}
 
 const show = {
   showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
@@ -48,26 +36,23 @@ const show = {
   status: "under_construction",
 };
 
-const EditShowConfig = (props: EditShowConfigProps) => {
+const EditShowConfig = () => {
   const handleSubmit = (values: Value) => {
     console.log(values);
   };
 
   return (
     <Form
-      size="md"
+      size="sm"
       initialValues={show}
       onSubmit={handleSubmit}
       validationSchema={showSchema}
     >
       <FormHeader>Edit Show Config Properties</FormHeader>
       <FormBody>
-        <TextField type="text" label="Name" name="name" variant="filled" />
-        <TextField type="number" label="Year" name="year" variant="filled" />
+        <TextField type="text" label="Name" name="name" />
+        <TextField type="number" label="Year" name="year" />
       </FormBody>
-      <FormActions>
-        <AddFieldForm />
-      </FormActions>
     </Form>
   );
 };

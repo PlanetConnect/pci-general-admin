@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DataTable } from "../../../app/templates/datatable";
 import { PaperContent, Title } from "../../../app/templates/content/";
 
-import dataTableColumns from "../data/datatable/dataTableColumns";
+import showListColumns from "../data/datatable/showListColumns";
 import data from "../data/data";
 
 const settings = {
@@ -19,7 +19,7 @@ function ShowList() {
   return (
     <PaperContent>
       <Title>Shows</Title>
-      <DataTable columns={dataTableColumns} rows={shows} settings={settings} />
+      <DataTable columns={showListColumns} rows={shows} settings={settings} />
     </PaperContent>
   );
 }

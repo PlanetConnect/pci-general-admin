@@ -27,11 +27,10 @@ const Select = ({
 }: SelectProps & FieldHookConfig<string>) => {
   const [field, meta] = useField(props);
   return (
-    <Stack sx={{}} spacing={1}>
+    <Stack sx={{ width: "100%" }} spacing={1}>
       <FormControl variant={variant}>
         <InputLabel id={label}>{label}</InputLabel>
         <MuiSelect {...field} labelId={label} label={label}>
-          <MenuItem value="">None</MenuItem>
           {options.map((option: Option) => {
             return (
               <MenuItem key={option.value} value={option.value}>

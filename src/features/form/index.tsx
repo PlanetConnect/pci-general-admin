@@ -1,4 +1,4 @@
-import FormInfo from "./containers/FormInfo";
-import FormList from "./containers/FormList";
+import FormInfoTabs from "./FormInfoTabs";
+import FormList from "./FormList";
 
-export { FormInfo, FormList };
+export { FormInfoTabs, FormList };

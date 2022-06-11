@@ -9,7 +9,7 @@ import { AttendeeList } from "../features/attendee";
 import { ContactList } from "../features/contact";
 import { ExhibitionList } from "../features/exhibition";
 import { ShowList, ShowInfoTabs } from "../features/show";
-import { FormInfo, FormList } from "../features/form";
+import { FormInfoTabs, FormList } from "../features/form";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
         <Route path="shows/:showId" element={<ShowInfoTabs />} />
         {/* Form Routes */}
         <Route path="forms" element={<FormList />} />
-        <Route path="forms/:formId" element={<FormInfo />} />
+        <Route path="forms/:formId" element={<FormInfoTabs />} />
         {/* Not Found Route */}
         <Route path="*" element={<NotFound />} />
       </Route>

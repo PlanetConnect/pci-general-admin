@@ -1,3 +1,3 @@
-import ContactList from "./containers/ContactList";
+import ContactList from "./ContactList";
 
 export { ContactList };

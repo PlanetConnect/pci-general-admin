@@ -1,3 +1,3 @@
-import Reporting from "./containers/Reporting";
+import Reporting from "./Reporting";
 
 export { Reporting };

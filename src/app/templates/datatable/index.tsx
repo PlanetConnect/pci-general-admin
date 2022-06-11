@@ -1,3 +1,3 @@
-import DataTable from "./containers/DataTable";
+import DataTable from "./components/DataTable";
 
 export { DataTable };

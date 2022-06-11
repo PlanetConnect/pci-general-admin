@@ -1,3 +1,3 @@
-import ExhibitionList from "./containers/ExhibitionList";
+import ExhibitionList from "./ExhibitionList";
 
 export { ExhibitionList };

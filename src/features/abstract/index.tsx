@@ -1,3 +1,3 @@
-import AbstractList from "./containers/AbstractList";
+import AbstractList from "./AbstractList";
 
 export { AbstractList };

@@ -1,3 +1,3 @@
-import MainSearch from "./containers/MainSearch";
+import MainSearch from "./MainSearch";
 
 export { MainSearch };

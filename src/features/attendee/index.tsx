@@ -1,3 +1,3 @@
-import AttendeeList from "./containers/AttendeeList";
+import AttendeeList from "./AttendeeList";
 
 export { AttendeeList };

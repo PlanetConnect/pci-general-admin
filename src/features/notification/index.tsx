@@ -1,3 +1,3 @@
-import NotificationIconBadge from "./containers/NotificationIconBadge";
+import NotificationIconBadge from "./NotificationIconBadge";
 
 export { NotificationIconBadge };

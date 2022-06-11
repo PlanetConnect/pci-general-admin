@@ -1,6 +1,6 @@
 import MenuItem from "./data/MenuItem";
-import Navigation from "./containers/Navigation";
-import { selectIsDrawerOpen } from "../../features/navigation/slices/mainAppDrawerSlice";
+import Navigation from "./Navigation";
+import { selectIsDrawerOpen } from "./mainAppDrawerSlice";
 
 export { Navigation, selectIsDrawerOpen };
 export type { MenuItem };

@@ -1,3 +1,3 @@
-import UserIconBadge from "./containers/UserIconBadge";
+import UserIconBadge from "./UserIconBadge";
 
 export { UserIconBadge };

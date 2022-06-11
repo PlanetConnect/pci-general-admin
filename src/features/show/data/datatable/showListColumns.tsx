@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 
-import DeleteShow from "../../containers/DeleteShow";
+import DeleteShow from "../../DeleteShow";
 
 const showListColumns = [
   {

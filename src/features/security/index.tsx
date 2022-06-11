@@ -1,3 +1,3 @@
-import RoleList from "./containers/RoleList";
+import RoleList from "./RoleList";
 
 export { RoleList };

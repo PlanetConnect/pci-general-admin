@@ -1,6 +1,6 @@
-import DeleteShow from "./containers/DeleteShow";
-import SelectShowOption from "./containers/SelectShowOption";
-import ShowInfoTabs from "./containers/ShowInfoTabs";
-import ShowList from "./containers/ShowList";
+import DeleteShow from "./DeleteShow";
+import SelectShowOption from "./SelectShowOption";
+import ShowInfoTabs from "./ShowInfoTabs";
+import ShowList from "./ShowList";
 
 export { DeleteShow, SelectShowOption, ShowInfoTabs, ShowList };

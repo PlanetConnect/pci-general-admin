@@ -1,3 +1,3 @@
-import AccountList from "./containers/AccountList";
+import AccountList from "./AccountList";
 
 export { AccountList };

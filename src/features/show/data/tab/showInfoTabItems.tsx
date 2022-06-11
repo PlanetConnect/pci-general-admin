@@ -1,10 +1,10 @@
 import ConstructionIcon from "@mui/icons-material/Construction";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
-import { TabItem } from "../../../../app/templates/tab/containers/IconedTab";
+import { TabItem } from "../../../../app/templates/tab/";
 
-import EditShowInfo from "../../containers/EditShowInfo";
-import EditShowConfig from "../../containers/EditShowConfig";
+import EditShowInfo from "../../EditShowInfo";
+import EditShowConfig from "../../EditShowConfig";
 
 export const useShowTabInfoItems = () => {
   const tabItems: TabItem[] = [

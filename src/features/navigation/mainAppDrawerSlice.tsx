@@ -12,7 +12,7 @@ const initialState: mainAppDrawerState = {
 };
 
 export const mainAppDrawerSlice = createSlice({
-  name: "mainAppDrawer",
+  name: "drawer",
   initialState,
   reducers: {
     openDrawer: (state: any) => {

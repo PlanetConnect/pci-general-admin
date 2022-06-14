@@ -6,6 +6,7 @@ const formSchema = Yup.object({
     .required("Required"),
   type: Yup.string().required("Required"),
   isActive: Yup.boolean().required("Required"),
+  description: Yup.string().max(200, "Must be 200 characters or less"),
 });
 
 export default formSchema;

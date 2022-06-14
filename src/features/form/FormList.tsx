@@ -48,13 +48,13 @@ const FormList = () => {
                 key={form.formId}
                 summary={
                   <Stack spacing={1} direction="row" alignItems="center">
-                    <Typography sx={{ fontWeight: 800 }}>
-                      {form.name}
-                    </Typography>
                     <Chip
                       label={form.isActive ? "Active" : "Inactive"}
                       color={form.isActive ? "success" : "error"}
                     />
+                    <Typography sx={{ fontWeight: 800 }}>
+                      {form.name}
+                    </Typography>
                   </Stack>
                 }
               >

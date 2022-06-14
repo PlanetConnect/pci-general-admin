@@ -7,6 +7,7 @@ import {
   Value,
   FormActions,
   SaveButton,
+  TextArea,
 } from "../../app/templates/form";
 
 import formSchema from "./data/form/formSchema";
@@ -16,6 +17,7 @@ const form = {
   name: "Merck Technology Symposium 2021 Registration Form",
   type: "registration",
   isActive: true,
+  description: "Testcription",
 };
 
 const FormSettings = () => {
@@ -24,7 +26,7 @@ const FormSettings = () => {
   };
   return (
     <Form
-      size="lg"
+      size="xl"
       initialValues={form}
       onSubmit={handleSubmit}
       validationSchema={formSchema}
@@ -33,6 +35,7 @@ const FormSettings = () => {
         <Switch name="isActive" isChecked={form.isActive} label="Is Active?" />
         <TextField type="text" label="Name" name="name" />
         <Select label="Type" name="type" options={formTypes} />
+        <TextArea type="text" label="Description" name="description" />
       </FormBody>
       <FormActions>
         <SaveButton />

@@ -10,19 +10,21 @@ import { Alert } from "../../alert";
 
 interface Option {
   value: string;
-  option: string;
+  option: string | number;
 }
 
 interface SelectProps {
   label: string;
   variant?: "standard" | "filled" | "outlined" | undefined;
   options: Option[];
+  isDisabled?: boolean;
 }
 
 const Select = ({
   label,
   variant = "outlined",
   options,
+  isDisabled = false,
   ...props
 }: SelectProps & FieldHookConfig<string>) => {
   const [field, meta] = useField(props);
@@ -30,7 +32,12 @@ const Select = ({
     <Stack sx={{ width: "100%" }} spacing={1}>
       <FormControl variant={variant}>
         <InputLabel id={label}>{label}</InputLabel>
-        <MuiSelect {...field} labelId={label} label={label}>
+        <MuiSelect
+          {...field}
+          labelId={label}
+          label={label}
+          disabled={isDisabled}
+        >
           {options.map((option: Option) => {
             return (
               <MenuItem key={option.value} value={option.value}>

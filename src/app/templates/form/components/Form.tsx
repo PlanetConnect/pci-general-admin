@@ -1,5 +1,6 @@
-import { Formik, Form as FormikForm } from "formik";
+import React from "react";
 
+import { Formik, Form as FormikForm } from "formik";
 import Container from "@mui/system/Container";
 import Stack from "@mui/material/Stack";
 
@@ -10,6 +11,7 @@ interface FormProps {
   initialValues: Value;
   validationSchema: object;
   children: React.ReactNode;
+  validateOnChange?: boolean | undefined;
   onSubmit: (values: Value) => void;
 }
 
@@ -17,6 +19,7 @@ const Form = (props: FormProps) => {
   return (
     <Container maxWidth={props.size}>
       <Formik
+        validateOnChange={props.validateOnChange}
         initialValues={props.initialValues}
         validationSchema={props.validationSchema}
         onSubmit={(values, { setSubmitting }) => {

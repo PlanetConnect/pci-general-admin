@@ -1,7 +1,7 @@
 import ConstructionIcon from "@mui/icons-material/Construction";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
-import { TabItem } from "../../../../app/templates/tab/";
+import { TabItem } from "../../../../app/templates/tab";
 
 import EditShowInfo from "../../EditShowInfo";
 import EditShowConfig from "../../EditShowConfig";

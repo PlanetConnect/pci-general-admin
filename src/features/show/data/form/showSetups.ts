@@ -1,15 +1,15 @@
 const showSetups = [
   {
     value: "virtual",
-    option: "Virtual",
+    label: "Virtual",
   },
   {
-    value: "in-person",
-    option: "In Person",
+    value: "in_person",
+    label: "In Person",
   },
   {
     value: "hybrid",
-    option: "Hybrid",
+    label: "Hybrid",
   },
 ];
 

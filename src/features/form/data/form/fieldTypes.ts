@@ -1,23 +1,23 @@
 const fieldTypes = [
   {
     value: "textfield",
-    option: "Text Field",
+    label: "Text Field",
   },
   {
     value: "number",
-    option: "Number",
+    label: "Number",
   },
   {
     value: "select",
-    option: "Select",
+    label: "Select",
   },
   {
     value: "textarea",
-    option: "Text Area",
+    label: "Text Area",
   },
   {
     value: "switch",
-    option: "Switch",
+    label: "Switch",
   },
 ];
 

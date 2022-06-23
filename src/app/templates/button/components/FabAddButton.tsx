@@ -1,0 +1,18 @@
+import React from "react";
+
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+
+interface FabAddButtonProps {
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
+}
+
+const FabAddButton = ({ onClick }: FabAddButtonProps) => {
+  return (
+    <Fab size="small" color="secondary" aria-label="add" onClick={onClick}>
+      <AddIcon />
+    </Fab>
+  );
+};
+
+export default FabAddButton;

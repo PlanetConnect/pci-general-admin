@@ -10,7 +10,7 @@ import { Alert } from "../../alert";
 
 interface Option {
   value: string;
-  option: string | number;
+  label: string | number;
 }
 
 interface SelectProps {
@@ -41,7 +41,7 @@ const Select = ({
           {options.map((option: Option) => {
             return (
               <MenuItem key={option.value} value={option.value}>
-                {option.option}
+                {option.label}
               </MenuItem>
             );
           })}

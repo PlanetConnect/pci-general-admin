@@ -11,6 +11,12 @@ const fieldSchema = Yup.object().shape({
         .max(100, "Must be 100 characters or less")
         .required("Required"),
       isActive: Yup.boolean().required("Required"),
+      options: Yup.array().of(
+        Yup.object().shape({
+          label: Yup.string().required("Required"),
+          value: Yup.string().required("Required"),
+        })
+      ),
     })
   ),
 });

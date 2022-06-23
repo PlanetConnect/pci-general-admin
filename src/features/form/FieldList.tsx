@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -6,20 +6,78 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import { Accordion } from "../../app/templates/accordion";
-import { FormBody, TextField, Select, Switch } from "../../app/templates/form";
+import {
+  Actions,
+  Section,
+  Select,
+  Switch,
+  TextField,
+  useFieldArrayMethods,
+} from "../../app/templates/formbuilder";
+import {
+  ButtonGroup,
+  DeleteButton,
+  DownButton,
+  UpButton,
+} from "../../app/templates/button";
+import { ConfirmationDialog } from "../../app/templates/dialog";
 
-import Field from "./data/types/Field";
 import fieldTypes from "./data/form/fieldTypes";
+import SelectOptionList from "./SelectOptionList";
 
-const FieldList = ({ form }: any) => {
+interface FieldListProps {
+  name: string;
+}
+
+const FieldList = ({ name }: FieldListProps) => {
+  const { fields, errors, swap, remove } = useFieldArrayMethods(name);
+  const [selectedFieldIndex, setSelectedFieldIndex] = useState<
+    number | undefined
+  >(undefined);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+  const handleDialogOpen = (index: number) => {
+    setSelectedFieldIndex(index);
+    setIsConfirmDialogOpen(true);
+  };
+
+  const handleConfirm = () => {
+    remove(selectedFieldIndex);
+    setIsConfirmDialogOpen(false);
+    setSelectedFieldIndex(undefined);
+  };
+
+  const handleClose = () => {
+    setIsConfirmDialogOpen(false);
+    setSelectedFieldIndex(undefined);
+  };
+
   return (
-    <Box sx={{ marginBottom: 1 }}>
-      {form.values.fields.map((field: Field, index: number) => {
+    <Box sx={{ flex: 1 }}>
+      {fields.map((field: any, index: number) => {
         return (
           <Accordion
-            key={field.fieldId}
+            key={field.id}
             summary={
               <Stack spacing={1} direction="row" alignItems="center">
+                <ButtonGroup>
+                  <DownButton
+                    onClick={(e) => {
+                      if (index < fields.length - 1) {
+                        swap(index, index + 1);
+                      }
+                      e.stopPropagation();
+                    }}
+                  />
+                  <UpButton
+                    onClick={(e) => {
+                      if (index !== 0) {
+                        swap(index, index - 1);
+                      }
+                      e.stopPropagation();
+                    }}
+                  />
+                </ButtonGroup>
                 <Chip
                   label={field.isActive ? "Active" : "Inactive"}
                   color={field.isActive ? "success" : "error"}
@@ -28,33 +86,66 @@ const FieldList = ({ form }: any) => {
               </Stack>
             }
           >
-            <FormBody>
+            <Section name="">
               <Switch
                 label="Is Active?"
-                name={`fields.${index}.isActive`}
+                name={`${name}.${index}.isActive`}
                 isChecked={field.isActive}
+              />
+              <Switch
+                label="Is Required?"
+                name={`${name}.${index}.validations.isRequired`}
+                isChecked={field.validations.isRequired}
               />
               <Select
                 label="Type"
-                name={`fields.${index}.type`}
+                name={`${name}.${index}.type`}
                 options={fieldTypes}
                 isDisabled
               />
               <TextField
                 label="Label"
-                name={`fields.${index}.label`}
+                name={`${name}.${index}.label`}
                 type="text"
+                error={errors?.[name]?.[index]?.["label"]?.["message"]}
               />
               <TextField
                 label="Name"
-                name={`fields.${index}.name`}
+                name={`${name}.${index}.name`}
                 type="text"
                 isDisabled
               />
-            </FormBody>
+              {field.type === "select" && field.options && (
+                <Section name="Options">
+                  <SelectOptionList
+                    name={`${name}.${index}.options`}
+                    index={index}
+                  />
+                </Section>
+              )}
+            </Section>
+            <Actions>
+              <DeleteButton
+                onClick={(e) => {
+                  handleDialogOpen(index);
+                  e.preventDefault();
+                }}
+              />
+            </Actions>
           </Accordion>
         );
       })}
+      <ConfirmationDialog
+        title="Confirm"
+        isOpen={isConfirmDialogOpen}
+        handleConfirm={(e) => {
+          handleConfirm();
+          e.preventDefault();
+        }}
+        handleClose={handleClose}
+      >
+        Delete field?
+      </ConfirmationDialog>
     </Box>
   );
 };

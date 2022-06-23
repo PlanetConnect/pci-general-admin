@@ -1,11 +1,11 @@
 const formTypes = [
   {
     value: "registration",
-    option: "Registration",
+    label: "Registration",
   },
   {
     value: "abstract_submission",
-    option: "Abstract Submission",
+    label: "Abstract Submission",
   },
 ];
 

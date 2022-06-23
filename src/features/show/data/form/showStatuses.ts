@@ -1,11 +1,15 @@
 const showStatuses = [
   {
     value: "active",
-    option: "Active",
+    label: "Active",
   },
   {
     value: "under_construction",
-    option: "Under Construction",
+    label: "Under Construction",
+  },
+  {
+    value: "archived",
+    label: "Archived",
   },
 ];
 

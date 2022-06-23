@@ -13,8 +13,8 @@ interface ConfirmationDialogProps {
   title: string;
   children: React.ReactNode;
   isOpen: boolean;
-  handleConfirm: () => void;
-  handleClose: () => void;
+  handleConfirm: (event: React.MouseEvent<HTMLElement>) => void;
+  handleClose: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const ConfirmationDialog = (props: ConfirmationDialogProps) => {

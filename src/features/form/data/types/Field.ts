@@ -11,7 +11,7 @@ interface Field {
     type: "string" | "number" | "boolean" | "email" | "url";
   };
   options?: {
-    option: string;
+    label: string;
     value: string | number;
   }[];
 }

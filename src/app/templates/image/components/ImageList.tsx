@@ -15,6 +15,7 @@ interface Image {
 }
 
 const ImageList = ({ width, cols, images }: ImageListProps) => {
+  console.log(images);
   return (
     <MuiImageList
       sx={{ width: width, height: "100%" }}

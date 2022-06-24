@@ -1,3 +1,4 @@
+import Image from "./components/Image";
 import ImageList from "./components/ImageList";
 
-export { ImageList };
+export { Image, ImageList };

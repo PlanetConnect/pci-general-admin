@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 
-import { FormActions } from "../../app/templates/form";
+import { Actions } from "../../app/templates/formbuilder";
 import { EditButton } from "../../app/templates/button";
 import { PaperContent, Title } from "../../app/templates/content";
 import { Table } from "../../app/templates/table";
@@ -85,9 +85,9 @@ const FormList = () => {
         <Box sx={{ margin: 2 }}>
           <Table data={display} columns={columns} />
         </Box>
-        <FormActions>
+        <Actions>
           <AddForm />
-        </FormActions>
+        </Actions>
       </Container>
     </PaperContent>
   );

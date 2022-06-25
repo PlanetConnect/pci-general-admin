@@ -17,16 +17,16 @@ export const useFormTabInfoItems = () => {
       value: "fields",
       component: <FormFields />,
     },
-    {
-      label: "Form Notifications",
-      value: "notifications",
-      component: <FormNotifications />,
-    },
-    {
-      label: "Entries",
-      value: "entries",
-      component: <FormEntries />,
-    },
+    // {
+    //   label: "Form Notifications",
+    //   value: "notifications",
+    //   component: <FormNotifications />,
+    // },
+    // {
+    //   label: "Entries",
+    //   value: "entries",
+    //   component: <FormEntries />,
+    // },
   ];
 
   return tabItems;

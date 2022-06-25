@@ -3,32 +3,45 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
-import { FormBody, TextField, Select, Value } from "../../app/templates/form";
-import { FormDialog } from "../../app/templates/dialog";
-import { FabAddButton } from "../../app/templates/button";
+import {
+  Actions,
+  Form,
+  Switch,
+  Select,
+  TextArea,
+  TextField,
+} from "../../app/templates/formbuilder";
+import { Dialog } from "../../app/templates/dialog";
+import {
+  CancelButton,
+  FabAddButton,
+  SaveButton,
+} from "../../app/templates/button";
 
 import formSchema from "./data/form/formSchema";
 import formTypes from "./data/form/formTypes";
 
 const form = {
+  isActive: true,
   name: "",
   type: "registration",
+  description: "",
 };
 
 const AddForm = () => {
-  const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleDialogOpen = () => {
-    setIsFormDialogOpen(true);
+    setIsDialogOpen(true);
   };
 
   const handleClose = () => {
-    setIsFormDialogOpen(false);
+    setIsDialogOpen(false);
   };
 
-  const handleSubmit = (values: Value) => {
+  const handleSubmit = (values: any) => {
     console.log(values);
-    setIsFormDialogOpen(false);
+    setIsDialogOpen(false);
   };
 
   return (
@@ -37,20 +50,27 @@ const AddForm = () => {
         <FabAddButton onClick={handleDialogOpen} />
       </Stack>
 
-      <FormDialog
-        title="Add new form"
-        submitButtonText="Add"
-        initialValues={form}
-        validationSchema={formSchema}
-        isOpen={isFormDialogOpen}
-        handleSubmit={handleSubmit}
-        handleClose={handleClose}
-      >
-        <FormBody>
-          <TextField type="text" label="Form Name" name="name" />
+      <Dialog title="Add new form" isOpen={isDialogOpen}>
+        <Form
+          size="xl"
+          defaultValues={form}
+          validationSchema={formSchema}
+          onSubmit={handleSubmit}
+        >
+          <Switch
+            label="Is Active?"
+            name="isActive"
+            isChecked={form.isActive}
+          />
+          <TextField type="text" label="Name" name="name" />
           <Select label="Type" name="type" options={formTypes} />
-        </FormBody>
-      </FormDialog>
+          <TextArea type="text" label="Description" name="description" />
+          <Actions>
+            <CancelButton onClick={handleClose} />
+            <SaveButton />
+          </Actions>
+        </Form>
+      </Dialog>
     </Box>
   );
 };

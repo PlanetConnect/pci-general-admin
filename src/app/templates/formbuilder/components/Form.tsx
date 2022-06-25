@@ -26,12 +26,19 @@ const Form = ({
     defaultValues: defaultValues,
     resolver: yupResolver(validationSchema),
   });
-  const handleFormSubmit = (data: unknown) => onSubmit(data);
+  const handleFormSubmit = (data: unknown) => {
+    onSubmit(data);
+  };
 
   return (
     <Container maxWidth={size}>
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+        <form
+          onSubmit={(e) => {
+            e.stopPropagation();
+            return methods.handleSubmit(handleFormSubmit)(e);
+          }}
+        >
           <Stack sx={{ width: "100%" }} spacing={1}>
             {children}
           </Stack>

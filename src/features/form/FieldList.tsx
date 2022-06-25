@@ -115,14 +115,17 @@ const FieldList = ({ name }: FieldListProps) => {
                 type="text"
                 isDisabled
               />
-              {field.type === "select" && field.options && (
-                <Section name="Options">
-                  <SelectOptionList
-                    name={`${name}.${index}.options`}
-                    index={index}
-                  />
-                </Section>
-              )}
+              {(field.type === "select" ||
+                field.type === "checkbox" ||
+                field.type === "multiselect") &&
+                field.options && (
+                  <Section name="Options">
+                    <SelectOptionList
+                      name={`${name}.${index}.options`}
+                      index={index}
+                    />
+                  </Section>
+                )}
             </Section>
             <Actions>
               <DeleteButton

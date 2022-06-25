@@ -9,7 +9,7 @@ import {
 } from "../../app/templates/formbuilder";
 
 import {
-  AddButton,
+  MiniAddButton,
   ButtonGroup,
   DownButton,
   RemoveButton,
@@ -80,7 +80,7 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
                 }
               />
               <ButtonGroup>
-                <AddButton
+                <MiniAddButton
                   onClick={() => insert(optIndex + 1, { label: "", value: "" })}
                 />
                 <RemoveButton onClick={() => remove(optIndex)} />
@@ -89,7 +89,7 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
           );
         })}
         <Stack alignItems="center">
-          <AddButton onClick={() => append({ label: "", value: "" })} />
+          <MiniAddButton onClick={() => append({ label: "", value: "" })} />
         </Stack>
       </Stack>
     </Box>

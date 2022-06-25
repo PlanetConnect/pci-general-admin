@@ -1,10 +1,15 @@
 import {
+  Actions,
+  AddressField,
   Form,
-  FormBody,
-  FormHeader,
+  Header,
+  DateField,
+  Section,
+  Select,
   TextField,
-  Value,
-} from "../../app/templates/form";
+} from "../../app/templates/formbuilder";
+import { useSnackBar } from "../../app/templates/snackbar";
+import { SaveButton } from "../../app/templates/button";
 
 import showSchema from "./data/form/showSchema";
 
@@ -37,22 +42,23 @@ const show = {
 };
 
 const EditShowConfig = () => {
-  const handleSubmit = (values: Value) => {
+  const handleSubmit = (values: any) => {
     console.log(values);
   };
 
   return (
     <Form
-      size="sm"
-      initialValues={show}
+      size="md"
+      defaultValues={show}
       onSubmit={handleSubmit}
       validationSchema={showSchema}
     >
-      <FormHeader>Edit Show Config Properties</FormHeader>
-      <FormBody>
-        <TextField type="text" label="Name" name="name" />
-        <TextField type="number" label="Year" name="year" />
-      </FormBody>
+      <Header>Edit Show Config Properties</Header>
+      <TextField type="text" label="Name" name="name" />
+      <TextField type="number" label="Year" name="year" />
+      <Actions>
+        <SaveButton />
+      </Actions>
     </Form>
   );
 };

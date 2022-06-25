@@ -1,19 +1,14 @@
-import * as React from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
-import FeedIcon from "@mui/icons-material/Feed";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
-import Edit from "@mui/icons-material/Edit";
-
-import { Accordion } from "../../app/templates/accordion";
 import { FormActions } from "../../app/templates/form";
+import { EditButton } from "../../app/templates/button";
 import { PaperContent, Title } from "../../app/templates/content";
+import { Table } from "../../app/templates/table";
 
 import AddForm from "./AddForm";
 
@@ -36,57 +31,59 @@ const forms = [
   },
 ];
 
+const columns = [
+  {
+    name: "isActive",
+    label: "Is Active?",
+  },
+  {
+    name: "name",
+    label: "Name",
+  },
+  {
+    name: "type",
+    label: "Type",
+  },
+  {
+    name: "submissions",
+    label: "Submissions",
+  },
+  {
+    name: "actions",
+    label: "Actions",
+  },
+];
+
 const FormList = () => {
+  let navigate = useNavigate();
+  const display = forms.map((form) => {
+    return {
+      name: form.name,
+      type: form.type,
+      isActive: (
+        <Chip
+          label={form.isActive ? "Active" : "Inactive"}
+          color={form.isActive ? "success" : "error"}
+        />
+      ),
+      submissions: form.submissions,
+      actions: (
+        <EditButton
+          size="small"
+          onClick={() => {
+            navigate(`/forms/${form.formId}`);
+          }}
+        />
+      ),
+    };
+  });
+
   return (
     <PaperContent>
       <Title>Forms</Title>
       <Container maxWidth="lg">
-        <Box sx={{ marginBottom: 2 }}>
-          {forms.map((form) => {
-            return (
-              <Accordion
-                key={form.formId}
-                summary={
-                  <Stack spacing={1} direction="row" alignItems="center">
-                    <Chip
-                      label={form.isActive ? "Active" : "Inactive"}
-                      color={form.isActive ? "success" : "error"}
-                    />
-                    <Typography sx={{ fontWeight: 800 }}>
-                      {form.name}
-                    </Typography>
-                  </Stack>
-                }
-              >
-                <Grid
-                  container
-                  spacing={2}
-                  alignItems="center"
-                  alignContent="center"
-                >
-                  <Grid item xs={10}>
-                    <Stack spacing={1} direction="row" alignItems="center">
-                      <FeedIcon />
-                      <Typography variant="body2">Submissions:</Typography>
-                      <Typography sx={{ fontWeight: 800 }} variant="body2">
-                        {form.submissions}
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button
-                      href={`/forms/${form.formId}`}
-                      size="small"
-                      variant="outlined"
-                      startIcon={<Edit />}
-                    >
-                      Edit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Accordion>
-            );
-          })}
+        <Box sx={{ margin: 2 }}>
+          <Table data={display} columns={columns} />
         </Box>
         <FormActions>
           <AddForm />

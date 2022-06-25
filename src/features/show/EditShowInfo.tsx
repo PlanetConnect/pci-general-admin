@@ -1,20 +1,19 @@
 import {
+  Actions,
   AddressField,
   Form,
-  FormBody,
-  FormHeader,
-  FormSection,
+  Header,
   DateField,
+  Section,
   Select,
   TextField,
-  Value,
-} from "../../app/templates/form";
+} from "../../app/templates/formbuilder";
+import { useSnackBar } from "../../app/templates/snackbar";
+import { SaveButton } from "../../app/templates/button";
 
 import showSchema from "./data/form/showSchema";
 import showSetups from "./data/form/showSetups";
 import showStatuses from "./data/form/showStatuses";
-
-import { useSnackBar } from "../../app/templates/snackbar";
 
 const show = {
   showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
@@ -46,7 +45,7 @@ const show = {
 
 const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
-  const handleSubmit = (values: Value) => {
+  const handleSubmit = (values: any) => {
     console.log(values);
     openSnackBar({
       message: "Show successfully updated.",
@@ -60,46 +59,42 @@ const EditShowInfo = () => {
 
   return (
     <Form
-      size="sm"
-      initialValues={show}
-      onSubmit={handleSubmit}
+      size="md"
+      defaultValues={show}
       validationSchema={showSchema}
+      onSubmit={handleSubmit}
     >
-      <FormHeader>Edit Show Information</FormHeader>
+      <Header>Edit Show Information</Header>
 
-      <FormBody>
-        <FormSection name="General information">
-          <Select label="Status" name="status" options={showStatuses} />
-          <Select label="Environment" name="setup" options={showSetups} />
-          <TextField type="text" label="Name" name="name" />
-          <TextField type="number" label="Year" name="year" />
+      <Section name="General information">
+        <Select label="Status" name="status" options={showStatuses} />
+        <Select label="Environment" name="setup" options={showSetups} />
+        <TextField type="text" label="Name" name="name" />
+        <TextField type="number" label="Year" name="year" />
+        <DateField label="Start Date" value={show.startDate} name="startDate" />
+        <DateField label="End Date" value={show.endDate} name="endDate" />
+      </Section>
 
-          <DateField
-            label="Start Date"
-            dateValue={show.startDate}
-            name="startDate"
-          />
-          <DateField label="End Date" dateValue={show.endDate} name="endDate" />
-        </FormSection>
+      <Section name="Links">
+        <TextField
+          type="text"
+          label="Virtual Environment"
+          name="links[0].virtualEnvironment"
+        />
+        <TextField type="text" label="External" name="links[0].external" />
+        <TextField type="text" label="Internal" name="links[0].internal" />
+      </Section>
 
-        <FormSection name="Links">
-          <TextField
-            type="text"
-            label="Virtual Environment"
-            name="links[0].virtualEnvironment"
-          />
-          <TextField type="text" label="External" name="links[0].external" />
-          <TextField type="text" label="Internal" name="links[0].internal" />
-        </FormSection>
-
-        <FormSection name="Address">
-          <AddressField
-            address={{
-              address1: "facility",
-            }}
-          />
-        </FormSection>
-      </FormBody>
+      <Section name="Address">
+        <AddressField
+          address={{
+            address1: "facility",
+          }}
+        />
+      </Section>
+      <Actions>
+        <SaveButton />
+      </Actions>
     </Form>
   );
 };

@@ -1,4 +1,4 @@
 import ConfirmationDialog from "./components/ConfirmationDialog";
-import FormDialog from "./components/FormDialog";
+import Dialog from "./components/Dialog";
 
-export { ConfirmationDialog, FormDialog };
+export { ConfirmationDialog, Dialog };

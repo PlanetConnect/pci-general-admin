@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header = ({ children }: HeaderProps) => {
   return (
-    <Stack sx={{ width: "100%" }} spacing={1}>
+    <Stack sx={{ width: "100%", marginBottom: 2 }} spacing={1}>
       <Typography variant="h6">{children}</Typography>
       <Divider />
     </Stack>

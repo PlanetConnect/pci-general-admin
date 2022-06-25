@@ -1,23 +1,22 @@
 import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
 
-interface DeleteButtonProps {
+interface CancelButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
   size?: "medium" | "small";
 }
 
-const DeleteButton = ({ onClick, size = "medium" }: DeleteButtonProps) => {
+const CancelButton = ({ onClick, size = "medium" }: CancelButtonProps) => {
   return (
     <Button
       variant="outlined"
-      startIcon={<DeleteIcon />}
+      startIcon={<CancelIcon />}
       onClick={onClick}
       size={size}
-      color="error"
     >
-      Delete
+      Cancel
     </Button>
   );
 };
 
-export default DeleteButton;
+export default CancelButton;

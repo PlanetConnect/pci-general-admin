@@ -1,4 +1,5 @@
-import { useFormContext } from "react-hook-form";
+import React, { useEffect } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
 import MuiTextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
@@ -10,8 +11,10 @@ interface TextFieldProps {
   label: string;
   name: string;
   variant?: "standard" | "filled" | "outlined" | undefined;
+  value?: string;
   error?: string;
   isDisabled?: boolean;
+  onChange?: (text: string) => void;
 }
 
 const TextField = ({
@@ -19,19 +22,45 @@ const TextField = ({
   label,
   name,
   variant = "outlined",
+  value,
   isDisabled = false,
   error,
+  onChange,
 }: TextFieldProps) => {
-  const { register } = useFormContext();
+  const { control, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (value) {
+      setValue(name, value);
+    }
+  });
+
+  const handleChange = (text: string) => {
+    if (onChange) {
+      onChange(text);
+    }
+  };
 
   return (
     <Stack sx={{ width: "100%" }} spacing={1}>
-      <MuiTextField
-        type={type}
-        label={label}
-        variant={variant}
-        disabled={isDisabled}
-        {...register(name)}
+      <Controller
+        control={control}
+        name={name}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <MuiTextField
+              value={value}
+              onChange={(e) => {
+                onChange(e.target.value);
+                handleChange(e.target.value);
+              }}
+              type={type}
+              label={label}
+              variant={variant}
+              disabled={isDisabled}
+            />
+          );
+        }}
       />
       <Error name={name} error={error} />
     </Stack>

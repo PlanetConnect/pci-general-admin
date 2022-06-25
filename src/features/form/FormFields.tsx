@@ -4,20 +4,25 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
 import { Actions, Form } from "../../app/templates/formbuilder";
-import { FabAddButton, SaveButton } from "../../app/templates/button";
+import { SaveButton } from "../../app/templates/button";
 import { useSnackBar } from "../../app/templates/snackbar";
 
-import fieldSchema from "./data/form/fieldSchema";
+import AddField from "./AddField";
 import FieldList from "./FieldList";
 
+import formSchema from "./data/form/formSchema";
+
 const initialValues = {
+  isActive: true,
+  name: "Registration Form",
+  type: "registration",
   fields: [
     {
       fieldId: "29129293291sd1235412",
       type: "textfield",
       label: "First Name",
       name: "first_name",
-      isActive: false,
+      isActive: true,
       validations: {
         isRequired: false,
         max: 250,
@@ -29,7 +34,7 @@ const initialValues = {
       type: "textfield",
       label: "Last Name",
       name: "last_name",
-      isActive: false,
+      isActive: true,
       validations: {
         isRequired: false,
         max: 250,
@@ -41,7 +46,7 @@ const initialValues = {
       type: "textfield",
       label: "Email",
       name: "email",
-      isActive: false,
+      isActive: true,
       validations: {
         isRequired: true,
         max: 250,
@@ -84,7 +89,7 @@ const initialValues = {
     },
     {
       fieldId: "29129293291sd12342114",
-      type: "select",
+      type: "checkbox",
       label: "Attendance Days",
       name: "attendance_days",
       isActive: true,
@@ -94,14 +99,6 @@ const initialValues = {
         type: "string",
       },
       options: [
-        {
-          label: "Both Physical Days",
-          value: "Physical Day 1, Physical Day 2",
-        },
-        {
-          label: "Both Virtual Days",
-          value: "Virtual Day 1, Virtual Day 2",
-        },
         {
           label: "Virtual Day 1",
           value: "Virtual Day 1",
@@ -117,6 +114,31 @@ const initialValues = {
         {
           label: "Physical Day 2",
           value: "Physical Day 2",
+        },
+      ],
+    },
+    {
+      fieldId: "2912929322222187644",
+      type: "multiselect",
+      label: "Roles",
+      name: "roles",
+      isActive: true,
+      validations: {
+        isRequired: true,
+        type: "string",
+      },
+      options: [
+        {
+          label: "Role1",
+          value: "Role1ID",
+        },
+        {
+          label: "Role2",
+          value: "Role2ID",
+        },
+        {
+          label: "Role3",
+          value: "Role3ID",
         },
       ],
     },
@@ -143,12 +165,12 @@ const FormFields = () => {
       <Form
         size="lg"
         defaultValues={initialValues}
-        validationSchema={fieldSchema}
+        validationSchema={formSchema}
         onSubmit={handleSubmit}
       >
         <FieldList name="fields" />
         <Stack alignItems="center">
-          <FabAddButton onClick={() => console.log("implement me")} />
+          <AddField />
         </Stack>
         <Actions>
           <SaveButton />

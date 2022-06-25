@@ -1,17 +1,20 @@
-import React from "react";
-
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 interface AddButtonProps {
-  onClick: (event: React.MouseEvent<HTMLElement>) => void;
+  size?: "medium" | "small";
 }
 
-const AddButton = ({ onClick }: AddButtonProps) => {
+const AddButton = ({ size = "medium" }: AddButtonProps) => {
   return (
-    <IconButton aria-label="delete" color="primary" onClick={onClick}>
-      <AddCircleOutlineIcon />
-    </IconButton>
+    <Button
+      type="submit"
+      variant="contained"
+      startIcon={<AddIcon />}
+      size={size}
+    >
+      Add
+    </Button>
   );
 };
 

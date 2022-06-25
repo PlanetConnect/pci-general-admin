@@ -13,7 +13,7 @@ interface AccordionProps {
 
 const Accordion = (props: AccordionProps) => {
   return (
-    <MuiAccordion>
+    <MuiAccordion TransitionProps={{ unmountOnExit: true }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         {props.summary}
       </AccordionSummary>

@@ -12,12 +12,20 @@ const fieldTypes = [
     label: "Select",
   },
   {
+    value: "multiselect",
+    label: "Multi Select",
+  },
+  {
     value: "textarea",
     label: "Text Area",
   },
   {
     value: "switch",
     label: "Switch",
+  },
+  {
+    value: "checkbox",
+    label: "Checkbox",
   },
 ];
 

@@ -24,10 +24,7 @@ const DateField = ({
   variant = "outlined",
   error,
 }: DateFieldProps) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <Stack spacing={1}>

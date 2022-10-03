@@ -1,4 +1,4 @@
-import { useFormTabInfoItems } from "./data/tab/FormInfoTabItems";
+import { useFormTabInfoItems } from "./FormInfoTabItems";
 
 import { PaperContent, Title } from "../../app/templates/content";
 import { VerticalTab } from "../../app/templates/tab";

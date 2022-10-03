@@ -1,3 +1,4 @@
 import AbstractList from "./AbstractList";
+import EditAbstractInfo from "./EditAbstractInfo";
 
-export { AbstractList };
+export { AbstractList, EditAbstractInfo };

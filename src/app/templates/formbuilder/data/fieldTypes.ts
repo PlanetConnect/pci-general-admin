@@ -27,6 +27,18 @@ const fieldTypes = [
     value: "checkbox",
     label: "Checkbox",
   },
+  {
+    value: "section",
+    label: "Section",
+  },
+  {
+    value: "field_array",
+    label: "Field Array",
+  },
+  {
+    value: "colorpicker",
+    label: "Color Picker",
+  },
 ];
 
 export default fieldTypes;

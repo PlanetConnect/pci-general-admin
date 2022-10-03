@@ -1,9 +1,9 @@
-import { TabItem } from "../../../../app/templates/tab/";
+import { TabItem } from "../../app/templates/tab";
 
-import FormEntries from "../../FormEntries";
-import FormFields from "../../FormFields";
-import FormSettings from "../../FormSettings";
-import FormNotifications from "../../FormNotifications";
+//import FormEntries from "../../FormEntries";
+import FormFields from "./FormFields";
+import FormSettings from "./FormSettings";
+//import FormNotifications from "../../FormNotifications";
 
 export const useFormTabInfoItems = () => {
   const tabItems: TabItem[] = [

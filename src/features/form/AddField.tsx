@@ -10,6 +10,8 @@ import {
   Switch,
   Select,
   TextField,
+  fieldSchema,
+  fieldTypes,
 } from "../../app/templates/formbuilder";
 
 import { Dialog } from "../../app/templates/dialog";
@@ -18,9 +20,6 @@ import {
   FabAddButton,
   AddButton,
 } from "../../app/templates/button";
-
-import fieldSchema from "./data/form/fieldSchema";
-import fieldTypes from "./data/form/fieldTypes";
 
 const field = {
   name: "",
@@ -75,18 +74,13 @@ const AddField = () => {
             name="isRequired"
             isChecked={field.validations.isRequired}
           />
-          <TextField
-            type="text"
-            label="Label"
-            name="label"
-            onChange={(text) => setName(text)}
-          />
+          <TextField type="text" label="Label" name="label" />
           <TextField
             type="text"
             label="Name"
             name="name"
-            isDisabled={true}
-            value={snakeCase(name)}
+            value={name}
+            onChange={(text) => setName(snakeCase(text))}
           />
           <Select label="Type" name="type" options={fieldTypes} />
 

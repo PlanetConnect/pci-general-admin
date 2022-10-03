@@ -1,3 +1,4 @@
 import ContactList from "./ContactList";
+import EditContactInfo from "./EditContactInfo";
 
-export { ContactList };
+export { ContactList, EditContactInfo };

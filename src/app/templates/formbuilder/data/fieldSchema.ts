@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const fieldSchema = Yup.object().shape({
+const field = {
   type: Yup.string().required("Required"),
   name: Yup.string()
     .max(100, "Must be 100 characters or less")
@@ -22,6 +22,11 @@ const fieldSchema = Yup.object().shape({
       min: Yup.number(),
     })
     .required("Required"),
+};
+
+const fieldSchema = Yup.object().shape({
+  ...field,
+  fields: Yup.array().of(Yup.object().shape({ ...field })),
 });
 
 export default fieldSchema;

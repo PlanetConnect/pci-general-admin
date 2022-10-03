@@ -11,7 +11,9 @@ interface SectionProps {
 const Section = ({ name, children }: SectionProps) => {
   return (
     <Stack spacing={1} sx={{ marginBottom: 1 }}>
-      <Typography variant="subtitle1">{name}</Typography>
+      <Typography variant="subtitle1" sx={{ marginBottom: 1 }}>
+        {name}
+      </Typography>
       {children}
     </Stack>
   );

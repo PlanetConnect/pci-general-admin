@@ -59,7 +59,7 @@ const EditShowInfo = () => {
 
   return (
     <Form
-      size="md"
+      size="lg"
       defaultValues={show}
       validationSchema={showSchema}
       onSubmit={handleSubmit}

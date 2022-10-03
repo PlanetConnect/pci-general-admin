@@ -1,3 +1,4 @@
+import EditExhibitionInfo from "./EditExhibitionInfo";
 import ExhibitionList from "./ExhibitionList";
 
-export { ExhibitionList };
+export { EditExhibitionInfo, ExhibitionList };

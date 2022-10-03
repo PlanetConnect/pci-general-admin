@@ -7,12 +7,11 @@ import {
   Switch,
   TextArea,
   TextField,
+  formSchema,
+  formTypes,
 } from "../../app/templates/formbuilder";
 import { SaveButton } from "../../app/templates/button";
 import { useSnackBar } from "../../app/templates/snackbar";
-
-import formSchema from "./data/form/formSchema";
-import formTypes from "./data/form/formTypes";
 
 const form = {
   name: "Merck Technology Symposium 2021 Registration Form",

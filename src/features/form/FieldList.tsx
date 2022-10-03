@@ -13,6 +13,7 @@ import {
   Switch,
   TextField,
   useFieldArrayMethods,
+  fieldTypes,
 } from "../../app/templates/formbuilder";
 import {
   ButtonGroup,
@@ -22,7 +23,6 @@ import {
 } from "../../app/templates/button";
 import { ConfirmationDialog } from "../../app/templates/dialog";
 
-import fieldTypes from "./data/form/fieldTypes";
 import SelectOptionList from "./SelectOptionList";
 
 interface FieldListProps {

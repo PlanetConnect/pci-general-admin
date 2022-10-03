@@ -3,14 +3,12 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
-import { Actions, Form } from "../../app/templates/formbuilder";
+import { Actions, Form, formSchema } from "../../app/templates/formbuilder";
 import { SaveButton } from "../../app/templates/button";
 import { useSnackBar } from "../../app/templates/snackbar";
 
 import AddField from "./AddField";
 import FieldList from "./FieldList";
-
-import formSchema from "./data/form/formSchema";
 
 const initialValues = {
   isActive: true,
@@ -163,7 +161,7 @@ const FormFields = () => {
   return (
     <Box sx={{ marginBottom: 1, maxWidth: "100%" }}>
       <Form
-        size="lg"
+        size="xl"
         defaultValues={initialValues}
         validationSchema={formSchema}
         onSubmit={handleSubmit}

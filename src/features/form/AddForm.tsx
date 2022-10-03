@@ -10,6 +10,8 @@ import {
   Select,
   TextArea,
   TextField,
+  formSchema,
+  formTypes,
 } from "../../app/templates/formbuilder";
 import { Dialog } from "../../app/templates/dialog";
 import {
@@ -17,9 +19,6 @@ import {
   FabAddButton,
   SaveButton,
 } from "../../app/templates/button";
-
-import formSchema from "./data/form/formSchema";
-import formTypes from "./data/form/formTypes";
 
 const form = {
   isActive: true,

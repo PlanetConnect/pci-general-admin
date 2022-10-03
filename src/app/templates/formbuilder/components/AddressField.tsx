@@ -31,7 +31,7 @@ const AddressField = ({
   error,
 }: AddressFieldProps) => {
   return (
-    <Stack spacing={2}>
+    <Stack spacing={1}>
       <TextField
         type="text"
         label="Address 1"

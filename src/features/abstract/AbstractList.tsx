@@ -1,12 +1,29 @@
-import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
-import { PaperContent, Title } from "../../app/templates/content";
+import { DataTable } from "../../app/templates/datatable";
+import { PaperContent, Title } from "../../app/templates/content/";
+
+import abstractListColumns from "./data/datatable/abstractListColumns";
+import data from "./data/data";
+
+const settings = {
+  columnVisibility: { abstract_id: false, modified_time: false },
+  isCheckBoxEnabled: false,
+  pageSize: 25,
+  rowIdField: "abstract_id",
+};
 
 function AbstractList() {
+  const [abstracts] = useState(data.records);
+
   return (
     <PaperContent>
       <Title>Abstracts</Title>
-      <Typography variant="body2">To address all issues</Typography>
+      <DataTable
+        columns={abstractListColumns}
+        rows={abstracts}
+        settings={settings}
+      />
     </PaperContent>
   );
 }

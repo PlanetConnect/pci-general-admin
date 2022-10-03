@@ -1,26 +1,29 @@
-import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
-import { PaperContent, Title } from "../../app/templates/content";
+import { DataTable } from "../../app/templates/datatable";
+import { PaperContent, Title } from "../../app/templates/content/";
+
+import attendeeListColumns from "./data/datatable/attendeeListColumns";
+import data from "./data/data";
+
+const settings = {
+  columnVisibility: { attendee_id: false },
+  isCheckBoxEnabled: false,
+  pageSize: 25,
+  rowIdField: "attendee_id",
+};
 
 function AttendeeList() {
+  const [attendees] = useState(data.records);
+
   return (
     <PaperContent>
-      <Title>Attendee List</Title>
-      <Typography variant="body2">
-        To address all issues (including breaking changes), run: npm audit fix
-        --force Run `npm audit` for details. jamesh@Jameshs-MacBook-Pro
-        pci-general-admin % npm install @mui/icons-material --save added 1
-        package, and audited 1464 packages in 15s 189 packages are looking for
-        funding run `npm fund` for details 6 moderate severity vulnerabilities
-        To address all issues (including breaking changes), run: npm audit fix
-        --force Run `npm audit` for details. jamesh@Jameshs-MacBook-Pro
-        pci-general-admin % npm install --save react-helmet npm WARN ERESOLVE
-        overriding peer dependency added 3 packages, and audited 1467 packages
-        in 6s 189 packages are looking for funding run `npm fund` for details 6
-        moderate severity vulnerabilities To address all issues (including
-        breaking changes), run: npm audit fix --force Run `npm audit` for
-        details. jamesh@Jameshs-MacBook-Pro pci-general-admin %{" "}
-      </Typography>
+      <Title>Attendees</Title>
+      <DataTable
+        columns={attendeeListColumns}
+        rows={attendees}
+        settings={settings}
+      />
     </PaperContent>
   );
 }

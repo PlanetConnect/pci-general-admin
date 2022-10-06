@@ -5,6 +5,9 @@ import { defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 3001,
+  },
   plugins: [
     react(),
     // report web vitals
@@ -19,8 +22,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "~app": path.resolve(__dirname, "./src/app"),
-      "~features": path.resolve(__dirname, "./src/features"),
+      "~": path.resolve(__dirname, "./src"),
     },
   },
   test: {

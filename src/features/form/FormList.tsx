@@ -4,10 +4,11 @@ import Container from "@mui/material/Container";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { EditButton } from "../../app/templates/button";
-import { PaperContent, Title } from "../../app/templates/content";
-import { Actions } from "../../app/templates/formbuilder";
-import { Table } from "../../app/templates/table";
+import { EditButton } from "~/app/templates/button";
+import { PaperContent, Title } from "~/app/templates/content";
+import { Actions } from "~/app/templates/formbuilder";
+import { Table } from "~/app/templates/table";
+
 import AddForm from "./AddForm";
 
 const forms = [

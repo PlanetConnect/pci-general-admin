@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-import { PaperContent, Title } from "../../app/templates/content/";
-import { DataTable } from "../../app/templates/datatable";
+import { PaperContent, Title } from "~/app/templates/content/";
+import { DataTable } from "~/app/templates/datatable";
+
 import data from "./data/data";
 import roleListColumns from "./data/datatable/roleListColumns";
 

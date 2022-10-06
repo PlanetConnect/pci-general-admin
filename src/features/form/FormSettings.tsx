@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-import { SaveButton } from "../../app/templates/button";
+import { SaveButton } from "~/app/templates/button";
 import {
   Actions,
   Form,
@@ -10,8 +10,8 @@ import {
   Switch,
   TextArea,
   TextField,
-} from "../../app/templates/formbuilder";
-import { useSnackBar } from "../../app/templates/snackbar";
+} from "~/app/templates/formbuilder";
+import { useSnackBar } from "~/app/templates/snackbar";
 
 const form = {
   name: "Merck Technology Symposium 2021 Registration Form",

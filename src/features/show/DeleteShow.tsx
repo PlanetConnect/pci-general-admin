@@ -2,8 +2,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import React, { useState } from "react";
 
-import { ConfirmationDialog } from "../../app/templates/dialog";
-import { useSnackBar } from "../../app/templates/snackbar";
+import { ConfirmationDialog } from "~/app/templates/dialog";
+import { useSnackBar } from "~/app/templates/snackbar";
 
 interface DeleteShowProps {
   showId: string;

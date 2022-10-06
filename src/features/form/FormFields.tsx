@@ -2,9 +2,10 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import React from "react";
 
-import { SaveButton } from "../../app/templates/button";
-import { Actions, Form, formSchema } from "../../app/templates/formbuilder";
-import { useSnackBar } from "../../app/templates/snackbar";
+import { SaveButton } from "~/app/templates/button";
+import { Actions, Form, formSchema } from "~/app/templates/formbuilder";
+import { useSnackBar } from "~/app/templates/snackbar";
+
 import AddField from "./AddField";
 import FieldList from "./FieldList";
 

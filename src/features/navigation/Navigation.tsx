@@ -1,7 +1,8 @@
 import { CssBaseline } from "@mui/material";
 import Box from "@mui/material/Box";
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "~/app/hooks";
+
 import MainAppbar from "./MainAppBar";
 import MainAppDrawer from "./MainAppDrawer";
 import {

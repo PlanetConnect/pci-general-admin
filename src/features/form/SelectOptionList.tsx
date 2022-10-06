@@ -8,11 +8,8 @@ import {
   MiniAddButton,
   RemoveButton,
   UpButton,
-} from "../../app/templates/button";
-import {
-  TextField,
-  useFieldArrayMethods,
-} from "../../app/templates/formbuilder";
+} from "~/app/templates/button";
+import { TextField, useFieldArrayMethods } from "~/app/templates/formbuilder";
 
 interface OptionListProps {
   name: string;

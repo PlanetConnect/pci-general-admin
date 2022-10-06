@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 
-import { SaveButton } from "../../app/templates/button";
-import { PaperContent } from "../../app/templates/content/";
+import { SaveButton } from "~/app/templates/button";
+import { PaperContent } from "~/app/templates/content/";
 import {
   Actions,
   Form,
@@ -12,8 +12,9 @@ import {
   Switch,
   TextArea,
   TextField,
-} from "../../app/templates/formbuilder";
-import { useSnackBar } from "../../app/templates/snackbar";
+} from "~/app/templates/formbuilder";
+import { useSnackBar } from "~/app/templates/snackbar";
+
 import abstractSchema from "./data/form/abstractSchema";
 
 const abstract = {

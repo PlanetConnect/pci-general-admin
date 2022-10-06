@@ -7,7 +7,8 @@ import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { topLevelRoutes, withShowRoutes } from "../../app/data/routes";
+import { topLevelRoutes, withShowRoutes } from "~/app/data/routes";
+
 import MenuItem from "./data/MenuItem";
 
 interface MainMenuItemProps {

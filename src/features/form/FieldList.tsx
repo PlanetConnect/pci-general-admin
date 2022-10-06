@@ -4,14 +4,14 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
-import { Accordion } from "../../app/templates/accordion";
+import { Accordion } from "~/app/templates/accordion";
 import {
   ButtonGroup,
   DeleteButton,
   DownButton,
   UpButton,
-} from "../../app/templates/button";
-import { ConfirmationDialog } from "../../app/templates/dialog";
+} from "~/app/templates/button";
+import { ConfirmationDialog } from "~/app/templates/dialog";
 import {
   Actions,
   fieldTypes,
@@ -20,7 +20,8 @@ import {
   Switch,
   TextField,
   useFieldArrayMethods,
-} from "../../app/templates/formbuilder";
+} from "~/app/templates/formbuilder";
+
 import SelectOptionList from "./SelectOptionList";
 
 interface FieldListProps {

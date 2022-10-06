@@ -1,5 +1,6 @@
-import { PaperContent, Title } from "../../app/templates/content";
-import { VerticalTab } from "../../app/templates/tab";
+import { PaperContent, Title } from "~/app/templates/content";
+import { VerticalTab } from "~/app/templates/tab";
+
 import { useFormTabInfoItems } from "./FormInfoTabItems";
 
 const FormInfoTabs = () => {

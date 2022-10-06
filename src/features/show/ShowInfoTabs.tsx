@@ -1,5 +1,6 @@
-import { PaperContent } from "../../app/templates/content";
-import { IconedTab } from "../../app/templates/tab";
+import { PaperContent } from "~/app/templates/content";
+import { IconedTab } from "~/app/templates/tab";
+
 import { useShowTabInfoItems } from "./data/tab/ShowInfoTabItems";
 
 const ShowInfoTabs = () => {

@@ -23,6 +23,8 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
   const { fields, errors, append, insert, remove, swap } =
     useFieldArrayMethods(name);
 
+  const fieldsError: any = errors?.fields;
+
   return (
     <Box
       sx={{
@@ -62,9 +64,9 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
                 name={`${name}.${optIndex}.label`}
                 type="text"
                 error={
-                  errors?.["fields"]?.[index]?.["options"]?.[optIndex]?.[
-                    "label"
-                  ]?.["message"]
+                  fieldsError?.[index]?.["options"]?.[optIndex]?.["label"]?.[
+                    "message"
+                  ]
                 }
               />
               <TextField
@@ -72,9 +74,9 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
                 name={`${name}.${optIndex}.value`}
                 type="text"
                 error={
-                  errors?.["fields"]?.[index]?.["options"]?.[optIndex]?.[
-                    "value"
-                  ]?.["message"]
+                  fieldsError?.[index]?.["options"]?.[optIndex]?.["value"]?.[
+                    "message"
+                  ]
                 }
               />
               <ButtonGroup>

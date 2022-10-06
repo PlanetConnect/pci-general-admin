@@ -15,14 +15,16 @@ const Error = ({ name, error }: ErrorProps) => {
   } = useFormContext();
 
   if (typeof error == "undefined" && errors[name]) {
-    displayedError = errors[name].message;
+    displayedError = errors?.[name]?.message;
   } else {
     displayedError = error;
   }
 
   return (
     <Box sx={{ flex: 1 }}>
-      {displayedError ? <Alert severity="error">{displayedError}</Alert> : null}
+      {displayedError ? (
+        <Alert severity="error">{String(displayedError)}</Alert>
+      ) : null}
     </Box>
   );
 };

@@ -50,6 +50,8 @@ const FieldList = ({ name }: FieldListProps) => {
     setSelectedFieldIndex(undefined);
   };
 
+  const nameError: any = errors?.[name];
+
   return (
     <Box sx={{ flex: 1 }}>
       {fields.map((field: any, index: number) => {
@@ -105,7 +107,7 @@ const FieldList = ({ name }: FieldListProps) => {
                 label="Label"
                 name={`${name}.${index}.label`}
                 type="text"
-                error={errors?.[name]?.[index]?.["label"]?.["message"]}
+                error={nameError?.[index]?.["label"]?.["message"]}
               />
               <TextField
                 label="Name"

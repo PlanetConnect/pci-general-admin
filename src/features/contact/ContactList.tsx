@@ -1,10 +1,9 @@
 import { useState } from "react";
 
-import { DataTable } from "../../app/templates/datatable";
 import { PaperContent, Title } from "../../app/templates/content/";
-
-import contactListColumns from "./data/datatable/contactListColumns";
+import { DataTable } from "../../app/templates/datatable";
 import data from "./data/data";
+import contactListColumns from "./data/datatable/contactListColumns";
 
 const settings = {
   columnVisibility: { contact_id: false },

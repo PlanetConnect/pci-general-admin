@@ -9,10 +9,24 @@
 /coverage
 
 # production
-/build
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
 
 # misc
-.DS_Store
 .env
 .env.local
 .env.development.local

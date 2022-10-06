@@ -1,20 +1,18 @@
-import React from "react";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import React from "react";
 
+import {
+  ButtonGroup,
+  DownButton,
+  MiniAddButton,
+  RemoveButton,
+  UpButton,
+} from "../../app/templates/button";
 import {
   TextField,
   useFieldArrayMethods,
 } from "../../app/templates/formbuilder";
-
-import {
-  MiniAddButton,
-  ButtonGroup,
-  DownButton,
-  RemoveButton,
-  UpButton,
-} from "../../app/templates/button";
 
 interface OptionListProps {
   name: string;

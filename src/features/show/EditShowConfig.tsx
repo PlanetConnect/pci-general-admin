@@ -1,11 +1,10 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
-import { Actions, Field, Form, Header } from "../../app/templates/formbuilder";
 import { SaveButton } from "../../app/templates/button";
-
-import configForm from "./data/config/configForm";
+import { Actions, Field, Form, Header } from "../../app/templates/formbuilder";
 import configData from "./data/config/configData";
+import configForm from "./data/config/configForm";
 import showSchema from "./data/form/showSchema";
 
 const EditShowConfig = () => {

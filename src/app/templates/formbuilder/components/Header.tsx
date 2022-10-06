@@ -1,9 +1,7 @@
-import React from "react";
-
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
-
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import React from "react";
 
 interface HeaderProps {
   children: React.ReactNode;

@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack";
 
+import { SaveButton } from "../../app/templates/button";
 import { PaperContent } from "../../app/templates/content/";
 import {
   Actions,
@@ -11,8 +12,6 @@ import {
   TextField,
 } from "../../app/templates/formbuilder";
 import { useSnackBar } from "../../app/templates/snackbar";
-import { SaveButton } from "../../app/templates/button";
-
 import contactSchema from "./data/form/contactSchema";
 
 const contact = {

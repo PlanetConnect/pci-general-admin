@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import React, { useEffect, useState } from "react";
 
 interface Film {
   title: string;

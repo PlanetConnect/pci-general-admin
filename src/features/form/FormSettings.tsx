@@ -1,16 +1,16 @@
 import Box from "@mui/material/Box";
 
+import { SaveButton } from "../../app/templates/button";
 import {
   Actions,
   Form,
+  formSchema,
+  formTypes,
   Select,
   Switch,
   TextArea,
   TextField,
-  formSchema,
-  formTypes,
 } from "../../app/templates/formbuilder";
-import { SaveButton } from "../../app/templates/button";
 import { useSnackBar } from "../../app/templates/snackbar";
 
 const form = {

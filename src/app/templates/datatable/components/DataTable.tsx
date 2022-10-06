@@ -1,14 +1,13 @@
-import { useState } from "react";
 import {
   DataGrid,
-  GridToolbar,
   GridColumnVisibilityModel,
+  GridToolbar,
 } from "@mui/x-data-grid";
+import { useState } from "react";
 
 import Column from "../data/Column";
 import DataTableSettings from "../data/DataTableSettings";
 import Row from "../data/Row";
-
 import styles from "../data/styles";
 
 interface DataTableProps {

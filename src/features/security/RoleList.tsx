@@ -1,10 +1,9 @@
 import { useState } from "react";
 
-import { DataTable } from "../../app/templates/datatable";
 import { PaperContent, Title } from "../../app/templates/content/";
-
-import roleListColumns from "./data/datatable/roleListColumns";
+import { DataTable } from "../../app/templates/datatable";
 import data from "./data/data";
+import roleListColumns from "./data/datatable/roleListColumns";
 
 const settings = {
   columnVisibility: { role_id: false },

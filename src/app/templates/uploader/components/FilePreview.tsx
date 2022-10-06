@@ -1,7 +1,7 @@
-import Box from "@mui/material/Box";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 interface FilePreviewProps {
   file: string;

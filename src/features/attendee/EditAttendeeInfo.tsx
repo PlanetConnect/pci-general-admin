@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack";
 
+import { SaveButton } from "../../app/templates/button";
 import { PaperContent } from "../../app/templates/content/";
 import {
   Actions,
@@ -10,11 +11,9 @@ import {
   TextField,
 } from "../../app/templates/formbuilder";
 import { useSnackBar } from "../../app/templates/snackbar";
-import { SaveButton } from "../../app/templates/button";
-
 import attendeeSchema from "./data/form/attendeeSchema";
-import roles from "./data/form/roles";
 import days from "./data/form/days";
+import roles from "./data/form/roles";
 
 const attendee = {
   attendeeId: "5276827c-0d59-4416-a4ac-f1444a1f93c2",

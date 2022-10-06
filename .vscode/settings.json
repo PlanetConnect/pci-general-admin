@@ -1,0 +1,7 @@
+{
+  "i18n-ally.localesPaths": ["public/locales"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}

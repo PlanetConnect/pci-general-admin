@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 
 import { Accordion } from "../../app/templates/accordion";
-import {
-  Actions,
-  Section,
-  Select,
-  Switch,
-  TextField,
-  useFieldArrayMethods,
-  fieldTypes,
-} from "../../app/templates/formbuilder";
 import {
   ButtonGroup,
   DeleteButton,
@@ -22,7 +12,15 @@ import {
   UpButton,
 } from "../../app/templates/button";
 import { ConfirmationDialog } from "../../app/templates/dialog";
-
+import {
+  Actions,
+  fieldTypes,
+  Section,
+  Select,
+  Switch,
+  TextField,
+  useFieldArrayMethods,
+} from "../../app/templates/formbuilder";
 import SelectOptionList from "./SelectOptionList";
 
 interface FieldListProps {

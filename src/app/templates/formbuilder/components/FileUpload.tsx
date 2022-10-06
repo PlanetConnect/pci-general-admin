@@ -1,8 +1,8 @@
-import React from "react";
 import Box from "@mui/material/Box";
+import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-import { Uploader, MIME } from "../../uploader";
+import { MIME, Uploader } from "../../uploader";
 
 interface FileUploadProps {
   name: string;

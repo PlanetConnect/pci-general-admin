@@ -8,7 +8,7 @@ const NotFound = () => {
     <PaperContent>
       <Title>Page Not Found!</Title>
       <Typography variant="body2">
-        The page you're looking for isn't found.
+        The page you&apos;re looking for isn&apos;t found.
       </Typography>
     </PaperContent>
   );

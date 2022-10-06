@@ -1,7 +1,7 @@
-import { useFormContext } from "react-hook-form";
-import { Alert } from "../../alert";
-
 import Box from "@mui/material/Box";
+import { useFormContext } from "react-hook-form";
+
+import { Alert } from "../../alert";
 
 interface ErrorProps {
   name: string;

@@ -1,16 +1,13 @@
-import React from "react";
-
-import { styled, useTheme } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MuiDrawer from "@mui/material/Drawer";
-
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Divider from "@mui/material/Divider";
+import MuiDrawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import { styled, useTheme } from "@mui/material/styles";
+import React from "react";
 
+import { closedMixin, openedMixin } from "./data/MainAppDrawerMixins";
 import MainMenuItems from "./MainMenuItems";
-
-import { openedMixin, closedMixin } from "./data/MainAppDrawerMixins";
 
 interface MainAppDrawerProps {
   isDrawerOpen: boolean;

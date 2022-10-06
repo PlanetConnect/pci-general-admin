@@ -1,9 +1,8 @@
+import { DndContext } from "@dnd-kit/core";
 import React, { useState } from "react";
 
-import { DndContext } from "@dnd-kit/core";
-
-import Droppable from "./Droppable";
 import Draggable from "./Draggable";
+import Droppable from "./Droppable";
 
 const DnD = () => {
   const containers = ["A", "B", "C", "D"];

@@ -1,5 +1,5 @@
-import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
+import Button from "@mui/material/Button";
 
 interface EditButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;

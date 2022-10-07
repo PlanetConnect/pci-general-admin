@@ -1,7 +1,6 @@
-import React from "react";
-
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import IconButton from "@mui/material/IconButton";
+import React from "react";
 
 interface RemoveButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;

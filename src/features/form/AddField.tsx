@@ -1,25 +1,19 @@
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import React, { useState } from "react";
 import { snakeCase } from "snake-case";
 
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-
+import { AddButton, CancelButton, FabAddButton } from "~/app/templates/button";
+import { Dialog } from "~/app/templates/dialog";
 import {
   Actions,
-  Form,
-  Switch,
-  Select,
-  TextField,
   fieldSchema,
   fieldTypes,
-} from "../../app/templates/formbuilder";
-
-import { Dialog } from "../../app/templates/dialog";
-import {
-  CancelButton,
-  FabAddButton,
-  AddButton,
-} from "../../app/templates/button";
+  Form,
+  Select,
+  Switch,
+  TextField,
+} from "~/app/templates/formbuilder";
 
 const field = {
   name: "",

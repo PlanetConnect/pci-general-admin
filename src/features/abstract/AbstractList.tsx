@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { DataTable } from "../../app/templates/datatable";
-import { PaperContent, Title } from "../../app/templates/content/";
+import { PaperContent, Title } from "~/app/templates/content/";
+import { DataTable } from "~/app/templates/datatable";
 
-import abstractListColumns from "./data/datatable/abstractListColumns";
 import data from "./data/data";
+import abstractListColumns from "./data/datatable/abstractListColumns";
 
 const settings = {
   columnVisibility: { abstract_id: false, modified_time: false },

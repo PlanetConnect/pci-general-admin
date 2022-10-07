@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { DataTable } from "../../app/templates/datatable";
-import { PaperContent, Title } from "../../app/templates/content/";
+import { PaperContent, Title } from "~/app/templates/content/";
+import { DataTable } from "~/app/templates/datatable";
 
-import accountListColumns from "./data/datatable/accountListColumns";
 import data from "./data/data";
+import accountListColumns from "./data/datatable/accountListColumns";
 
 const settings = {
   columnVisibility: { account_id: false },

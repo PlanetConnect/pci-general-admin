@@ -1,17 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 
-import { Main } from "./layouts/";
-
-import { NotFound } from "./templates/content/";
-
 import { AbstractList, EditAbstractInfo } from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
 import { AttendeeList, EditAttendeeInfo } from "../features/attendee";
 import { ContactList, EditContactInfo } from "../features/contact";
-import { ExhibitionList, EditExhibitionInfo } from "../features/exhibition";
-import { ShowList, ShowInfoTabs } from "../features/show";
+import { EditExhibitionInfo, ExhibitionList } from "../features/exhibition";
 import { FormInfoTabs, FormList } from "../features/form";
 import { EditRoleInfo, RoleList } from "../features/security";
+import { ShowInfoTabs, ShowList } from "../features/show";
+import { Main } from "./layouts/";
+import { NotFound } from "./templates/content/";
 
 function App() {
   return (

@@ -2,11 +2,10 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { v4 as uuidv4 } from "uuid";
 
-import Field from "./Field";
-import Section from "./Section";
-import { useFieldArrayMethods } from "./FieldArray";
-
 import { MiniAddButton } from "../../button";
+import Field from "./Field";
+import { useFieldArrayMethods } from "./FieldArray";
+import Section from "./Section";
 
 interface FieldSetProps {
   name: string;
@@ -19,7 +18,7 @@ const FieldSet = ({ name, set }: FieldSetProps) => {
 
   const shape: any = {};
   for (const key in rest) {
-    let type = typeof rest[key as keyof typeof rest];
+    const type = typeof rest[key as keyof typeof rest];
     let val: string | number | boolean = "";
 
     if (type === "boolean") {
@@ -62,7 +61,7 @@ const FieldSet = ({ name, set }: FieldSetProps) => {
                   return key === formField.name;
                 });
 
-                let toGenerate = { ...formField };
+                const toGenerate = { ...formField };
                 toGenerate.name = `${name}.${index}.${key[0]}`;
 
                 return (

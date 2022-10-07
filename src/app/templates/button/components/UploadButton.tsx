@@ -1,5 +1,5 @@
-import Button from "@mui/material/Button";
 import UploadIcon from "@mui/icons-material/Upload";
+import Button from "@mui/material/Button";
 
 interface UploadButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;

@@ -1,9 +1,8 @@
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import MuiSwitch from "@mui/material/Switch";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
-
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import MuiSwitch from "@mui/material/Switch";
 
 interface SwitchProps {
   label: string;

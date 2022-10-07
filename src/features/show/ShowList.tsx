@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { DataTable } from "../../app/templates/datatable";
-import { PaperContent, Title } from "../../app/templates/content/";
+import { PaperContent, Title } from "~/app/templates/content/";
+import { DataTable } from "~/app/templates/datatable";
 
-import showListColumns from "./data/datatable/showListColumns";
 import data from "./data/data";
+import showListColumns from "./data/datatable/showListColumns";
 
 const settings = {
   columnVisibility: { show_id: false, modified_time: false },

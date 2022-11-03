@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 import { SaveButton } from "~/app/templates/button";
 import {
   Actions,
@@ -10,57 +12,96 @@ import {
   TextField,
 } from "~/app/templates/formbuilder";
 import { useSnackBar } from "~/app/templates/snackbar";
+import Show from "~/features/show/data/types/Show";
+import {
+  useGetShowByIdQuery,
+  useUpdateShowMutation,
+} from "~/services/queryApi";
 
 import showSchema from "./data/form/showSchema";
 import showSetups from "./data/form/showSetups";
 import showStatuses from "./data/form/showStatuses";
 
-const show = {
-  showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
-  name: "Merck Technology Symposium 2022",
-  year: 2022,
-  links: [
-    {
-      showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
-      virtualEnvironment: "https://test-with-new-link.com",
-      internal: "https://tests.com",
-      external: "https://www.commendssss.com",
-    },
-  ],
-  startDate: "2022-03-06",
-  endDate: "2022-03-11",
-  setup: "hybrid",
-  isActive: true,
-  facility: "Nuclear Silo",
-  street: "test",
-  city: "Longhorn",
-  state: "NJ",
-  zip: "08722",
-  country: "US",
-  description: "The Description of my Show!",
-  createdTime: "2022-04-15 09:39:34.120772",
-  modifiedTime: "2022-04-15 09:39:34.120772",
-  status: "under_construction",
-};
+// const show: Show = {
+//   showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
+//   name: "Merck Technology Symposium 2022",
+//   year: 2022,
+//   links: [
+//     {
+//       showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
+//       virtualEnvironment: "https://test-with-new-link.com",
+//       internal: "https://tests.com",
+//       external: "https://www.commendssss.com",
+//     },
+//   ],
+//   startDate: "2022-03-06",
+//   endDate: "2022-03-11",
+//   setup: "hybrid",
+//   isActive: true,
+//   facility: "Nuclear Silo",
+//   street: "test",
+//   city: "Longhorn",
+//   state: "NJ",
+//   zip: "08722",
+//   country: "US",
+//   description: "The Description of my Show!",
+//   createdTime: "2022-04-15 09:39:34.120772",
+//   modifiedTime: "2022-04-15 09:39:34.120772",
+//   status: "under_construction",
+// };
+
+// const ShowForm = Form<Show>;
 
 const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
-  const handleSubmit = (values: any) => {
+  const { showId } = useParams();
+  console.log(
+    "🚀 ~ file: EditShowInfo.tsx ~ line 56 ~ EditShowInfo ~ showId",
+    showId
+  );
+
+  const [updateShow, results] = useUpdateShowMutation();
+  const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
+  if (isLoading || !show) {
+    return <div>loading</div>;
+  }
+
+  const handleSubmit = async (values: Show) => {
     console.log(values);
-    openSnackBar({
-      message: "Show successfully updated.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+    values.end_date = new Date(values.end_date).toISOString();
+    values.start_date = new Date(values.start_date).toISOString();
+
+    const updateResult = await updateShow({ show: values, id: showId || "" });
+    console.log(
+      "🚀 ~ file: EditShowInfo.tsx ~ line 55 ~ handleSubmit ~ updateResult",
+      updateResult
+    );
+
+    if (updateResult?.error) {
+      openSnackBar({
+        message: `Show cannot be updated. ${updateResult.error.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    } else {
+      openSnackBar({
+        message: "Show successfully updated.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+    }
   };
 
   return (
     <Form
       size="lg"
-      defaultValues={show}
+      defaultValues={show.data as any}
       validationSchema={showSchema}
       onSubmit={handleSubmit}
     >
@@ -71,8 +112,16 @@ const EditShowInfo = () => {
         <Select label="Environment" name="setup" options={showSetups} />
         <TextField type="text" label="Name" name="name" />
         <TextField type="number" label="Year" name="year" />
-        <DateField label="Start Date" value={show.startDate} name="startDate" />
-        <DateField label="End Date" value={show.endDate} name="endDate" />
+        <DateField
+          label="Start Date"
+          value={show.data.start_date}
+          name="start_date"
+        />
+        <DateField
+          label="End Date"
+          value={show.data.end_date}
+          name="end_date"
+        />
       </Section>
 
       <Section name="Links">

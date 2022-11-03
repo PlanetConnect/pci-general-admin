@@ -4,8 +4,8 @@ interface Show {
   showId: string;
   name: string;
   year: number;
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
   links?: Link[];
   setup: string;
   isActive: boolean;
@@ -19,6 +19,7 @@ interface Show {
   description?: string;
   createdTime: string;
   modifiedTime: string;
+  status?: string;
 }
 
 export default Show;

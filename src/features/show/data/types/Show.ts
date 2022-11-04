@@ -20,6 +20,7 @@ interface Show {
   createdTime: string;
   modifiedTime: string;
   status?: string;
+  pk?: string;
 }
 
 export default Show;

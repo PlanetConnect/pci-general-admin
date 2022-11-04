@@ -65,9 +65,16 @@ const EditShowInfo = () => {
   if (isLoading || !show) {
     return <div>loading</div>;
   }
+  const defaultValues: Show = { ...show.data };
+  if (!defaultValues.start_date) {
+    defaultValues.start_date = new Date().toISOString();
+  }
+  if (!defaultValues.end_date) {
+    defaultValues.end_date = new Date().toISOString();
+  }
 
   const handleSubmit = async (values: Show) => {
-    console.log(values);
+    console.log("save submit", values);
     values.end_date = new Date(values.end_date).toISOString();
     values.start_date = new Date(values.start_date).toISOString();
 
@@ -101,7 +108,7 @@ const EditShowInfo = () => {
   return (
     <Form
       size="lg"
-      defaultValues={show.data as any}
+      defaultValues={defaultValues}
       validationSchema={showSchema}
       onSubmit={handleSubmit}
     >
@@ -112,26 +119,18 @@ const EditShowInfo = () => {
         <Select label="Environment" name="setup" options={showSetups} />
         <TextField type="text" label="Name" name="name" />
         <TextField type="number" label="Year" name="year" />
-        <DateField
-          label="Start Date"
-          value={show.data.start_date}
-          name="start_date"
-        />
-        <DateField
-          label="End Date"
-          value={show.data.end_date}
-          name="end_date"
-        />
+        <DateField label="Start Date" name="start_date" />
+        <DateField label="End Date" name="end_date" />
       </Section>
 
       <Section name="Links">
         <TextField
           type="text"
           label="Virtual Environment"
-          name="links[0].virtualEnvironment"
+          name="links.0.virtualEnvironment"
         />
-        <TextField type="text" label="External" name="links[0].external" />
-        <TextField type="text" label="Internal" name="links[0].internal" />
+        <TextField type="text" label="External" name="links.0.external" />
+        <TextField type="text" label="Internal" name="links.0.internal" />
       </Section>
 
       <Section name="Address">

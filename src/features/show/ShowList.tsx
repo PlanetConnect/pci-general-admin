@@ -35,8 +35,8 @@ function ShowList() {
       isActive: false,
       showId: "",
       year: new Date().getFullYear(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      start_date: new Date().toISOString(),
+      end_date: new Date().toISOString(),
       createdTime: new Date().toISOString(),
       modifiedTime: new Date().toISOString(),
     });

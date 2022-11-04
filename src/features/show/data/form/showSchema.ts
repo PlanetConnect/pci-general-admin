@@ -6,8 +6,8 @@ const showSchema = Yup.object({
     .required("Required"),
   status: Yup.string().required("Required"),
   setup: Yup.string().required("Required"),
-  startDate: Yup.date().typeError("Must be a valid Date").required("Required"),
-  endDate: Yup.date().typeError("Must be a valid Date").required("Required"),
+  start_date: Yup.date().typeError("Must be a valid Date").required("Required"),
+  end_date: Yup.date().typeError("Must be a valid Date").required("Required"),
   year: Yup.number()
     .min(2010, "Must be between 2010 and 2050")
     .max(2050, "Must be between 2010 and 2050")

@@ -20,18 +20,66 @@ export const queryApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
   }),
+  tagTypes: ["Show"],
   endpoints: (builder) => ({
-    getShows: builder.query<GetResults<Show>, void>(getShows),
-    getShowById: builder.query<GetResult<Show>, string>(getShowById),
-    deleteShow: builder.mutation<DeleteResult, string>(deleteShow),
+    getShowById: builder.query<GetResult<Show>, string>({
+      query: (id: string) => `/shows/${id}`,
+    }),
+    deleteShow: builder.mutation<DeleteResult, string>({
+      query: (id: string) => ({ url: `/shows/${id}`, method: "DELETE" }),
+      //   async onQueryStarted(deletedObj, { dispatch, queryFulfilled }) {
+      //     console.log(
+      //       "🚀 ~ file: queryApi.ts ~ line 31 ~ onQueryStarted ~ deletedObj",
+      //       deletedObj
+      //     );
+      //     const patchResult = dispatch(
+      //       queryApi.util.updateQueryData("getShows", deletedObj.pk, (draft) => {
+      //         draft.data = draft.data.filter((ele) => {
+      //           return deletedObj.pk !== ele.pk;
+      //         });
+      //         return draft;
+      //       })
+      //     );
+      //     try {
+      //       await queryFulfilled;
+      //     } catch {
+      //       patchResult.undo();
+      //     }
+      //   },
+    }),
+    createShow: builder.mutation<CreateResult, Show>({
+      query: (payload: Show) => ({
+        url: `/shows/`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    getShows: builder.query<GetResults<Show>, void>({
+      query: () => `/shows`,
+      providesTags: ["Show"],
+    }),
     updateShow: builder.mutation<
       UpdateResult<Show>,
       { show: Show; id: string }
-    >(updateShow),
-    createShow: builder.mutation<CreateResult, Show>(createShow),
-    // getShows: builder.query<GetResults<Show>, void>({
-    //   query: () => `/shows`,
-    // }),
+    >({
+      query: (payload: { show: Show; id: string }) => ({
+        url: `/shows/${payload.id}`,
+        method: "PUT",
+        body: payload.show,
+      }),
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          queryApi.util.updateQueryData("getShowById", id, (draft) => {
+            Object.assign(draft, patch);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
   }),
 });
 

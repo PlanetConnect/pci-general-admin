@@ -6,11 +6,6 @@ import GetResult from "~/features/show/data/types/GetResult";
 import GetResults from "~/features/show/data/types/GetResults";
 import Show from "~/features/show/data/types/Show";
 import UpdateResult from "~/features/show/data/types/UpdateResult";
-import createShow from "~/features/show/endpoints/createShow";
-import deleteShow from "~/features/show/endpoints/deleteShow";
-import getShowById from "~/features/show/endpoints/getShowById";
-import getShows from "~/features/show/endpoints/getShows";
-import updateShow from "~/features/show/endpoints/updateShow";
 
 const baseUrl = "https://dev.serverless-api.planetconnect.com";
 
@@ -27,25 +22,21 @@ export const queryApi = createApi({
     }),
     deleteShow: builder.mutation<DeleteResult, string>({
       query: (id: string) => ({ url: `/shows/${id}`, method: "DELETE" }),
-      //   async onQueryStarted(deletedObj, { dispatch, queryFulfilled }) {
-      //     console.log(
-      //       "🚀 ~ file: queryApi.ts ~ line 31 ~ onQueryStarted ~ deletedObj",
-      //       deletedObj
-      //     );
-      //     const patchResult = dispatch(
-      //       queryApi.util.updateQueryData("getShows", deletedObj.pk, (draft) => {
-      //         draft.data = draft.data.filter((ele) => {
-      //           return deletedObj.pk !== ele.pk;
-      //         });
-      //         return draft;
-      //       })
-      //     );
-      //     try {
-      //       await queryFulfilled;
-      //     } catch {
-      //       patchResult.undo();
-      //     }
-      //   },
+      async onQueryStarted(deletedObj, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          queryApi.util.updateQueryData("getShows", undefined, (draft) => {
+            draft.data = draft.data.filter((ele) => {
+              return `SHOW#${deletedObj}` !== ele.pk;
+            });
+            return draft;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
     createShow: builder.mutation<CreateResult, Show>({
       query: (payload: Show) => ({

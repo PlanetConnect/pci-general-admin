@@ -20,8 +20,8 @@ interface AddressFieldProps {
 
 const AddressField = ({
   address: {
-    address1 = "address1",
-    address2 = "address2",
+    address1 = "street",
+    address2 = "street2",
     city = "city",
     state = "state",
     zip = "zip",

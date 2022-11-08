@@ -32,13 +32,10 @@ function ShowList() {
     const createResult = await createShow({
       name: "New Show",
       setup: "hybrid",
-      isActive: false,
-      showId: "",
+      is_active: false,
       year: new Date().getFullYear(),
-      start_date: new Date().toISOString(),
-      end_date: new Date().toISOString(),
-      createdTime: new Date().toISOString(),
-      modifiedTime: new Date().toISOString(),
+      start_date: new Date(),
+      end_date: new Date(),
     });
     console.log(
       "🚀 ~ file: ShowList.tsx ~ line 41 ~ onCreate ~ createResult",

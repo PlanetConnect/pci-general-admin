@@ -66,17 +66,21 @@ const EditShowInfo = () => {
     return <div>loading</div>;
   }
   const defaultValues: Show = { ...show.data };
+  console.log(
+    "🚀 ~ file: EditShowInfo.tsx ~ line 69 ~ EditShowInfo ~ defaultValues",
+    defaultValues
+  );
   if (!defaultValues.start_date) {
-    defaultValues.start_date = new Date().toISOString();
+    defaultValues.start_date = new Date();
   }
   if (!defaultValues.end_date) {
-    defaultValues.end_date = new Date().toISOString();
+    defaultValues.end_date = new Date();
   }
 
   const handleSubmit = async (values: Show) => {
     console.log("save submit", values);
-    values.end_date = new Date(values.end_date).toISOString();
-    values.start_date = new Date(values.start_date).toISOString();
+    // values.end_date = new Date(values.end_date).toISOString();
+    // values.start_date = new Date(values.start_date).toISOString();
 
     const updateResult = await updateShow({ show: values, id: showId || "" });
     console.log(
@@ -127,16 +131,20 @@ const EditShowInfo = () => {
         <TextField
           type="text"
           label="Virtual Environment"
-          name="links.0.virtualEnvironment"
+          name="links.0.virtual_environment"
         />
         <TextField type="text" label="External" name="links.0.external" />
         <TextField type="text" label="Internal" name="links.0.internal" />
       </Section>
 
-      <Section name="Address">
+      <Section name="Venue">
         <AddressField
           address={{
-            address1: "facility",
+            address1: "venue.street",
+            city: "venue.city",
+            state: "venue.state",
+            country: "venue.country",
+            zip: "venue.zip",
           }}
         />
       </Section>

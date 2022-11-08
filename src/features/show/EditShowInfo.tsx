@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import {
@@ -22,43 +22,11 @@ import showSchema from "./data/form/showSchema";
 import showSetups from "./data/form/showSetups";
 import showStatuses from "./data/form/showStatuses";
 
-// const show: Show = {
-//   showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
-//   name: "Merck Technology Symposium 2022",
-//   year: 2022,
-//   links: [
-//     {
-//       showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
-//       virtualEnvironment: "https://test-with-new-link.com",
-//       internal: "https://tests.com",
-//       external: "https://www.commendssss.com",
-//     },
-//   ],
-//   startDate: "2022-03-06",
-//   endDate: "2022-03-11",
-//   setup: "hybrid",
-//   isActive: true,
-//   facility: "Nuclear Silo",
-//   street: "test",
-//   city: "Longhorn",
-//   state: "NJ",
-//   zip: "08722",
-//   country: "US",
-//   description: "The Description of my Show!",
-//   createdTime: "2022-04-15 09:39:34.120772",
-//   modifiedTime: "2022-04-15 09:39:34.120772",
-//   status: "under_construction",
-// };
-
-// const ShowForm = Form<Show>;
-
 const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
   const { showId } = useParams();
-  console.log(
-    "🚀 ~ file: EditShowInfo.tsx ~ line 56 ~ EditShowInfo ~ showId",
-    showId
-  );
+
+  const navigate = useNavigate();
 
   const [updateShow, results] = useUpdateShowMutation();
   const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
@@ -66,6 +34,7 @@ const EditShowInfo = () => {
     return <div>loading</div>;
   }
   const defaultValues: Show = { ...show.data };
+
   console.log(
     "🚀 ~ file: EditShowInfo.tsx ~ line 69 ~ EditShowInfo ~ defaultValues",
     defaultValues
@@ -77,9 +46,25 @@ const EditShowInfo = () => {
     defaultValues.end_date = new Date();
   }
 
+  if (!defaultValues.venue) {
+    defaultValues.venue = {
+      city: "",
+      country: "",
+      facility: "test",
+      state: "",
+      street: "",
+      zip: "",
+    };
+  }
+
   const handleSubmit = async (values: Show) => {
-    console.log("save submit", values);
-    // values.end_date = new Date(values.end_date).toISOString();
+    delete values?.modified_time;
+    delete values?.sk;
+    delete values?.created_time;
+    delete values?.show_id;
+    delete values?.gsi1pk;
+    delete values?.gsi1sk;
+    console.log("save submit", values); // values.end_date = new Date(values.end_date).toISOString();
     // values.start_date = new Date(values.start_date).toISOString();
 
     const updateResult = await updateShow({ show: values, id: showId || "" });
@@ -106,6 +91,8 @@ const EditShowInfo = () => {
         },
         variant: "success",
       });
+
+      navigate(`/shows`);
     }
   };
 
@@ -145,6 +132,7 @@ const EditShowInfo = () => {
             state: "venue.state",
             country: "venue.country",
             zip: "venue.zip",
+            facility: "venue.facility",
           }}
         />
       </Section>

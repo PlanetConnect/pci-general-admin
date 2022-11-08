@@ -13,6 +13,7 @@ interface AddressFieldProps {
     state?: string;
     zip?: string;
     country?: string;
+    facility?: string;
   };
   variant?: "standard" | "filled" | "outlined" | undefined;
   error?: string;
@@ -26,12 +27,20 @@ const AddressField = ({
     state = "state",
     zip = "zip",
     country = "country",
+    facility = "facility",
   },
   variant = "outlined",
   error,
 }: AddressFieldProps) => {
   return (
     <Stack spacing={1}>
+      <TextField
+        type="text"
+        label="Facility Name"
+        name={facility}
+        variant={variant}
+        error={error}
+      />
       <TextField
         type="text"
         label="Address 1"

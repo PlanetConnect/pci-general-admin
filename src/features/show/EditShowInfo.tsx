@@ -1,3 +1,4 @@
+import { Show } from "@pci/pci-services.types.show";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -12,7 +13,6 @@ import {
   TextField,
 } from "~/app/templates/formbuilder";
 import { useSnackBar } from "~/app/templates/snackbar";
-import Show from "~/features/show/data/types/Show";
 import {
   useGetShowByIdQuery,
   useUpdateShowMutation,
@@ -33,7 +33,7 @@ const EditShowInfo = () => {
   if (isLoading || !show) {
     return <div>loading</div>;
   }
-  const defaultValues: Show = { ...show.data };
+  const defaultValues = new Show({ ...show.data });
 
   console.log(
     "🚀 ~ file: EditShowInfo.tsx ~ line 69 ~ EditShowInfo ~ defaultValues",
@@ -58,12 +58,6 @@ const EditShowInfo = () => {
   }
 
   const handleSubmit = async (values: Show) => {
-    delete values?.modified_time;
-    delete values?.sk;
-    delete values?.created_time;
-    delete values?.show_id;
-    delete values?.gsi1pk;
-    delete values?.gsi1sk;
     console.log("save submit", values); // values.end_date = new Date(values.end_date).toISOString();
     // values.start_date = new Date(values.start_date).toISOString();
 

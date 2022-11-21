@@ -1,10 +1,10 @@
+import { Show } from "@pci/pci-services.types.show";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
 import GetResult from "~/features/show/data/types/GetResult";
 import GetResults from "~/features/show/data/types/GetResults";
-import Show from "~/features/show/data/types/Show";
 import UpdateResult from "~/features/show/data/types/UpdateResult";
 
 const baseUrl = "https://dev.serverless-api.planetconnect.com";
@@ -26,7 +26,7 @@ export const queryApi = createApi({
         const patchResult = dispatch(
           queryApi.util.updateQueryData("getShows", undefined, (draft) => {
             draft.data = draft.data.filter((ele) => {
-              return `SHOW#${deletedObj}` !== ele.pk;
+              return `SHOW#${deletedObj}` !== ele.show_id;
             });
             return draft;
           })

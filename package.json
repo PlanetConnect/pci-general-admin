@@ -16,6 +16,7 @@
     "@mui/material": "^5.8.0",
     "@mui/x-data-grid": "^5.11.1",
     "@mui/x-date-pickers": "^5.0.4",
+    "@pci/pci-services.types.show": "^0.2.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@tanstack/react-table": "^8.0.0-alpha.87",
     "ag-grid-community": "^27.3.0",

@@ -7,7 +7,7 @@ import DeleteShow from "../../DeleteShow";
 
 const showListColumns = [
   {
-    field: "pk",
+    field: "show_id",
     headerName: "Show ID",
     width: 150,
     flex: 1,
@@ -70,14 +70,14 @@ const showListColumns = [
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
           component={Link}
-          to={`/shows/${params.row.pk.split("#")[1]}`}
+          to={`/shows/${params.row.show_id.replace("SHOW#", "")}`}
           aria-label="edit"
           size="small"
         >
           <EditIcon fontSize="small" />
         </IconButton>
         <DeleteShow
-          showId={params.row.pk.replace("SHOW#", "")}
+          showId={params.row.show_id.replace("SHOW#", "")}
           showName={params.row.name}
         />
       </Stack>

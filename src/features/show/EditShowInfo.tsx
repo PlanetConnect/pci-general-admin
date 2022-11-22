@@ -25,6 +25,10 @@ import showStatuses from "./data/form/showStatuses";
 const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
   const { showId } = useParams();
+  console.log(
+    "🚀 ~ file: EditShowInfo.tsx ~ line 28 ~ EditShowInfo ~ showId",
+    showId
+  );
 
   const navigate = useNavigate();
 

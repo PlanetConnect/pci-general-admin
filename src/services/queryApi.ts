@@ -26,7 +26,10 @@ export const queryApi = createApi({
         const patchResult = dispatch(
           queryApi.util.updateQueryData("getShows", undefined, (draft) => {
             draft.data = draft.data.filter((ele) => {
-              return `SHOW#${deletedObj}` !== ele.show_id;
+              return (
+                `SHOW#${deletedObj}` !== ele.show_id &&
+                deletedObj !== ele.show_id
+              );
             });
             return draft;
           })
@@ -44,6 +47,7 @@ export const queryApi = createApi({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Show"],
     }),
     getShows: builder.query<GetResults<Show>, void>({
       query: () => `/shows`,
@@ -60,11 +64,44 @@ export const queryApi = createApi({
       }),
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          queryApi.util.updateQueryData("getShowById", id, (draft) => {
-            Object.assign(draft, patch);
+          queryApi.util.updateQueryData("getShows", undefined, (draft) => {
+            draft.data = draft.data.map((ele) => {
+              if (id === ele.show_id) {
+                return {
+                  ...patch.show,
+                  start_date: new Date(patch.show.start_date?.toISOString()),
+                  validate: () => {
+                    throw new Error("Function not implemented.");
+                  },
+                };
+                // return {
+                //   ...ele,
+                //   ...patch.show,
+                //   validate: () => {
+                //     throw new Error("Function not implemented.");
+                //   },
+                // };
+                // return patch.show;
+              }
+              return ele;
+            });
+            Object.assign(draft, draft);
+            return draft;
           })
         );
+        // const patchResult = dispatch(
+        //   queryApi.util.updateQueryData("getShowById", id, (draft) => {
+        //     console.log(
+        //       "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft",
+        //       draft
+        //     );
+        //     Object.assign(draft.data, patch.show);
+        //   })
+        // );
         try {
+          console.log(
+            "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft"
+          );
           await queryFulfilled;
         } catch {
           patchResult.undo();

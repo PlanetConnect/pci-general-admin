@@ -25,40 +25,27 @@ const DeleteShow = (props: DeleteShowProps) => {
 
   const handleConfirm = async () => {
     try {
-      const deleteResult = await deletShow(props.showId);
+      await deletShow(props.showId);
 
-      if (deleteResult?.error) {
-        openSnackBar({
-          message: `Show cannot be deleted. ${deleteResult.error.error}`,
-          position: {
-            vertical: "top",
-            horizontal: "center",
-          },
-          variant: "error",
-        });
-      } else {
-        openSnackBar({
-          message: "Show successfully deleted.",
-          position: {
-            vertical: "top",
-            horizontal: "center",
-          },
-          variant: "success",
-        });
-        setIsConfirmDialogOpen(false);
-      }
-    } catch (e) {
-      console.log("🚀 ~ file: DeleteShow.tsx ~ line 28 ~ handleConfirm ~ e", e);
+      openSnackBar({
+        message: "Show successfully deleted.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+      setIsConfirmDialogOpen(false);
+    } catch (e: any) {
+      openSnackBar({
+        message: `Show cannot be deleted. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
     }
-
-    // openSnackBar({
-    //   message: "Show successfully deleted.",
-    //   position: {
-    //     vertical: "top",
-    //     horizontal: "center",
-    //   },
-    //   variant: "success",
-    // });
   };
 
   const handleClose = () => {

@@ -25,10 +25,6 @@ import showStatuses from "./data/form/showStatuses";
 const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
   const { showId } = useParams();
-  console.log(
-    "🚀 ~ file: EditShowInfo.tsx ~ line 28 ~ EditShowInfo ~ showId",
-    showId
-  );
 
   const navigate = useNavigate();
 
@@ -39,10 +35,6 @@ const EditShowInfo = () => {
   }
   const defaultValues = new Show({ ...show.data });
 
-  console.log(
-    "🚀 ~ file: EditShowInfo.tsx ~ line 69 ~ EditShowInfo ~ defaultValues",
-    defaultValues
-  );
   if (!defaultValues.start_date) {
     defaultValues.start_date = new Date();
   }
@@ -62,25 +54,9 @@ const EditShowInfo = () => {
   }
 
   const handleSubmit = async (values: Show) => {
-    console.log("save submit", values); // values.end_date = new Date(values.end_date).toISOString();
-    // values.start_date = new Date(values.start_date).toISOString();
+    try {
+      await updateShow({ show: values, id: showId || "" });
 
-    const updateResult = await updateShow({ show: values, id: showId || "" });
-    console.log(
-      "🚀 ~ file: EditShowInfo.tsx ~ line 55 ~ handleSubmit ~ updateResult",
-      updateResult
-    );
-
-    if (updateResult?.error) {
-      openSnackBar({
-        message: `Show cannot be updated. ${updateResult.error.error}`,
-        position: {
-          vertical: "top",
-          horizontal: "center",
-        },
-        variant: "error",
-      });
-    } else {
       openSnackBar({
         message: "Show successfully updated.",
         position: {
@@ -91,6 +67,15 @@ const EditShowInfo = () => {
       });
 
       navigate(`/shows`);
+    } catch (e: any) {
+      openSnackBar({
+        message: `Show cannot be updated. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
     }
   };
 

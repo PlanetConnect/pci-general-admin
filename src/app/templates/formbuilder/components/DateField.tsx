@@ -34,7 +34,7 @@ const DateField = ({
             inputFormat={inputFormat}
             value={field.value}
             onChange={(value: Date | null) => {
-              field.onChange(value?.toISOString());
+              field.onChange(value && new Date(value));
             }}
             renderInput={(params) => {
               return (

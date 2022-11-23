@@ -19,29 +19,32 @@ export const queryApi = createApi({
   endpoints: (builder) => ({
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `/shows/${id}`,
+      providesTags: ["Show"],
     }),
     deleteShow: builder.mutation<DeleteResult, string>({
       query: (id: string) => ({ url: `/shows/${id}`, method: "DELETE" }),
-      async onQueryStarted(deletedObj, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          queryApi.util.updateQueryData("getShows", undefined, (draft) => {
-            draft.data = draft.data.filter((ele) => {
-              return (
-                `SHOW#${deletedObj}` !== ele.show_id &&
-                deletedObj !== ele.show_id
-              );
-            });
-            return draft;
-          })
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
-        }
-      },
+      invalidatesTags: ["Show"],
+
+      // async onQueryStarted(deletedObj, { dispatch, queryFulfilled }) {
+      //   const patchResult = dispatch(
+      //     queryApi.util.updateQueryData("getShows", undefined, (draft) => {
+      //       draft.data = draft.data.filter((ele) => {
+      //         return (
+      //           `SHOW#${deletedObj}` !== ele.show_id &&
+      //           deletedObj !== ele.show_id
+      //         );
+      //       });
+      //       return draft;
+      //     })
+      //   );
+      //   try {
+      //     await queryFulfilled;
+      //   } catch {
+      //     patchResult.undo();
+      //   }
+      // },
     }),
-    createShow: builder.mutation<CreateResult, Show>({
+    createShow: builder.mutation<CreateResult<Show>, Show>({
       query: (payload: Show) => ({
         url: `/shows/`,
         method: "POST",
@@ -62,51 +65,66 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.show,
       }),
-      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          queryApi.util.updateQueryData("getShows", undefined, (draft) => {
-            draft.data = draft.data.map((ele) => {
-              if (id === ele.show_id) {
-                return {
-                  ...patch.show,
-                  start_date: new Date(patch.show.start_date?.toISOString()),
-                  validate: () => {
-                    throw new Error("Function not implemented.");
-                  },
-                };
-                // return {
-                //   ...ele,
-                //   ...patch.show,
-                //   validate: () => {
-                //     throw new Error("Function not implemented.");
-                //   },
-                // };
-                // return patch.show;
-              }
-              return ele;
-            });
-            Object.assign(draft, draft);
-            return draft;
-          })
-        );
-        // const patchResult = dispatch(
-        //   queryApi.util.updateQueryData("getShowById", id, (draft) => {
-        //     console.log(
-        //       "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft",
-        //       draft
-        //     );
-        //     Object.assign(draft.data, patch.show);
-        //   })
-        // );
-        try {
-          console.log(
-            "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft"
-          );
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
-        }
-      },
+      invalidatesTags: ["Show"],
+
+      // async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+      //   console.log(
+      //     "🚀 ~ file: queryApi.ts ~ line 66 ~ onQueryStarted ~ patch",
+      //     patch
+      //   );
+      //   const patchResult = dispatch(
+      //     queryApi.util.updateQueryData("getShows", undefined, (draft) => {
+      //       console.log(
+      //         "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft",
+      //         draft
+      //       );
+      //       draft.data = draft.data.map((ele) => {
+      //         if (id === ele.show_id) {
+      //           console.log(
+      //             "🚀 ~ file: queryApi.ts ~ line 78 ~ draft.data=draft.data.map ~ ele",
+      //             ele
+      //           );
+      //           return new Show(patch.show);
+      //           // return {
+      //           //   ...patch.show,
+      //           //   start_date: new Date(patch.show.start_date),
+      //           //   validate: () => {
+      //           //     throw new Error("Function not implemented.");
+      //           //   },
+      //           // };
+      //           // return {
+      //           //   ...ele,
+      //           //   ...patch.show,
+      //           //   validate: () => {
+      //           //     throw new Error("Function not implemented.");
+      //           //   },
+      //           // };
+      //           // return patch.show;
+      //         }
+      //         return ele;
+      //       });
+      //       Object.assign(draft, draft);
+      //       return draft;
+      //     })
+      //   );
+      //   // const patchResult = dispatch(
+      //   //   queryApi.util.updateQueryData("getShowById", id, (draft) => {
+      //   //     console.log(
+      //   //       "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft",
+      //   //       draft
+      //   //     );
+      //   //     Object.assign(draft.data, patch.show);
+      //   //   })
+      //   // );
+      //   try {
+      //     console.log(
+      //       "🚀 ~ file: queryApi.ts ~ line 68 ~ queryApi.util.updateQueryData ~ draft"
+      //     );
+      //     await queryFulfilled;
+      //   } catch {
+      //     patchResult.undo();
+      //   }
+      // },
     }),
   }),
 });

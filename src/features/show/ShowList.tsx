@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { PaperContent, Title } from "~/app/templates/content/";
 import { DataTable } from "~/app/templates/datatable";
+import { useSnackBar } from "~/app/templates/snackbar";
 import { useCreateShowMutation, useGetShowsQuery } from "~/services/queryApi";
 
 import data from "./data/data";
@@ -20,8 +21,14 @@ function ShowList() {
   // const [shows] = useState(data.records);
   // const shows = useState(data.records);
   const navigate = useNavigate();
+  const { openSnackBar } = useSnackBar();
+
   const { data: shows, isFetching, isLoading, isError } = useGetShowsQuery();
   const [createShow, results] = useCreateShowMutation();
+  console.log(
+    "🚀 ~ file: ShowList.tsx ~ line 25 ~ ShowList ~ results",
+    results
+  );
 
   console.log("🚀 ~ file: ShowList.tsx ~ line 21 ~ ShowList ~ shows", shows);
   if (isLoading) {
@@ -40,26 +47,34 @@ function ShowList() {
   });
 
   const onCreate = async () => {
-    console.log("create new show");
-    const createResult = await createShow({
-      name: "New Show",
-      setup: "hybrid",
-      year: new Date().getFullYear(),
-      start_date: new Date(),
-      end_date: new Date(),
-      validate: function (): Promise<void> {
-        throw new Error("Function not implemented.");
-      },
-    });
-    console.log(
-      "🚀 ~ file: ShowList.tsx ~ line 41 ~ onCreate ~ createResult",
-      createResult
-    );
+    try {
+      console.log("create new show");
+      const createResult = await createShow({
+        name: "New Show",
+        setup: "hybrid",
+        year: new Date().getFullYear(),
+        start_date: new Date(),
+        end_date: new Date(),
+        validate: function (): Promise<void> {
+          throw new Error("Function not implemented.");
+        },
+      }).unwrap();
+      console.log(
+        "🚀 ~ file: ShowList.tsx ~ line 41 ~ onCreate ~ createResult",
+        createResult
+      );
 
-    if (createResult?.error) {
-      console.log("error creating show", createResult.error);
-    } else {
       navigate(`/shows/${createResult?.data?.data?.show_id}`);
+    } catch (e: any) {
+      console.log("error creating show ", e.data.error);
+      openSnackBar({
+        message: `Show cannot be created. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
     }
   };
   return (

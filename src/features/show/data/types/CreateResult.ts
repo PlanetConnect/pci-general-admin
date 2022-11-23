@@ -1,6 +1,6 @@
-interface CreateResult {
-  success: boolean;
-  inserted_id: string;
+interface CreateResult<T> {
+  count: number;
+  data: T;
 }
 
 export default CreateResult;

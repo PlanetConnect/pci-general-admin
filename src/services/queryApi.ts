@@ -1,6 +1,7 @@
 import { Show } from "@pci/pci-services.types.show";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import HealthCheckResult from "~/features/account/data/types/HealthCheckResult";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
 import GetResult from "~/features/show/data/types/GetResult";
@@ -15,7 +16,7 @@ export const queryApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
   }),
-  tagTypes: ["Show"],
+  tagTypes: ["Show", "Account", "Contact"],
   endpoints: (builder) => ({
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `/shows/${id}`,
@@ -48,6 +49,76 @@ export const queryApi = createApi({
       }),
       invalidatesTags: ["Show"],
     }),
+
+    //Change type to accounts
+    getAccountById: builder.query<GetResult<Show>, string>({
+      query: (id: string) => `/accounts/${id}`,
+      providesTags: ["Show"],
+    }),
+    deleteAccount: builder.mutation<DeleteResult, string>({
+      query: (id: string) => ({ url: `/accounts/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Account"],
+    }),
+    createAccount: builder.mutation<CreateResult<Show>, Show>({
+      query: (payload: Show) => ({
+        url: `/accounts/`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Account"],
+    }),
+    getAccounts: builder.query<GetResults<Show>, void>({
+      query: () => `/accounts`,
+      providesTags: ["Account"],
+    }),
+    updateAccount: builder.mutation<
+      UpdateResult<Show>,
+      { show: Show; id: string }
+    >({
+      query: (payload: { show: Show; id: string }) => ({
+        url: `/accounts/${payload.id}`,
+        method: "PUT",
+        body: payload.show,
+      }),
+      invalidatesTags: ["Account"],
+    }),
+    getAccountsHealthCheck: builder.query<HealthCheckResult, void>({
+      query: () => `/accounts/health-check`,
+      providesTags: ["Account"],
+    }),
+
+    //change type to contacts
+    getContactByEmail: builder.query<GetResult<Show>, string>({
+      query: (id: string) => `/contacts/${id}`,
+      providesTags: ["Show"],
+    }),
+    deleteContact: builder.mutation<DeleteResult, string>({
+      query: (id: string) => ({ url: `/contacts/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Contact"],
+    }),
+    createContact: builder.mutation<CreateResult<Show>, Show>({
+      query: (payload: Show) => ({
+        url: `/contacts/`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Contact"],
+    }),
+    getContacts: builder.query<GetResults<Show>, void>({
+      query: () => `/contacts`,
+      providesTags: ["Contact"],
+    }),
+    updateContact: builder.mutation<
+      UpdateResult<Show>,
+      { show: Show; id: string }
+    >({
+      query: (payload: { show: Show; id: string }) => ({
+        url: `/contacts/${payload.id}`,
+        method: "PUT",
+        body: payload.show,
+      }),
+      invalidatesTags: ["Contact"],
+    }),
   }),
 });
 
@@ -59,4 +130,10 @@ export const {
   useUpdateShowMutation,
   useCreateShowMutation,
   useGetShowByIdQuery,
+  useGetAccountsQuery,
+  useDeleteAccountMutation,
+  useUpdateAccountMutation,
+  useCreateAccountMutation,
+  useGetAccountByIdQuery,
+  useGetAccountsHealthCheckQuery,
 } = queryApi;

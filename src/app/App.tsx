@@ -6,6 +6,7 @@ import { AttendeeList, EditAttendeeInfo } from "../features/attendee";
 import { ContactList, EditContactInfo } from "../features/contact";
 import { EditExhibitionInfo, ExhibitionList } from "../features/exhibition";
 import { FormInfoTabs, FormList } from "../features/form";
+import { Login } from "../features/login";
 import { EditRoleInfo, RoleList } from "../features/security";
 import { ShowInfoTabs, ShowList } from "../features/show";
 import { Main } from "./layouts/";
@@ -14,6 +15,8 @@ import { NotFound } from "./templates/content/";
 function App() {
   return (
     <Routes>
+      {/* Login Routes */}
+      <Route path="/login" element={<Login />} />
       <Route path="/" element={<Main />}>
         {/* Abstract Routes */}
         <Route path="abstracts" element={<AbstractList />} />

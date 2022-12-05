@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { ConfirmationDialog } from "~/app/templates/dialog";
 import { useSnackBar } from "~/app/templates/snackbar";
+import { useDeleteShowMutation } from "~/services/queryApi";
 
 interface DeleteShowProps {
   showId: string;
@@ -14,6 +15,7 @@ const DeleteShow = (props: DeleteShowProps) => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { openSnackBar } = useSnackBar();
 
+  const [deletShow, results] = useDeleteShowMutation();
   const title = "Confirm";
   const message = `Delete ${props.showName}?`;
 
@@ -21,17 +23,29 @@ const DeleteShow = (props: DeleteShowProps) => {
     setIsConfirmDialogOpen(true);
   };
 
-  const handleConfirm = () => {
-    setIsConfirmDialogOpen(false);
+  const handleConfirm = async () => {
+    try {
+      await deletShow(props.showId);
 
-    openSnackBar({
-      message: "Show successfully deleted.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+      openSnackBar({
+        message: "Show successfully deleted.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+      setIsConfirmDialogOpen(false);
+    } catch (e: any) {
+      openSnackBar({
+        message: `Show cannot be deleted. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
   };
 
   const handleClose = () => {

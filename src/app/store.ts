@@ -1,22 +1,28 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
 import { useDispatch } from "react-redux";
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+
+import { queryApi } from "~/services/queryApi";
 
 import counterReducer from "../features/counter/counterSlice";
 import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
-// import { queryApi } from "../Services/queryApi";
-import { rootReducer } from "./store/Reducers";
+import showsReducer from "../features/show/endpoints/getShows";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     mainAppDrawer: mainAppDrawerReducer,
+    shows: showsReducer,
+    [queryApi.reducerPath]: queryApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(queryApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>(); // Export a hook that can be reused to resolve types
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,

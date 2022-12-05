@@ -24,6 +24,12 @@ const Form = ({
     defaultValues: defaultValues,
     resolver: yupResolver(validationSchema),
   });
+  console.log(
+    "🚀 ~ file: Form.tsx ~ line 27 ~ methods.error",
+    methods.formState.errors
+  );
+  const values = methods.watch();
+  // console.log("🚀 ~ file: Form.tsx ~ line 32 ~ values", values);
   const handleFormSubmit = (data: unknown) => {
     onSubmit(data);
   };

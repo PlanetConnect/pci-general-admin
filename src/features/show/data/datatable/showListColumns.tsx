@@ -70,13 +70,16 @@ const showListColumns = [
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
           component={Link}
-          to={`/shows/${params.row.show_id}`}
+          to={`/shows/${params.row.show_id.replace("SHOW#", "")}`}
           aria-label="edit"
           size="small"
         >
           <EditIcon fontSize="small" />
         </IconButton>
-        <DeleteShow showId={params.row.show_id} showName={params.row.name} />
+        <DeleteShow
+          showId={params.row.show_id.replace("SHOW#", "")}
+          showName={params.row.name}
+        />
       </Stack>
     ),
   },

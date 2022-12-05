@@ -3,8 +3,8 @@ import {
   CognitoUserAttribute,
   ISignUpResult,
 } from "amazon-cognito-identity-js";
-import { AppDispatch } from "~/app/store";
 
+import { AppDispatch } from "~/app/store";
 import { userPool } from "~/features/auth/utils/userPool";
 
 interface authSignUpPayload {
@@ -12,8 +12,9 @@ interface authSignUpPayload {
   password: string;
 }
 
-export const authSignUp = 
-  ({ username, password }: authSignUpPayload) => (dispatch: AppDispatch) =>
+export const authSignUp =
+  ({ username, password }: authSignUpPayload) =>
+  (dispatch: AppDispatch) =>
     new Promise((resolve, reject) => {
       const emailAttribute = new CognitoUserAttribute({
         Name: "email",
@@ -36,5 +37,4 @@ export const authSignUp =
           resolve(result);
         }
       );
-    })
-);
+    });

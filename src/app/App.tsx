@@ -3,10 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import { AbstractList, EditAbstractInfo } from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
 import { AttendeeList, EditAttendeeInfo } from "../features/attendee";
+import { Login, LoginMfa, Signup } from "../features/auth";
 import { ContactList, EditContactInfo } from "../features/contact";
 import { EditExhibitionInfo, ExhibitionList } from "../features/exhibition";
 import { FormInfoTabs, FormList } from "../features/form";
-import { Login } from "../features/login";
 import { EditRoleInfo, RoleList } from "../features/security";
 import { ShowInfoTabs, ShowList } from "../features/show";
 import { Main } from "./layouts/";
@@ -17,6 +17,9 @@ function App() {
     <Routes>
       {/* Login Routes */}
       <Route path="/login" element={<Login />} />
+      <Route path="/login/mfa" element={<LoginMfa />} />
+      <Route path="/signup" element={<Signup />} />
+
       <Route path="/" element={<Main />}>
         {/* Abstract Routes */}
         <Route path="abstracts" element={<AbstractList />} />

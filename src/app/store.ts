@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { queryApi } from "~/services/queryApi";
 
+import loginTokenSlice from "../features/auth/loginSlice";
 import counterReducer from "../features/counter/counterSlice";
 import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
 import showsReducer from "../features/show/endpoints/getShows";
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     counter: counterReducer,
     mainAppDrawer: mainAppDrawerReducer,
+    loginTokens: loginTokenSlice,
     shows: showsReducer,
     [queryApi.reducerPath]: queryApi.reducer,
   },

@@ -3,15 +3,14 @@ import Stack from "@mui/material/Stack";
 import TextField from "./TextField";
 interface LoginFieldProps {
   value: {
-    email: string;
-    password: string;
+    code: string;
   };
   variant?: "standard" | "filled" | "outlined" | undefined;
   error?: string;
 }
 
-const LoginField = ({
-  value: { email = "email", password = "password" },
+const LoginMfaField = ({
+  value: { code = "code" },
   variant = "outlined",
   error,
 }: LoginFieldProps) => {
@@ -19,15 +18,8 @@ const LoginField = ({
     <Stack spacing={1}>
       <TextField
         type="text"
-        label="Email"
-        name={email}
-        variant={variant}
-        error={error}
-      />
-      <TextField
-        type="text"
-        label="Password"
-        name={password}
+        label="Code"
+        name={code}
         variant={variant}
         error={error}
       />
@@ -35,4 +27,4 @@ const LoginField = ({
   );
 };
 
-export default LoginField;
+export default LoginMfaField;

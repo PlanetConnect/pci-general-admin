@@ -1,19 +1,25 @@
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 
 import { AppDispatch } from "~/app/store";
+import {
+  setAccessToken,
+  setCognitoUser,
+  setRefreshToken,
+  setUsername,
+} from "~/features/auth/loginSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 interface authLoginPayload {
-  username: string;
+  email: string;
   password: string;
 }
 
 export const authLogin =
-  ({ username, password }: authLoginPayload) =>
+  ({ email, password }: authLoginPayload) =>
   (dispatch: AppDispatch) =>
     new Promise((resolve, reject) => {
       const authenticationData = {
-        Username: username,
+        Username: email,
         Password: password,
       };
 
@@ -22,10 +28,15 @@ export const authLogin =
       );
 
       const userData = {
-        Username: username,
+        Username: email,
         Pool: userPool,
       };
       const cognitoUser = new CognitoUser(userData);
+      console.log(
+        "🚀 ~ file: authLogin.ts:34 ~ newPromise ~ cognitoUser",
+        cognitoUser
+      );
+      dispatch(setCognitoUser(cognitoUser));
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
           console.log(
@@ -42,13 +53,27 @@ export const authLogin =
             accessToken
           );
           // TODO: Save Refresh and Access Token in persist redux
-
+          dispatch(setAccessToken(accessToken));
+          dispatch(setRefreshToken(result.getRefreshToken().getToken()));
           // is this what we need to send back?
           resolve(cognitoUser);
         },
 
         onFailure: function (err) {
           reject(err.message);
+        },
+        mfaRequired: function (codeDeliveryDetails) {
+          dispatch(setUsername(email));
+          cognitoUser.resendConfirmationCode(function (err, result) {
+            if (err) {
+              reject(err);
+            }
+            console.log("call result: " + result);
+            resolve(result);
+          });
+          reject("MFA Required");
+          // const verificationCode = prompt("Please input verification code", "");
+          // cognitoUser.sendMFACode(verificationCode as string, this);
         },
       });
     });

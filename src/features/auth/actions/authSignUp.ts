@@ -5,36 +5,38 @@ import {
 } from "amazon-cognito-identity-js";
 
 import { AppDispatch } from "~/app/store";
+import { setUsername } from "~/features/auth/loginSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 interface authSignUpPayload {
-  username: string;
+  email: string;
   password: string;
+  phone: string;
 }
 
 export const authSignUp =
-  ({ username, password }: authSignUpPayload) =>
+  ({ email, password, phone }: authSignUpPayload) =>
   (dispatch: AppDispatch) =>
     new Promise((resolve, reject) => {
       const emailAttribute = new CognitoUserAttribute({
         Name: "email",
-        Value: username,
+        Value: email,
+      });
+      const phoneAttribute = new CognitoUserAttribute({
+        Name: "phone_number",
+        Value: phone,
       });
 
-      const attributes = [emailAttribute];
-      return userPool.signUp(
-        username,
-        password,
-        attributes,
-        [],
-        (err, result) => {
-          if (err) {
-            console.log("signup err", err);
-            reject(err);
-            return;
-          }
-          console.log("signup result", result);
-          resolve(result);
+      const attributes = [emailAttribute, phoneAttribute];
+      return userPool.signUp(email, password, attributes, [], (err, result) => {
+        if (err) {
+          console.log("signup err", err);
+          reject(err);
+          return;
         }
-      );
+        console.log("signup result", result);
+        dispatch(setUsername(email));
+
+        resolve(result);
+      });
     });

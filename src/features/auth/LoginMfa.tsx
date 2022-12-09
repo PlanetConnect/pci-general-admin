@@ -1,40 +1,50 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { AppDispatch } from "~/app/store";
 import { LoginButton } from "~/app/templates/button";
+import ResendConfirmationButton from "~/app/templates/button/components/ResendConfirmationButton";
 import { PaperContent, Title } from "~/app/templates/content/";
 import { Actions, Form, Section } from "~/app/templates/formbuilder";
 import LoginField from "~/app/templates/formbuilder/components/LoginField";
+import LoginMfaField from "~/app/templates/formbuilder/components/LoginMfaField";
 import { useSnackBar } from "~/app/templates/snackbar";
 import { authLogin } from "~/features/auth/actions/authLogin";
-import loginSchema from "~/features/login/data/form/loginSchema";
+import { authLoginMfa } from "~/features/auth/actions/authLoginMfa";
+import { authSignUp } from "~/features/auth/actions/authSignUp";
+import confirmationCodeSchema from "~/features/auth/form/confirmationCodeSchema";
 
 const defaultValues = {
-  username: "",
-  password: "",
+  code: "",
 };
-function Login() {
+function LoginMfa() {
   const dispatch: AppDispatch = useDispatch();
   const { openSnackBar } = useSnackBar();
+  const navigate = useNavigate();
 
   const handleSubmit = async (values: any) => {
     console.log(values);
-    openSnackBar({
-      message: "login Success.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+    // openSnackBar({
+    //   message: "login Success.",
+    //   position: {
+    //     vertical: "top",
+    //     horizontal: "center",
+    //   },
+    //   variant: "success",
+    // });
     try {
-      const user = await dispatch(
-        authLogin({ username: values.username, password: values.password })
+      const mfa = await dispatch(authLoginMfa({ code: values.code }));
+      console.log("🚀 ~ file: mfa.tsx:35 ~ handleSubmit ~ mfa", mfa);
+      navigate(`/`);
+    } catch (e: unknown) {
+      if (e.toString() === "MFA Required") {
+        navigate(`/login/mfa`);
+      }
+      console.log(
+        "🚀 ~ file: LoginMfa.tsx:42 ~ handleSubmit ~ e.toString()",
+        e.toString()
       );
-      console.log("🚀 ~ file: Login.tsx:35 ~ handleSubmit ~ user", user);
-    } catch (e) {
-      console.log("🚀 ~ file: Login.tsx ~ line 44 ~ handleSubmit ~ e", e);
     }
   };
   return (
@@ -53,29 +63,29 @@ function Login() {
             alignItems: "center",
           }}
         >
-          <Title>Login as admin</Title>
+          <Title>Enter your verification code</Title>
         </Grid>
         <Grid item xs={12} sm={6} md={4} p={3} sx={{ margin: "auto" }}>
           <PaperContent>
             <Form
               size="lg"
               defaultValues={defaultValues}
-              validationSchema={loginSchema}
+              validationSchema={confirmationCodeSchema}
               onSubmit={handleSubmit}
             >
               <Section name="">
-                <LoginField
+                <LoginMfaField
                   value={{
-                    username: "username",
-                    password: "password",
+                    code: "code",
                   }}
                 />
               </Section>
 
               <Actions>
-                <LoginButton />
+                <LoginButton text="Submit Verification Code" />
               </Actions>
             </Form>
+            <ResendConfirmationButton />
           </PaperContent>
         </Grid>
       </Grid>
@@ -83,4 +93,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginMfa;

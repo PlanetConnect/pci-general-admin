@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "~/app/store";
+import { authLogout } from "~/features/auth/actions/authLogout";
 import {
   getAccessToken,
   getCognitoUser,
@@ -29,6 +30,7 @@ export const fetchAccessToken =
       );
       if (!accessToken) {
         console.log("no access token");
+        dispatch(authLogout());
 
         return;
       }
@@ -52,15 +54,16 @@ export const fetchAccessToken =
           Pool: userPool,
         };
         const cognitoUser = new CognitoUser(userData);
-        dispatch(setCognitoUser(cognitoUser));
         const token = new CognitoRefreshToken({ RefreshToken: refreshToken });
 
         cognitoUser.refreshSession(token, (err, session) => {
           if (err) {
             console.log(err);
+            dispatch(authLogout());
           } else {
             dispatch(setAccessToken(session.getAccessToken().getJwtToken()));
             dispatch(setRefreshToken(session.getRefreshToken().getToken()));
+            dispatch(setCognitoUser(cognitoUser));
           }
         });
       }

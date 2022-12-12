@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import showsReducer from "~/features/show/showSlice";
 import { queryApi } from "~/services/queryApi";
 
 import loginTokenSlice from "../features/auth/loginSlice";

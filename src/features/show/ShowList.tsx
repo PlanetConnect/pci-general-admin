@@ -1,5 +1,7 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import { Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Show } from "@pci/pci-services.types.show";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { PaperContent, Title } from "~/app/templates/content/";
@@ -7,7 +9,6 @@ import { DataTable } from "~/app/templates/datatable";
 import { useSnackBar } from "~/app/templates/snackbar";
 import { useCreateShowMutation, useGetShowsQuery } from "~/services/queryApi";
 
-import data from "./data/data";
 import showListColumns from "./data/datatable/showListColumns";
 
 const settings = {
@@ -23,9 +24,37 @@ function ShowList() {
 
   const { data: shows, isFetching, isLoading, isError } = useGetShowsQuery();
   const [createShow, results] = useCreateShowMutation();
-
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Loading Shows</Typography>
+      </div>
+    );
+  }
   if (isLoading) {
-    return <div>loading</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
   }
   const newShows = shows?.data?.filter((show: Show) => {
     if (show.show_id) {

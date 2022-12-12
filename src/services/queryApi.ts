@@ -9,7 +9,7 @@ import {
 import { CognitoRefreshToken, CognitoUser } from "amazon-cognito-identity-js";
 import jwt_decode from "jwt-decode";
 
-import { AppDispatch, RootState } from "~/app/store";
+import { RootState } from "~/app/store";
 import { authLogout } from "~/features/auth/actions/authLogout";
 import {
   getAccessToken,
@@ -47,10 +47,7 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   console.log("🚀 ~ file: queryApi.ts: custom base query");
-  // const {
-  //   getState,
-  //   dispatch,
-  // }: { getState: () => RootState; dispatch: AppDispatch } = api;
+
   const accessToken = getAccessToken(api.getState() as RootState);
   console.log(
     "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ accessToken",
@@ -61,7 +58,7 @@ const baseQueryWithReauth: BaseQueryFn<
     console.log("🚀 ~ file: authRefresh.ts:29 ~ newPromise ~ decoded", decoded);
 
     // if session expired try to refresh
-    if (decoded.exp < Date.now() / 1000) {
+    if (decoded?.exp < Date.now() / 1000) {
       console.log("session expired");
       const refreshToken = getRefreshToken(api.getState() as RootState);
 

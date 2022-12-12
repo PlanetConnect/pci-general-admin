@@ -8,6 +8,7 @@ export interface loginTokenState {
   refreshToken: string;
   username: string;
   cognitoUser?: CognitoUser;
+  sessionUserAttributes?: any;
 }
 
 const initialState: loginTokenState = {
@@ -15,6 +16,7 @@ const initialState: loginTokenState = {
   refreshToken: "",
   username: "",
   cognitoUser: undefined,
+  sessionUserAttributes: {},
 };
 
 export const loginTokenSlice = createSlice({
@@ -33,6 +35,9 @@ export const loginTokenSlice = createSlice({
     setCognitoUser: (state, action: PayloadAction<CognitoUser>) => {
       state.cognitoUser = action.payload;
     },
+    setSessionUserAttributes: (state, action: PayloadAction<any>) => {
+      state.sessionUserAttributes = action.payload;
+    },
     resetTokens: () => initialState,
   },
 });
@@ -44,6 +49,8 @@ export const getAccessToken = (state: RootState) =>
 export const getUsername = (state: RootState) => state.loginTokens.username;
 export const getCognitoUser = (state: RootState) =>
   state.loginTokens.cognitoUser;
+export const getSessionUserAttributes = (state: RootState) =>
+  state.loginTokens.sessionUserAttributes;
 
 export const {
   setAccessToken,
@@ -51,6 +58,7 @@ export const {
   resetTokens,
   setUsername,
   setCognitoUser,
+  setSessionUserAttributes,
 } = loginTokenSlice.actions;
 
 export default loginTokenSlice.reducer;

@@ -25,6 +25,11 @@ export const fetchAccessToken =
         "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ refreshToken",
         accessToken
       );
+      if (!accessToken) {
+        console.log("no access token");
+
+        return;
+      }
       const decoded = jwt_decode(accessToken);
       console.log(
         "🚀 ~ file: authRefresh.ts:29 ~ newPromise ~ decoded",

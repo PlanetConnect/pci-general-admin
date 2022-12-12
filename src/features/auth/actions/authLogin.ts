@@ -5,6 +5,7 @@ import {
   setAccessToken,
   setCognitoUser,
   setRefreshToken,
+  setSessionUserAttributes,
   setUsername,
 } from "~/features/auth/loginSlice";
 import { userPool } from "~/features/auth/utils/userPool";
@@ -63,17 +64,35 @@ export const authLogin =
           reject(err.message);
         },
         mfaRequired: function (codeDeliveryDetails) {
-          dispatch(setUsername(email));
-          cognitoUser.resendConfirmationCode(function (err, result) {
-            if (err) {
-              reject(err);
-            }
-            console.log("call result: " + result);
-            resolve(result);
-          });
           reject("MFA Required");
           // const verificationCode = prompt("Please input verification code", "");
           // cognitoUser.sendMFACode(verificationCode as string, this);
+        },
+        newPasswordRequired: function (userAttributes, requiredAttributes) {
+          // User was signed up by an admin and must provide new
+          // password and required attributes, if any, to complete
+          // authentication.
+          dispatch(setUsername(email));
+
+          // the api doesn't accept this field back
+          delete userAttributes.email_verified;
+          delete userAttributes.phone_number_verified;
+          delete userAttributes.phone_number;
+
+          console.log(
+            "🚀 ~ file: authLogin.ts:97 ~ newPromise ~ requiredAttributes",
+            requiredAttributes
+          );
+
+          console.log(
+            "🚀 ~ file: authLogin.ts:91 ~ newPromise ~ userAttributes",
+            userAttributes
+          );
+
+          dispatch(setSessionUserAttributes(userAttributes));
+          reject("New Password Required");
+          // store userAttributes on global variable
+          // sessionUserAttributes = userAttributes;
         },
       });
     });

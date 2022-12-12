@@ -16,17 +16,15 @@ const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={3}>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </SnackbarProvider>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <ThemeProvider theme={theme}>
+        <SnackbarProvider maxSnack={3}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </SnackbarProvider>
+      </ThemeProvider>
+    </LocalizationProvider>
+  </Provider>
 );

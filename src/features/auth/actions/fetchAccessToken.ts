@@ -10,9 +10,11 @@ import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "~/app/store";
 import {
   getAccessToken,
+  getCognitoUser,
   getRefreshToken,
   getUsername,
   setAccessToken,
+  setCognitoUser,
   setRefreshToken,
 } from "~/features/auth/loginSlice";
 import { userPool } from "~/features/auth/utils/userPool";
@@ -22,7 +24,7 @@ export const fetchAccessToken =
     new Promise((resolve, reject) => {
       const accessToken = getAccessToken(getState());
       console.log(
-        "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ refreshToken",
+        "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ accessToken",
         accessToken
       );
       if (!accessToken) {
@@ -36,33 +38,30 @@ export const fetchAccessToken =
         decoded
       );
 
-      //   const refreshToken = getRefreshToken(getState());
-      //   console.log(
-      //     "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ refreshToken",
-      //     refreshToken
-      //   );
-      //   const username = getUsername(getState());
-      //   console.log(
-      //     "🚀 ~ file: authRefresh.ts:27 ~ newPromise ~ username",
-      //     username
-      //   );
+      // if session expired try to refresh
+      if (decoded.exp < Date.now() / 1000) {
+        console.log("session expired");
+        const refreshToken = getRefreshToken(getState());
 
-      //   const userData = {
-      //     Username: username,
-      //     Pool: userPool,
-      //   };
-      //   const cognitoUser = new CognitoUser(userData);
+        const username = getUsername(getState());
 
-      //   const token = new CognitoRefreshToken({ RefreshToken: refreshToken });
+        const user = getCognitoUser(getState());
 
-      //   cognitoUser.refreshSession(token, (err, session) => {
-      //     if (err) {
-      //       console.log(err);
-      //     } else {
-      //       console.log(
-      //         "🚀 ~ file: authRefresh.ts:34 ~ cognitoUser.refreshSession ~ session",
-      //         session
-      //       );
-      //     }
-      //   });
+        const userData = {
+          Username: user?.username,
+          Pool: userPool,
+        };
+        const cognitoUser = new CognitoUser(userData);
+        dispatch(setCognitoUser(cognitoUser));
+        const token = new CognitoRefreshToken({ RefreshToken: refreshToken });
+
+        cognitoUser.refreshSession(token, (err, session) => {
+          if (err) {
+            console.log(err);
+          } else {
+            dispatch(setAccessToken(session.getAccessToken().getJwtToken()));
+            dispatch(setRefreshToken(session.getRefreshToken().getToken()));
+          }
+        });
+      }
     });

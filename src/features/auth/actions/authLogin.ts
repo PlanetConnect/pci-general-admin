@@ -56,6 +56,8 @@ export const authLogin =
           // TODO: Save Refresh and Access Token in persist redux
           dispatch(setAccessToken(accessToken));
           dispatch(setRefreshToken(result.getRefreshToken().getToken()));
+          dispatch(setUsername(email));
+
           // is this what we need to send back?
           resolve(cognitoUser);
         },

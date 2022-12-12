@@ -1,6 +1,7 @@
 import { CognitoUser } from "amazon-cognito-identity-js";
 
 import { AppDispatch, RootState } from "~/app/store";
+import { fetchAccessToken } from "~/features/auth/actions/fetchAccessToken";
 import { getCognitoUser } from "~/features/auth/loginSlice";
 
 export const startupAsync =
@@ -12,7 +13,7 @@ export const startupAsync =
       return "no user";
     } else {
       //TODO: if user is logged in and access token is expired, then refresh
-
+      dispatch(fetchAccessToken());
       return "user";
     }
   };

@@ -15,12 +15,11 @@ import { queryApi } from "~/services/queryApi";
 import loginTokenSlice from "../features/auth/loginSlice";
 import counterReducer from "../features/counter/counterSlice";
 import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
-import showsReducer from "../features/show/endpoints/getShows";
 
 const persistConfig = {
   key: "user",
   storage: storage,
-  whitelist: ["counter", "mainAppDrawer", "loginTokens", "shows", "strapi"], // which reducer want to store
+  whitelist: ["loginTokens"], // which reducer want to store
   // whitelist: ['user', 'sidebar', 'debug', 'event', 'strapi', 'queryApi'], // which reducer want to store
 };
 
@@ -31,6 +30,7 @@ const rootReducer = combineReducers({
   shows: showsReducer,
   [queryApi.reducerPath]: queryApi.reducer,
 });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

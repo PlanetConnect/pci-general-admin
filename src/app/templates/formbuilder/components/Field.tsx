@@ -1,11 +1,11 @@
+import { useFormContext } from "react-hook-form";
+
 import ColorPickerField from "./ColorPickerField";
 import FieldSet from "./FieldSet";
 import Select from "./Select";
 import Switch from "./Switch";
 import TextArea from "./TextArea";
 import TextField from "./TextField";
-
-import { useFormContext } from "react-hook-form";
 
 interface FieldProps {
   field: any;

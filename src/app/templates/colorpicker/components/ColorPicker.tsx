@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { HexColorPicker, HexColorInput } from "react-colorful";
-import Box from "@mui/material/Box";
-
 import "./style.css";
+
+import Box from "@mui/material/Box";
+import React, { useState } from "react";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 
 interface ColorPickerProps {
   value?: string;

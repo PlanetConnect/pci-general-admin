@@ -5,6 +5,7 @@ import DeleteButton from "./components/DeleteButton";
 import DownButton from "./components/DownButton";
 import EditButton from "./components/EditButton";
 import FabAddButton from "./components/FabAddButton";
+import LoginButton from "./components/LoginButton";
 import MiniAddButton from "./components/MiniAddButton";
 import RemoveButton from "./components/RemoveButton";
 import SaveButton from "./components/SaveButton";
@@ -19,6 +20,7 @@ export {
   DownButton,
   EditButton,
   FabAddButton,
+  LoginButton,
   MiniAddButton,
   RemoveButton,
   SaveButton,

@@ -1,11 +1,9 @@
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-
-import { useAppSelector } from "../../hooks";
-
 import { Navigation, selectIsDrawerOpen } from "../../../features/navigation";
+import { useAppSelector } from "../../hooks";
 
 const Main = () => {
   const theme = useTheme();

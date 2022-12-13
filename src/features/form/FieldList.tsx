@@ -1,27 +1,26 @@
-import React, { useState } from "react";
-
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 
-import { Accordion } from "../../app/templates/accordion";
-import {
-  Actions,
-  Section,
-  Select,
-  Switch,
-  TextField,
-  useFieldArrayMethods,
-  fieldTypes,
-} from "../../app/templates/formbuilder";
+import { Accordion } from "~/app/templates/accordion";
 import {
   ButtonGroup,
   DeleteButton,
   DownButton,
   UpButton,
-} from "../../app/templates/button";
-import { ConfirmationDialog } from "../../app/templates/dialog";
+} from "~/app/templates/button";
+import { ConfirmationDialog } from "~/app/templates/dialog";
+import {
+  Actions,
+  fieldTypes,
+  Section,
+  Select,
+  Switch,
+  TextField,
+  useFieldArrayMethods,
+} from "~/app/templates/formbuilder";
 
 import SelectOptionList from "./SelectOptionList";
 
@@ -51,6 +50,8 @@ const FieldList = ({ name }: FieldListProps) => {
     setIsConfirmDialogOpen(false);
     setSelectedFieldIndex(undefined);
   };
+
+  const nameError: any = errors?.[name];
 
   return (
     <Box sx={{ flex: 1 }}>
@@ -107,7 +108,7 @@ const FieldList = ({ name }: FieldListProps) => {
                 label="Label"
                 name={`${name}.${index}.label`}
                 type="text"
-                error={errors?.[name]?.[index]?.["label"]?.["message"]}
+                error={nameError?.[index]?.["label"]?.["message"]}
               />
               <TextField
                 label="Name"

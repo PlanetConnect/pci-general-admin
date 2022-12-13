@@ -1,24 +1,19 @@
-import React, { useState } from "react";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import React, { useState } from "react";
 
+import { CancelButton, FabAddButton, SaveButton } from "~/app/templates/button";
+import { Dialog } from "~/app/templates/dialog";
 import {
   Actions,
   Form,
-  Switch,
-  Select,
-  TextArea,
-  TextField,
   formSchema,
   formTypes,
-} from "../../app/templates/formbuilder";
-import { Dialog } from "../../app/templates/dialog";
-import {
-  CancelButton,
-  FabAddButton,
-  SaveButton,
-} from "../../app/templates/button";
+  Select,
+  Switch,
+  TextArea,
+  TextField,
+} from "~/app/templates/formbuilder";
 
 const form = {
   isActive: true,

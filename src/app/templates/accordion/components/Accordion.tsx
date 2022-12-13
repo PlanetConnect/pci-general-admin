@@ -1,10 +1,9 @@
-import React from "react";
-
-import MuiAccordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Divider from "@mui/material/Divider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MuiAccordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Divider from "@mui/material/Divider";
+import React from "react";
 
 interface AccordionProps {
   summary: React.ReactNode;

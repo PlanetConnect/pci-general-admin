@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
-
-import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
 
 import DeleteShow from "../../DeleteShow";
 
@@ -71,13 +70,16 @@ const showListColumns = [
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
           component={Link}
-          to={`/shows/${params.row.show_id}`}
+          to={`/shows/${params.row.show_id.replace("SHOW#", "")}`}
           aria-label="edit"
           size="small"
         >
           <EditIcon fontSize="small" />
         </IconButton>
-        <DeleteShow showId={params.row.show_id} showName={params.row.name} />
+        <DeleteShow
+          showId={params.row.show_id.replace("SHOW#", "")}
+          showName={params.row.name}
+        />
       </Stack>
     ),
   },

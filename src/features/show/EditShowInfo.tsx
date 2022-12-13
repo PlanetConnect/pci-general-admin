@@ -1,66 +1,117 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import { CircularProgress, Typography } from "@mui/material";
+import { Show } from "@pci/pci-services.types.show";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { SaveButton } from "~/app/templates/button";
 import {
   Actions,
   AddressField,
+  DateField,
   Form,
   Header,
-  DateField,
   Section,
   Select,
   TextField,
-} from "../../app/templates/formbuilder";
-import { useSnackBar } from "../../app/templates/snackbar";
-import { SaveButton } from "../../app/templates/button";
+} from "~/app/templates/formbuilder";
+import { useSnackBar } from "~/app/templates/snackbar";
+import {
+  useGetShowByIdQuery,
+  useUpdateShowMutation,
+} from "~/services/queryApi";
 
 import showSchema from "./data/form/showSchema";
 import showSetups from "./data/form/showSetups";
 import showStatuses from "./data/form/showStatuses";
 
-const show = {
-  showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
-  name: "Merck Technology Symposium 2022",
-  year: 2022,
-  links: [
-    {
-      showId: "06a5ba5a-4f15-4147-a110-ec33187c4bff",
-      virtualEnvironment: "https://test-with-new-link.com",
-      internal: "https://tests.com",
-      external: "https://www.commendssss.com",
-    },
-  ],
-  startDate: "2022-03-06",
-  endDate: "2022-03-11",
-  setup: "hybrid",
-  isActive: true,
-  facility: "Nuclear Silo",
-  street: "test",
-  city: "Longhorn",
-  state: "NJ",
-  zip: "08722",
-  country: "US",
-  description: "The Description of my Show!",
-  createdTime: "2022-04-15 09:39:34.120772",
-  modifiedTime: "2022-04-15 09:39:34.120772",
-  status: "under_construction",
-};
-
 const EditShowInfo = () => {
   const { openSnackBar } = useSnackBar();
-  const handleSubmit = (values: any) => {
-    console.log(values);
-    openSnackBar({
-      message: "Show successfully updated.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+  const { showId } = useParams();
+
+  const navigate = useNavigate();
+
+  const [updateShow, results] = useUpdateShowMutation();
+  const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Fatching Information</Typography>
+      </div>
+    );
+  }
+  if (isLoading || !show) {
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
+      <CircularProgress />
+      <Typography>Loading...</Typography>
+    </div>;
+  }
+  const defaultValues = new Show({ ...show.data });
+
+  if (!defaultValues.start_date) {
+    defaultValues.start_date = new Date();
+  }
+  if (!defaultValues.end_date) {
+    defaultValues.end_date = new Date();
+  }
+
+  if (!defaultValues.venue) {
+    defaultValues.venue = {
+      city: "",
+      country: "",
+      facility: "test",
+      state: "",
+      street: "",
+      zip: "",
+    };
+  }
+
+  const handleSubmit = async (values: Show) => {
+    try {
+      await updateShow({ show: values, id: showId || "" });
+
+      openSnackBar({
+        message: "Show successfully updated.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+
+      navigate(`/shows`);
+    } catch (e: any) {
+      openSnackBar({
+        message: `Show cannot be updated. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
   };
 
   return (
     <Form
       size="lg"
-      defaultValues={show}
+      defaultValues={defaultValues}
       validationSchema={showSchema}
       onSubmit={handleSubmit}
     >
@@ -71,24 +122,29 @@ const EditShowInfo = () => {
         <Select label="Environment" name="setup" options={showSetups} />
         <TextField type="text" label="Name" name="name" />
         <TextField type="number" label="Year" name="year" />
-        <DateField label="Start Date" value={show.startDate} name="startDate" />
-        <DateField label="End Date" value={show.endDate} name="endDate" />
+        <DateField label="Start Date" name="start_date" />
+        <DateField label="End Date" name="end_date" />
       </Section>
 
       <Section name="Links">
         <TextField
           type="text"
           label="Virtual Environment"
-          name="links[0].virtualEnvironment"
+          name="links.0.virtual_environment"
         />
-        <TextField type="text" label="External" name="links[0].external" />
-        <TextField type="text" label="Internal" name="links[0].internal" />
+        <TextField type="text" label="External" name="links.0.external" />
+        <TextField type="text" label="Internal" name="links.0.internal" />
       </Section>
 
-      <Section name="Address">
+      <Section name="Venue">
         <AddressField
           address={{
-            address1: "facility",
+            address1: "venue.street",
+            city: "venue.city",
+            state: "venue.state",
+            country: "venue.country",
+            zip: "venue.zip",
+            facility: "venue.facility",
           }}
         />
       </Section>

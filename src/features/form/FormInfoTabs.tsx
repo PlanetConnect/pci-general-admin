@@ -1,11 +1,11 @@
-import { useFormTabInfoItems } from "./FormInfoTabItems";
+import { PaperContent, Title } from "~/app/templates/content";
+import { VerticalTab } from "~/app/templates/tab";
 
-import { PaperContent, Title } from "../../app/templates/content";
-import { VerticalTab } from "../../app/templates/tab";
+import { useFormTabInfoItems } from "./FormInfoTabItems";
 
 const FormInfoTabs = () => {
   const tabs = useFormTabInfoItems();
-  let selectedTab = "settings";
+  const selectedTab = "settings";
 
   return (
     <PaperContent>

@@ -1,20 +1,15 @@
-import React from "react";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import React from "react";
 
 import {
-  TextField,
-  useFieldArrayMethods,
-} from "../../app/templates/formbuilder";
-
-import {
-  MiniAddButton,
   ButtonGroup,
   DownButton,
+  MiniAddButton,
   RemoveButton,
   UpButton,
-} from "../../app/templates/button";
+} from "~/app/templates/button";
+import { TextField, useFieldArrayMethods } from "~/app/templates/formbuilder";
 
 interface OptionListProps {
   name: string;
@@ -24,6 +19,8 @@ interface OptionListProps {
 const SelectOptionList = ({ name, index }: OptionListProps) => {
   const { fields, errors, append, insert, remove, swap } =
     useFieldArrayMethods(name);
+
+  const fieldsError: any = errors?.fields;
 
   return (
     <Box
@@ -64,9 +61,9 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
                 name={`${name}.${optIndex}.label`}
                 type="text"
                 error={
-                  errors?.["fields"]?.[index]?.["options"]?.[optIndex]?.[
-                    "label"
-                  ]?.["message"]
+                  fieldsError?.[index]?.["options"]?.[optIndex]?.["label"]?.[
+                    "message"
+                  ]
                 }
               />
               <TextField
@@ -74,9 +71,9 @@ const SelectOptionList = ({ name, index }: OptionListProps) => {
                 name={`${name}.${optIndex}.value`}
                 type="text"
                 error={
-                  errors?.["fields"]?.[index]?.["options"]?.[optIndex]?.[
-                    "value"
-                  ]?.["message"]
+                  fieldsError?.[index]?.["options"]?.[optIndex]?.["value"]?.[
+                    "message"
+                  ]
                 }
               />
               <ButtonGroup>

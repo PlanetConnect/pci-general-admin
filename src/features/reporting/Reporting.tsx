@@ -1,3 +1,5 @@
-const Reporting = () => {};
+const Reporting = () => {
+  // TBD
+};
 
 export default Reporting;

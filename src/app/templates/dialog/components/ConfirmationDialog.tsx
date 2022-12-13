@@ -1,14 +1,13 @@
-import React from "react";
-
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
-import Transition from "./Transition";
+import React from "react";
 
 import { CancelButton, DeleteButton } from "../../button";
+import Transition from "./Transition";
 
 interface ConfirmationDialogProps {
   title: string;

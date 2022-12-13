@@ -1,15 +1,13 @@
-import React from "react";
-import { styled } from "@mui/material/styles";
-
+import MenuIcon from "@mui/icons-material/Menu";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
+import React from "react";
 
-import MenuIcon from "@mui/icons-material/Menu";
-
-import { MainSearch } from "../search";
 import { NotificationIconBadge } from "../notification";
+import { MainSearch } from "../search";
 import { SelectShowOption } from "../show";
 import { UserIconBadge } from "../user";
 

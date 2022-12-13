@@ -1,14 +1,12 @@
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
-
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import React from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
 import Error from "./Error";
 
 interface DateFieldProps {
-  value: string;
   label: string;
   name: string;
   inputFormat?: string;
@@ -17,7 +15,6 @@ interface DateFieldProps {
 }
 
 const DateField = ({
-  value,
   label,
   name,
   inputFormat = "MM/dd/yyyy",
@@ -31,14 +28,13 @@ const DateField = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={value}
         render={({ field }) => (
           <DesktopDatePicker
             label={label}
             inputFormat={inputFormat}
             value={field.value}
             onChange={(value: Date | null) => {
-              field.onChange(value?.toLocaleString());
+              field.onChange(value && new Date(value));
             }}
             renderInput={(params) => {
               return (

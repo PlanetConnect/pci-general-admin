@@ -1,10 +1,9 @@
-import React from "react";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-
+import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
+
 import { ColorPicker } from "../../colorpicker";
 
 interface ColorPickerFieldProps {

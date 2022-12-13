@@ -1,6 +1,6 @@
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const NotificationIconBadge = () => {
   return (

@@ -1,11 +1,11 @@
-import { useShowTabInfoItems } from "./data/tab/ShowInfoTabItems";
+import { PaperContent } from "~/app/templates/content";
+import { IconedTab } from "~/app/templates/tab";
 
-import { IconedTab } from "../../app/templates/tab";
-import { PaperContent } from "../../app/templates/content";
+import { useShowTabInfoItems } from "./data/tab/ShowInfoTabItems";
 
 const ShowInfoTabs = () => {
   const tabs = useShowTabInfoItems();
-  let selectedTab = "generalInfo";
+  const selectedTab = "generalInfo";
 
   return (
     <PaperContent>

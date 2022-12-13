@@ -1,7 +1,6 @@
-import React from "react";
-
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import IconButton from "@mui/material/IconButton";
+import React from "react";
 
 interface UpButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;

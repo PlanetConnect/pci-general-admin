@@ -1,14 +1,13 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Actions } from "../../app/templates/formbuilder";
-import { EditButton } from "../../app/templates/button";
-import { PaperContent, Title } from "../../app/templates/content";
-import { Table } from "../../app/templates/table";
+import { EditButton } from "~/app/templates/button";
+import { PaperContent, Title } from "~/app/templates/content";
+import { Actions } from "~/app/templates/formbuilder";
+import { Table } from "~/app/templates/table";
 
 import AddForm from "./AddForm";
 
@@ -55,7 +54,7 @@ const columns = [
 ];
 
 const FormList = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const display = forms.map((form) => {
     return {
       name: form.name,

@@ -1,6 +1,3 @@
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
-
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
@@ -9,6 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import React from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
 import Error from "./Error";
 

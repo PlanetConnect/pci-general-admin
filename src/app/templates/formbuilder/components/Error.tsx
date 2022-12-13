@@ -1,7 +1,7 @@
-import { useFormContext } from "react-hook-form";
-import { Alert } from "../../alert";
-
 import Box from "@mui/material/Box";
+import { useFormContext } from "react-hook-form";
+
+import { Alert } from "../../alert";
 
 interface ErrorProps {
   name: string;
@@ -15,14 +15,16 @@ const Error = ({ name, error }: ErrorProps) => {
   } = useFormContext();
 
   if (typeof error == "undefined" && errors[name]) {
-    displayedError = errors[name].message;
+    displayedError = errors?.[name]?.message;
   } else {
     displayedError = error;
   }
 
   return (
     <Box sx={{ flex: 1 }}>
-      {displayedError ? <Alert severity="error">{displayedError}</Alert> : null}
+      {displayedError ? (
+        <Alert severity="error">{String(displayedError)}</Alert>
+      ) : null}
     </Box>
   );
 };

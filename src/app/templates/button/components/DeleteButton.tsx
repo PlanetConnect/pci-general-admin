@@ -1,5 +1,5 @@
-import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
 
 interface DeleteButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;

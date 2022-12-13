@@ -1,9 +1,9 @@
-import Select from "./Select";
-import TextField from "./TextField";
 import Stack from "@mui/material/Stack";
 
 import countries from "../data/countries";
 import states from "../data/states";
+import Select from "./Select";
+import TextField from "./TextField";
 
 interface AddressFieldProps {
   address: {
@@ -13,6 +13,7 @@ interface AddressFieldProps {
     state?: string;
     zip?: string;
     country?: string;
+    facility?: string;
   };
   variant?: "standard" | "filled" | "outlined" | undefined;
   error?: string;
@@ -20,18 +21,26 @@ interface AddressFieldProps {
 
 const AddressField = ({
   address: {
-    address1 = "address1",
-    address2 = "address2",
+    address1 = "street",
+    address2 = "street2",
     city = "city",
     state = "state",
     zip = "zip",
     country = "country",
+    facility = "facility",
   },
   variant = "outlined",
   error,
 }: AddressFieldProps) => {
   return (
     <Stack spacing={1}>
+      <TextField
+        type="text"
+        label="Facility Name"
+        name={facility}
+        variant={variant}
+        error={error}
+      />
       <TextField
         type="text"
         label="Address 1"

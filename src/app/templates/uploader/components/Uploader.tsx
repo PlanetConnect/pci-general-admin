@@ -1,12 +1,11 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 
-import { FilePreview, ImagePreview, MIME } from "../../uploader";
 import { UploadButton } from "../../button";
+import { FilePreview, ImagePreview, MIME } from "../../uploader";
 
 const MAX_FILE_SIZE = 52428800;
 const MAX_FILES = 1;

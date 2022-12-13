@@ -1,4 +1,4 @@
-import { TabItem } from "../../app/templates/tab";
+import { TabItem } from "~/app/templates/tab";
 
 //import FormEntries from "../../FormEntries";
 import FormFields from "./FormFields";

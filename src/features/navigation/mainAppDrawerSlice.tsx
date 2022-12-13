@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+
+import { RootState } from "~/app/store";
 
 export interface mainAppDrawerState {
   isDrawerOpen: boolean;
@@ -15,10 +16,10 @@ export const mainAppDrawerSlice = createSlice({
   name: "drawer",
   initialState,
   reducers: {
-    openDrawer: (state: any) => {
+    openDrawer: (state) => {
       state.isDrawerOpen = true;
     },
-    closeDrawer: (state: any) => {
+    closeDrawer: (state) => {
       state.isDrawerOpen = false;
     },
   },

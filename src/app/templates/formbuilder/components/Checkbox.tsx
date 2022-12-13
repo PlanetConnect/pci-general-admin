@@ -1,13 +1,12 @@
+import Box from "@mui/material/Box";
+import MuiCheckbox from "@mui/material/Checkbox";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import FormLabel from "@mui/material/FormLabel";
+import Stack from "@mui/material/Stack";
 import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-
-import Box from "@mui/material/Box";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import MuiCheckbox from "@mui/material/Checkbox";
-import Stack from "@mui/material/Stack";
 
 import Error from "./Error";
 

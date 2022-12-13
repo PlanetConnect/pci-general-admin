@@ -16,7 +16,7 @@ export const queryApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
   }),
-  tagTypes: ["Show", "Account", "Contact"],
+  tagTypes: ["Show", "Account", "Contact", "Role"],
   endpoints: (builder) => ({
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `/shows/${id}`,
@@ -90,7 +90,7 @@ export const queryApi = createApi({
     //change type to contacts
     getContactByEmail: builder.query<GetResult<Show>, string>({
       query: (id: string) => `/contacts/${id}`,
-      providesTags: ["Show"],
+      providesTags: ["Contact"],
     }),
     deleteContact: builder.mutation<DeleteResult, string>({
       query: (id: string) => ({ url: `/contacts/${id}`, method: "DELETE" }),
@@ -118,6 +118,42 @@ export const queryApi = createApi({
         body: payload.show,
       }),
       invalidatesTags: ["Contact"],
+    }),
+
+    //change type to roles
+    getRoleById: builder.query<GetResult<Show>, string>({
+      query: (id: string) => `/PCIApiGateway/${id}`,
+      providesTags: ["Role"],
+    }),
+    deleteRole: builder.mutation<DeleteResult, string>({
+      query: (id: string) => ({
+        url: `/PCIApiGateway/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Role"],
+    }),
+    createRole: builder.mutation<CreateResult<Show>, Show>({
+      query: (payload: Show) => ({
+        url: `/PCIApiGateway/`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Role"],
+    }),
+    getRoles: builder.query<GetResults<Show>, void>({
+      query: () => `/PCIApiGateway`,
+      providesTags: ["Role"],
+    }),
+    updateRole: builder.mutation<
+      UpdateResult<Show>,
+      { show: Show; id: string }
+    >({
+      query: (payload: { show: Show; id: string }) => ({
+        url: `/PCIApiGateway/${payload.id}`,
+        method: "PUT",
+        body: payload.show,
+      }),
+      invalidatesTags: ["Role"],
     }),
   }),
 });

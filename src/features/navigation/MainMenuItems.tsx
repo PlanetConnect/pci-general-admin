@@ -5,9 +5,17 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { topLevelRoutes, withShowRoutes } from "~/app/data/routes";
+import {
+  logoutRoutes,
+  topLevelRoutes,
+  withShowRoutes,
+} from "~/app/data/routes";
+import { AppDispatch } from "~/app/store";
+import { authLogout } from "~/features/auth/actions/authLogout";
+import { fetchAccessToken } from "~/features/auth/actions/fetchAccessToken";
 
 import MenuItem from "./data/MenuItem";
 
@@ -22,6 +30,8 @@ interface MenuItemsProps {
 let isDrawerOpen: boolean;
 
 const MenuItems = (props: MenuItemsProps) => {
+  const dispatch: AppDispatch = useDispatch();
+
   return (
     <React.Fragment>
       {props.menuItems.map((item: MenuItem) => {
@@ -33,6 +43,16 @@ const MenuItems = (props: MenuItemsProps) => {
             sx={{ display: "block" }}
             component={Link}
             to={item.path}
+            onClick={async () => {
+              if (item.label === "Logout") {
+                console.log("logout");
+                const user = await dispatch(authLogout());
+                console.log(
+                  "🚀 ~ file: Login.tsx:35 ~ handleSubmit ~ user",
+                  user
+                );
+              }
+            }}
           >
             <ListItemButton
               sx={{
@@ -69,6 +89,8 @@ const MainMenuItems = (props: MainMenuItemProps) => {
       <MenuItems menuItems={topLevelRoutes} />
       <Divider />
       <MenuItems menuItems={withShowRoutes} />
+      <Divider />
+      <MenuItems menuItems={logoutRoutes} />
     </List>
   );
 };

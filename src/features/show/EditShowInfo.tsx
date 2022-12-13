@@ -1,3 +1,5 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import { CircularProgress, Typography } from "@mui/material";
 import { Show } from "@pci/pci-services.types.show";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -30,8 +32,35 @@ const EditShowInfo = () => {
 
   const [updateShow, results] = useUpdateShowMutation();
   const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Fatching Information</Typography>
+      </div>
+    );
+  }
   if (isLoading || !show) {
-    return <div>loading</div>;
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
+      <CircularProgress />
+      <Typography>Loading...</Typography>
+    </div>;
   }
   const defaultValues = new Show({ ...show.data });
 

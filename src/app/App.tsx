@@ -4,7 +4,8 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 
 import { startupAsync } from "~/app/actions/startupAsync";
 import { AppDispatch, useAppDispatch } from "~/app/store";
-import { getCognitoUser } from "~/features/auth/loginSlice";
+import { getCognitoUser } from "~/features/auth/authSlice";
+import ProtectedRoute from "~/features/auth/ProtectedRoute";
 
 import { AbstractList, EditAbstractInfo } from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
@@ -20,17 +21,12 @@ import { NotFound } from "./templates/content/";
 
 function App() {
   const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
+
   const [initialized, setInitialized] = useState(false);
-  console.log("app.tsx");
-  const user = useSelector(getCognitoUser);
 
   useEffect(() => {
     (async () => {
-      const result = await dispatch(startupAsync(user));
-      if (result === "no user") {
-        navigate("/login");
-      }
+      await dispatch(startupAsync());
       setInitialized(true);
     })();
   }, []);
@@ -44,34 +40,150 @@ function App() {
       <Route path="/login/mfa" element={<LoginMfa />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login/newPassword" element={<LoginNewPassword />} />
-      <Route path="/" element={<Main />}>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Main />
+          </ProtectedRoute>
+        }
+      >
         {/* Abstract Routes */}
-        <Route path="abstracts" element={<AbstractList />} />
-        <Route path="abstracts/:abstractId" element={<EditAbstractInfo />} />
+        <Route
+          path="abstracts"
+          element={
+            <ProtectedRoute>
+              <AbstractList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="abstracts/:abstractId"
+          element={
+            <ProtectedRoute>
+              <EditAbstractInfo />
+            </ProtectedRoute>
+          }
+        />
         {/* Account Routes */}
-        <Route path="accounts" element={<AccountList />} />
-        <Route path="accounts/:accountId" element={<EditAccountInfo />} />
+        <Route
+          path="accounts"
+          element={
+            <ProtectedRoute>
+              <AccountList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="accounts/:accountId"
+          element={
+            <ProtectedRoute>
+              <EditAccountInfo />
+            </ProtectedRoute>
+          }
+        />
         {/* Attendee Routes */}
-        <Route path="attendees" element={<AttendeeList />} />
-        <Route path="attendees/:attendeeId" element={<EditAttendeeInfo />} />
+        <Route
+          path="attendees"
+          element={
+            <ProtectedRoute>
+              <AttendeeList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attendees/:attendeeId"
+          element={
+            <ProtectedRoute>
+              <EditAttendeeInfo />
+            </ProtectedRoute>
+          }
+        />
         {/* Contact Routes */}
-        <Route path="contacts" element={<ContactList />} />
-        <Route path="contacts/:contactId" element={<EditContactInfo />} />
+        <Route
+          path="contacts"
+          element={
+            <ProtectedRoute>
+              <ContactList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="contacts/:contactId"
+          element={
+            <ProtectedRoute>
+              <EditContactInfo />
+            </ProtectedRoute>
+          }
+        />
         {/* Exhibition Routes */}
-        <Route path="exhibitions" element={<ExhibitionList />} />
+        <Route
+          path="exhibitions"
+          element={
+            <ProtectedRoute>
+              <ExhibitionList />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="exhibitions/:exhibitionId"
-          element={<EditExhibitionInfo />}
+          element={
+            <ProtectedRoute>
+              <EditExhibitionInfo />
+            </ProtectedRoute>
+          }
         />
         {/* Show Routes */}
-        <Route path="shows" element={<ShowList />} />
-        <Route path="shows/:showId" element={<ShowInfoTabs />} />
+        <Route
+          path="shows"
+          element={
+            <ProtectedRoute>
+              <ShowList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="shows/:showId"
+          element={
+            <ProtectedRoute>
+              <ShowInfoTabs />
+            </ProtectedRoute>
+          }
+        />
         {/* Form Routes */}
-        <Route path="forms" element={<FormList />} />
-        <Route path="forms/:formId" element={<FormInfoTabs />} />
+        <Route
+          path="forms"
+          element={
+            <ProtectedRoute>
+              <FormList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="forms/:formId"
+          element={
+            <ProtectedRoute>
+              <FormInfoTabs />
+            </ProtectedRoute>
+          }
+        />
         {/* Security Routes */}
-        <Route path="security" element={<RoleList />} />
-        <Route path="roles/:roleId" element={<EditRoleInfo />} />
+        <Route
+          path="security"
+          element={
+            <ProtectedRoute>
+              <RoleList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="roles/:roleId"
+          element={
+            <ProtectedRoute>
+              <EditRoleInfo />
+            </ProtectedRoute>
+          }
+        />
         {/* Not Found Route */}
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -5,7 +5,7 @@ import {
 } from "amazon-cognito-identity-js";
 
 import { AppDispatch } from "~/app/store";
-import { setUsername } from "~/features/auth/loginSlice";
+import { setUsername } from "~/features/auth/authSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 interface authSignUpPayload {

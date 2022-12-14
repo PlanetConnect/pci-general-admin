@@ -15,22 +15,19 @@ import {
   getRefreshToken,
   getUsername,
   setAccessToken,
-  setCognitoUser,
   setRefreshToken,
-} from "~/features/auth/loginSlice";
+} from "~/features/auth/authSlice";
+import { setCognitoUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 export const fetchAccessToken =
   () => (dispatch: AppDispatch, getState: () => RootState) =>
     new Promise((resolve, reject) => {
       const accessToken = getAccessToken(getState());
-      console.log(
-        "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ accessToken",
-        accessToken
-      );
+
       if (!accessToken) {
-        console.log("no access token");
-        dispatch(authLogout());
+        // console.log("no access token");
+        // dispatch(authLogout());
 
         return;
       }

@@ -6,25 +6,23 @@ import {
   getCognitoUser,
   getUsername,
   resetTokens,
-} from "~/features/auth/loginSlice";
+} from "~/features/auth/authSlice";
+import { getUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 export const authLogout =
-  () => (dispatch: AppDispatch, getState: () => RootState) =>
-    new Promise((resolve, reject) => {
-      const user = getCognitoUser(getState());
+  () => (dispatch: AppDispatch, getState: () => RootState) => {
+    const user = getUser(getState());
 
-      // const username = useSelector(getUsername);
-
+    if (user) {
       const userData = {
         Username: user?.username,
         Pool: userPool,
       };
       const cognitoUser = new CognitoUser(userData);
 
-      if (cognitoUser !== null) {
-        cognitoUser.signOut();
-        console.log("logout success");
-        dispatch(resetTokens());
-      }
-    });
+      cognitoUser.signOut();
+      console.log("logout success");
+      dispatch(resetTokens());
+    }
+  };

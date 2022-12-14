@@ -6,27 +6,38 @@ import {
 } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { useDispatch } from "react-redux";
-import { persistReducer, persistStore } from "redux-persist";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import showsReducer from "~/features/show/showSlice";
 import { queryApi } from "~/services/queryApi";
 
-import loginTokenSlice from "../features/auth/loginSlice";
+import authSlice from "../features/auth/authSlice";
+import userSlice from "../features/auth/userSlice";
 import counterReducer from "../features/counter/counterSlice";
 import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
 
 const persistConfig = {
   key: "user",
   storage: storage,
-  whitelist: ["loginTokens"], // which reducer want to store
+  whitelist: ["auth"], // which reducer want to store
   // whitelist: ['user', 'sidebar', 'debug', 'event', 'strapi', 'queryApi'], // which reducer want to store
 };
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   mainAppDrawer: mainAppDrawerReducer,
-  loginTokens: loginTokenSlice,
+  auth: authSlice,
+  user: userSlice,
   shows: showsReducer,
   [queryApi.reducerPath]: queryApi.reducer,
 });
@@ -37,7 +48,9 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }).concat(queryApi.middleware),
 });
 

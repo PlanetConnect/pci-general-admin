@@ -1,3 +1,4 @@
+import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { Show } from "@pci/pci-services.types.show";
 import {
   BaseQueryFn,
@@ -18,9 +19,9 @@ import {
   getRefreshToken,
   getUsername,
   setAccessToken,
-  setCognitoUser,
   setRefreshToken,
-} from "~/features/auth/loginSlice";
+} from "~/features/auth/authSlice";
+import { setCognitoUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
@@ -58,16 +59,11 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  console.log("🚀 ~ file: queryApi.ts: custom base query");
-
   const accessToken = getAccessToken(api.getState() as RootState);
-  console.log(
-    "🚀 ~ file: authRefresh.ts:21 ~ newPromise ~ accessToken",
-    accessToken
-  );
+
   if (accessToken) {
     const decoded = jwt_decode(accessToken);
-    console.log("🚀 ~ file: authRefresh.ts:29 ~ newPromise ~ decoded", decoded);
+    // console.log("🚀 ~ file: authRefresh.ts:29 ~ newPromise ~ decoded", decoded);
 
     // if session expired try to refresh
     if (decoded?.exp < Date.now() / 1000) {
@@ -92,11 +88,6 @@ const baseQueryWithReauth: BaseQueryFn<
           console.log(err);
           api.dispatch(authLogout());
         } else {
-          console.log(
-            "🚀 ~ file: queryApi.ts:70 ~ cognitoUser.refreshSession ~ session",
-            session
-          );
-
           api.dispatch(setAccessToken(session.getAccessToken().getJwtToken()));
           api.dispatch(setRefreshToken(session.getRefreshToken().getToken()));
           api.dispatch(setCognitoUser(cognitoUser));
@@ -106,7 +97,6 @@ const baseQueryWithReauth: BaseQueryFn<
   }
 
   const result = await baseQuery(args, api, extraOptions);
-  console.log("🚀 ~ file: queryApi.ts:33 ~ >= ~ result", result);
 
   return result;
 };
@@ -117,6 +107,10 @@ export const queryApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Show"],
   endpoints: (builder) => ({
+    getMe: builder.query<GetResult<DecodedToken>, void>({
+      query: () =>
+        `https://dev.serverless-api.planetconnect.com/authorization/me`,
+    }),
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,
       providesTags: ["Show"],
@@ -157,6 +151,7 @@ export const queryApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+  useGetMeQuery,
   useGetShowsQuery,
   useDeleteShowMutation,
   useUpdateShowMutation,

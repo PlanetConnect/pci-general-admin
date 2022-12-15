@@ -1,3 +1,4 @@
+import { Account } from "@pci/pci-services.types.account";
 import { Show } from "@pci/pci-services.types.show";
 import {
   BaseQueryFn,
@@ -12,6 +13,7 @@ import jwt_decode from "jwt-decode";
 import variables from "~/app/data/vars";
 import { RootState } from "~/app/store";
 import HealthCheckResult from "~/features/account/data/types/HealthCheckResult";
+import AccountCreateResult from "~/features/account/types/AccountCreateResult";
 import { authLogout } from "~/features/auth/actions/authLogout";
 import {
   getAccessToken,
@@ -31,6 +33,8 @@ import UpdateResult from "~/features/show/data/types/UpdateResult";
 
 const getBaseUrl = (target: string) => {
   let env = "";
+  console.log("🚀 ~ file: queryApi.ts:36 ~ getBaseUrl ~ variables", variables);
+
   if (variables.env === "development" || variables.env === "dev") {
     env = "dev";
   } else if (variables.env === "beta") {
@@ -154,39 +158,42 @@ export const queryApi = createApi({
     }),
 
     //Change type to accounts
-    getAccountById: builder.query<GetResult<Show>, string>({
-      query: (id: string) => `/accounts/${id}`,
-      providesTags: ["Show"],
+    getAccountById: builder.query<GetResult<Account>, string>({
+      query: (id: string) => `${getBaseUrl("accounts")}/accounts/${id}`,
+      providesTags: ["Account"],
     }),
     deleteAccount: builder.mutation<DeleteResult, string>({
-      query: (id: string) => ({ url: `/accounts/${id}`, method: "DELETE" }),
+      query: (id: string) => ({
+        url: `${getBaseUrl("accounts")}/accounts/${id}`,
+        method: "DELETE",
+      }),
       invalidatesTags: ["Account"],
     }),
-    createAccount: builder.mutation<CreateResult<Show>, Show>({
-      query: (payload: Show) => ({
-        url: `/accounts/`,
+    createAccount: builder.mutation<AccountCreateResult, Account>({
+      query: (payload: Account) => ({
+        url: `${getBaseUrl("accounts")}/accounts/`,
         method: "POST",
         body: payload,
       }),
       invalidatesTags: ["Account"],
     }),
-    getAccounts: builder.query<GetResults<Show>, void>({
-      query: () => `/accounts`,
+    getAccounts: builder.query<GetResults<Account>, void>({
+      query: () => `${getBaseUrl("accounts")}/accounts`,
       providesTags: ["Account"],
     }),
     updateAccount: builder.mutation<
-      UpdateResult<Show>,
-      { show: Show; id: string }
+      UpdateResult<Account>,
+      { account: Account; id: string }
     >({
-      query: (payload: { show: Show; id: string }) => ({
-        url: `/accounts/${payload.id}`,
+      query: (payload: { account: Account; id: string }) => ({
+        url: `${getBaseUrl("accounts")}/accounts/${payload.id}`,
         method: "PUT",
-        body: payload.show,
+        body: payload.account,
       }),
       invalidatesTags: ["Account"],
     }),
     getAccountsHealthCheck: builder.query<HealthCheckResult, void>({
-      query: () => `/accounts/health-check`,
+      query: () => `${getBaseUrl("accounts")}/accounts/health-check`,
       providesTags: ["Account"],
     }),
 

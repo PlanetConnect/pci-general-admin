@@ -20,6 +20,7 @@ const persistConfig = {
   key: "user",
   storage: storage,
   whitelist: ["loginTokens"], // which reducer want to store
+  blacklist: ["counter", "mainAppDrawer", "shows", "queryApi"], // which reducer want to store
   // whitelist: ['user', 'sidebar', 'debug', 'event', 'strapi', 'queryApi'], // which reducer want to store
 };
 

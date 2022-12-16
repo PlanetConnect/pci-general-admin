@@ -29,8 +29,7 @@ import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
 const persistConfig = {
   key: "user",
   storage: storage,
-  whitelist: ["auth"], // which reducer want to store
-  // whitelist: ['user', 'sidebar', 'debug', 'event', 'strapi', 'queryApi'], // which reducer want to store
+  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({

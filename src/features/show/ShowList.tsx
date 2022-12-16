@@ -26,7 +26,7 @@ function ShowList() {
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
 
-  const { data: shows, isFetching, isLoading, isError } = useGetShowsQuery();
+  const { data: shows, isLoading, isError } = useGetShowsQuery();
   const [createShow, results] = useCreateShowMutation();
   if (isError) {
     return (

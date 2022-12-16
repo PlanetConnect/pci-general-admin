@@ -3,6 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 
+import DeleteAccount from "~/features/account/DeleteAccount";
+
 const accountListColumns = [
   {
     field: "account_id",
@@ -54,6 +56,10 @@ const accountListColumns = [
         >
           <EditIcon fontSize="small" />
         </IconButton>
+        <DeleteAccount
+          accountId={params.row.account_id}
+          accountName={params.row.name}
+        />
       </Stack>
     ),
   },

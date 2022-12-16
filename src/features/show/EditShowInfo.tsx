@@ -31,13 +31,8 @@ const EditShowInfo = () => {
   const navigate = useNavigate();
 
   const [updateShow, results] = useUpdateShowMutation();
-  const {
-    data: show,
-    isLoading,
-    isError,
-    error,
-  } = useGetShowByIdQuery(showId || "");
-  console.log("🚀 ~ file: EditShowInfo.tsx:40 ~ EditShowInfo ~ error", error);
+  const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
+  console.log("🚀 ~ file: EditShowInfo.tsx:35 ~ EditShowInfo ~ show", show);
   if (isError) {
     return (
       <div
@@ -50,13 +45,11 @@ const EditShowInfo = () => {
         }}
       >
         <ErrorIcon color="error" />
-        <Typography>
-          Error Fetching Information: {error?.data?.message}
-        </Typography>
+        <Typography>Error Fetching Information</Typography>
       </div>
     );
   }
-  if (isLoading || !show) {
+  if (isLoading || show === undefined) {
     return (
       <div
         style={{
@@ -74,6 +67,10 @@ const EditShowInfo = () => {
   }
   console.log("🚀 ~ file: EditShowInfo.tsx:68 ~ EditShowInfo ~ show", show);
   const defaultValues = new Show({ ...show.data });
+  console.log(
+    "🚀 ~ file: EditShowInfo.tsx:67 ~ EditShowInfo ~ defaultValues",
+    defaultValues
+  );
 
   if (!defaultValues.start_date) {
     defaultValues.start_date = new Date();

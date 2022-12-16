@@ -7,7 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { PaperContent, Title } from "~/app/templates/content/";
 import { DataTable } from "~/app/templates/datatable";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { useCreateShowMutation, useGetShowsQuery } from "~/services/queryApi";
+import {
+  useCreateShowMutation,
+  useGetMeQuery,
+  useGetShowsQuery,
+} from "~/services/queryApi";
 
 import showListColumns from "./data/datatable/showListColumns";
 
@@ -22,7 +26,7 @@ function ShowList() {
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
 
-  const { data: shows, isFetching, isLoading, isError } = useGetShowsQuery();
+  const { data: shows, isLoading, isError } = useGetShowsQuery();
   const [createShow, results] = useCreateShowMutation();
   if (isError) {
     return (

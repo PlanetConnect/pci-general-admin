@@ -1,19 +1,19 @@
 import { CognitoUser } from "amazon-cognito-identity-js";
 
 import { AppDispatch, RootState } from "~/app/store";
-import { fetchAccessToken } from "~/features/auth/actions/fetchAccessToken";
-import { getCognitoUser } from "~/features/auth/loginSlice";
+import { getAccessToken } from "~/features/auth/authSlice";
+import { setUser } from "~/features/auth/userSlice";
+import { queryApi } from "~/services/queryApi";
 
 export const startupAsync =
-  (user?: CognitoUser) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    console.log("startup async");
-    //TODO: check if user is logged in
-    if (!user) {
-      return "no user";
-    } else {
-      //TODO: if user is logged in and access token is expired, then refresh
-      dispatch(fetchAccessToken());
-      return "user";
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    // console.log("startup async");
+    const accessToken = getAccessToken(getState());
+
+    if (accessToken) {
+      const me = await dispatch(queryApi.endpoints.getMe.initiate());
+      console.log("user loaded", me.data?.username);
+      dispatch(setUser(me.data));
+      return me.data;
     }
   };

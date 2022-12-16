@@ -6,7 +6,7 @@ import {
   setAccessToken,
   setRefreshToken,
   setUsername,
-} from "~/features/auth/loginSlice";
+} from "~/features/auth/authSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 interface authLoginConfirmPayload {

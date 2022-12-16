@@ -1,14 +1,15 @@
+import { menuItemClasses } from "@mui/material";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 
 import { AppDispatch } from "~/app/store";
 import {
   setAccessToken,
-  setCognitoUser,
   setRefreshToken,
-  setSessionUserAttributes,
   setUsername,
-} from "~/features/auth/loginSlice";
+} from "~/features/auth/authSlice";
+import { setCognitoUser, setUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
+import { queryApi } from "~/services/queryApi";
 
 interface authLoginPayload {
   email: string;
@@ -39,7 +40,7 @@ export const authLogin =
       );
       dispatch(setCognitoUser(cognitoUser));
       cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
+        onSuccess: async function (result) {
           console.log(
             "🚀 ~ file: Login.tsx ~ line 73 ~ handleSubmit ~ result",
             result
@@ -53,13 +54,16 @@ export const authLogin =
             "🚀 ~ file: Login.tsx ~ line 78 ~ handleSubmit ~ accessToken",
             accessToken
           );
-          // TODO: Save Refresh and Access Token in persist redux
+
           dispatch(setAccessToken(accessToken));
           dispatch(setRefreshToken(result.getRefreshToken().getToken()));
           dispatch(setUsername(email));
 
+          // get me from API
+          const me = await dispatch(queryApi.endpoints.getMe.initiate());
+          dispatch(setUser(me));
           // is this what we need to send back?
-          resolve(cognitoUser);
+          resolve(me);
         },
 
         onFailure: function (err) {
@@ -91,7 +95,6 @@ export const authLogin =
             userAttributes
           );
 
-          dispatch(setSessionUserAttributes(userAttributes));
           reject("New Password Required");
           // store userAttributes on global variable
           // sessionUserAttributes = userAttributes;

@@ -32,6 +32,7 @@ const EditShowInfo = () => {
 
   const [updateShow, results] = useUpdateShowMutation();
   const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
+  console.log("🚀 ~ file: EditShowInfo.tsx:35 ~ EditShowInfo ~ show", show);
   if (isError) {
     return (
       <div
@@ -44,25 +45,32 @@ const EditShowInfo = () => {
         }}
       >
         <ErrorIcon color="error" />
-        <Typography>Error Fatching Information</Typography>
+        <Typography>Error Fetching Information</Typography>
       </div>
     );
   }
-  if (isLoading || !show) {
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        width: "100%",
-      }}
-    >
-      <CircularProgress />
-      <Typography>Loading...</Typography>
-    </div>;
+  if (isLoading || show === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
   }
+  console.log("🚀 ~ file: EditShowInfo.tsx:68 ~ EditShowInfo ~ show", show);
   const defaultValues = new Show({ ...show.data });
+  console.log(
+    "🚀 ~ file: EditShowInfo.tsx:67 ~ EditShowInfo ~ defaultValues",
+    defaultValues
+  );
 
   if (!defaultValues.start_date) {
     defaultValues.start_date = new Date();

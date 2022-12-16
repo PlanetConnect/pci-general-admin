@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { AppDispatch } from "~/app/store";
@@ -9,8 +9,11 @@ import { Actions, Form, Section } from "~/app/templates/formbuilder";
 import LoginField from "~/app/templates/formbuilder/components/LoginField";
 import { useSnackBar } from "~/app/templates/snackbar";
 import { authLogin } from "~/features/auth/actions/authLogin";
-import { authSignUp } from "~/features/auth/actions/authSignUp";
 import loginSchema from "~/features/auth/form/loginSchema";
+import {
+  getSavedLoginPath,
+  setSavedLoginPath,
+} from "~/features/auth/userSlice";
 
 const defaultValues = {
   email: "",
@@ -20,6 +23,8 @@ function Login() {
   const dispatch: AppDispatch = useDispatch();
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
+
+  const savedLoginPath = useSelector(getSavedLoginPath);
 
   const handleSubmit = async (values: any) => {
     console.log(values);
@@ -35,8 +40,13 @@ function Login() {
       const user = await dispatch(
         authLogin({ email: values.email, password: values.password })
       );
-      console.log("🚀 ~ file: Login.tsx:35 ~ handleSubmit ~ user", user);
-      navigate(`/`);
+
+      if (savedLoginPath) {
+        dispatch(setSavedLoginPath(""));
+        navigate(savedLoginPath);
+      } else {
+        navigate(`/`);
+      }
     } catch (e: unknown) {
       if (e.toString() === "MFA Required") {
         navigate(`/login/mfa`);

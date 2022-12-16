@@ -1,3 +1,8 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import { CircularProgress, Typography } from "@mui/material";
+import { Account } from "@pci/pci-services.types.account";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
 import {
@@ -10,6 +15,10 @@ import {
   TextField,
 } from "~/app/templates/formbuilder";
 import { useSnackBar } from "~/app/templates/snackbar";
+import {
+  useGetAccountByIdQuery,
+  useUpdateAccountMutation,
+} from "~/services/queryApi";
 
 import accountSchema from "./data/form/accountSchema";
 
@@ -33,7 +42,64 @@ const account = {
 
 const EditAccountInfo = () => {
   const { openSnackBar } = useSnackBar();
-  const handleSubmit = (values: any) => {
+  const { accountId } = useParams();
+  const navigate = useNavigate();
+
+  console.log(
+    "🚀 ~ file: EditAccountInfo.tsx:43 ~ EditAccountInfo ~ accountId",
+    accountId
+  );
+
+  const [updateAccount, results] = useUpdateAccountMutation();
+  const {
+    data: account,
+    isLoading,
+    isError,
+  } = useGetAccountByIdQuery(accountId || "");
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Fetching Information</Typography>
+      </div>
+    );
+  }
+  if (isLoading || account === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
+  }
+  console.log(
+    "🚀 ~ file: EditAccountInfo.tsx:91 ~ EditAccountInfo ~ account",
+    account
+  );
+
+  const defaultValues = new Account({ ...account?.data });
+  console.log(
+    "🚀 ~ file: EditAccountInfo.tsx:95 ~ EditAccountInfo ~ defaultValues",
+    defaultValues
+  );
+
+  const handleSubmit = async (values: Account) => {
     console.log(values);
     openSnackBar({
       message: "Account successfully updated.",
@@ -43,13 +109,36 @@ const EditAccountInfo = () => {
       },
       variant: "success",
     });
+    try {
+      await updateAccount({ account: values, id: accountId || "" });
+
+      openSnackBar({
+        message: "Show successfully updated.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+
+      navigate(`/accounts`);
+    } catch (e: any) {
+      openSnackBar({
+        message: `Show cannot be updated. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
   };
 
   return (
     <PaperContent>
       <Form
         size="md"
-        defaultValues={account}
+        defaultValues={defaultValues}
         validationSchema={accountSchema}
         onSubmit={handleSubmit}
       >

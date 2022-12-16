@@ -68,7 +68,7 @@ const EditAccountInfo = () => {
         }}
       >
         <ErrorIcon color="error" />
-        <Typography>Error Fatching Information</Typography>
+        <Typography>Error Fetching Information</Typography>
       </div>
     );
   }

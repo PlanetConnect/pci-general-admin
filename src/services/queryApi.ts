@@ -34,12 +34,10 @@ import GetResults from "~/features/show/data/types/GetResults";
 import UpdateResult from "~/features/show/data/types/UpdateResult";
 
 const getBaseEnv = () => {
-  let env = "";
+  let env = "dev";
   console.log("🚀 ~ file: queryApi.ts:36 ~ getBaseUrl ~ variables", variables);
 
-  if (variables.env === "development" || variables.env === "dev") {
-    env = "dev";
-  } else if (variables.env === "beta") {
+  if (variables.env === "beta") {
     env = "beta";
   } else if (variables.env === "production" || variables.env === "prod") {
     env = "prod";

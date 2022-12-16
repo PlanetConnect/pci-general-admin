@@ -9,6 +9,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { CognitoRefreshToken, CognitoUser } from "amazon-cognito-identity-js";
 import jwt_decode from "jwt-decode";
+import { BlockquoteHTMLAttributes } from "react";
 
 import variables from "~/app/data/vars";
 import { RootState } from "~/app/store";
@@ -120,7 +121,7 @@ const baseQueryWithReauth: BaseQueryFn<
 export const queryApi = createApi({
   reducerPath: "queryApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Show", "Account", "Contact", "Role"],
+  tagTypes: ["Show", "Account", "Contact", "Role", "Booth"],
   endpoints: (builder) => ({
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,
@@ -265,6 +266,51 @@ export const queryApi = createApi({
     //   }),
     //   invalidatesTags: ["Role"],
     // }),
+
+    //Change type to Booths
+    getBooths: builder.query<
+      GetResult<Show>,
+      { email: string; showId: string }
+    >({
+      query: (payload: { email: string; showId: string }) =>
+        `${getBaseUrl("booths")}/shows/${payload.showId}/booths/${
+          payload.email
+        }`,
+      providesTags: ["Booth"],
+    }),
+    getBoothById: builder.query<
+      GetResult<Show>,
+      { id: string; showId: string }
+    >({
+      query: (payload: { id: string; showId: string }) =>
+        `${getBaseUrl("booths")}/shows/${payload.showId}/booths/${payload.id}`,
+      providesTags: ["Booth"],
+    }),
+    getBoothByAccount: builder.query<
+      GetResult<Show>,
+      { accountId: string; showId: string }
+    >({
+      query: (payload: { accountId: string; showId: string }) =>
+        `${getBaseUrl("booths")}/shows/${payload.showId}/accounts/${
+          payload.accountId
+        }/booths`,
+      providesTags: ["Booth"],
+    }),
+    getBoothsByShow: builder.query<GetResults<Show>, string>({
+      query: (id: string) => `${getBaseUrl("booths")}/shows/${id}/booths`,
+      providesTags: ["Booth"],
+    }),
+    createBooth: builder.mutation<
+      AccountCreateResult,
+      { booth: Show; showId: string }
+    >({
+      query: (payload: { booth: Show; showId: string }) => ({
+        url: `${getBaseUrl("booth")}shows/${payload.showId}/booths/`,
+        method: "POST",
+        body: payload.booth,
+      }),
+      invalidatesTags: ["Booth"],
+    }),
   }),
 });
 
@@ -283,4 +329,10 @@ export const {
   useCreateAccountMutation,
   useGetAccountByIdQuery,
   useGetAccountsHealthCheckQuery,
+  //booths
+  useGetBoothsQuery,
+  useGetBoothByIdQuery,
+  useGetBoothByAccountQuery,
+  useGetBoothsByShowQuery,
+  useCreateBoothMutation,
 } = queryApi;

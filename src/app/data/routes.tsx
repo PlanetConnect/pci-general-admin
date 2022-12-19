@@ -5,6 +5,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import Security from "@mui/icons-material/Security";
 import TableBarRoundedIcon from "@mui/icons-material/TableBarRounded";
 import TextFields from "@mui/icons-material/TextFields";
@@ -60,11 +61,16 @@ export const withShowRoutes: MenuItem[] = [
     path: "/reports",
     icon: <Analytics />,
   },
+  // {
+  //   label: "Profile",
+  //   path: "/profile",
+  //   icon: <PersonIcon />,
+  // },
 ];
 export const logoutRoutes: MenuItem[] = [
-  {
-    label: "Logout",
-    path: "/login",
-    icon: <LogoutIcon />,
-  },
+  // {
+  //   label: "Logout",
+  //   path: "/login",
+  //   icon: <LogoutIcon />,
+  // },
 ];

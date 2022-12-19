@@ -10,7 +10,13 @@ import ProtectedRoute from "~/features/auth/ProtectedRoute";
 import { AbstractList, EditAbstractInfo } from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
 import { AttendeeList, EditAttendeeInfo } from "../features/attendee";
-import { Login, LoginMfa, LoginNewPassword, Signup } from "../features/auth";
+import {
+  Login,
+  LoginMfa,
+  LoginNewPassword,
+  Profile,
+  Signup,
+} from "../features/auth";
 import { ContactList, EditContactInfo } from "../features/contact";
 import { EditExhibitionInfo, ExhibitionList } from "../features/exhibition";
 import { FormInfoTabs, FormList } from "../features/form";
@@ -27,10 +33,14 @@ function App() {
   useEffect(() => {
     (async () => {
       await dispatch(startupAsync());
+      console.log("startupAsync initialized");
+
       setInitialized(true);
     })();
   }, []);
   if (!initialized) {
+    console.log("startupAsync NOT initialized");
+
     return null;
   }
   return (
@@ -181,6 +191,14 @@ function App() {
           element={
             <ProtectedRoute>
               <EditRoleInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

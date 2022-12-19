@@ -28,19 +28,19 @@ function Login() {
 
   const handleSubmit = async (values: any) => {
     console.log(values);
-    openSnackBar({
-      message: "login Success.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+
     try {
       const user = await dispatch(
         authLogin({ email: values.email, password: values.password })
       );
-
+      openSnackBar({
+        message: "login Success.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
       if (savedLoginPath) {
         dispatch(setSavedLoginPath(""));
         navigate(savedLoginPath);
@@ -48,6 +48,14 @@ function Login() {
         navigate(`/`);
       }
     } catch (e: unknown) {
+      openSnackBar({
+        message: "login failed. Error: " + e.toString(),
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
       if (e.toString() === "MFA Required") {
         navigate(`/login/mfa`);
       }

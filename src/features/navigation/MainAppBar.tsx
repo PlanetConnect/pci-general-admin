@@ -1,10 +1,18 @@
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
+import { Button, Grid, Popover } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { AppDispatch } from "~/app/store";
+import { authLogout } from "~/features/auth/actions/authLogout";
 
 import { NotificationIconBadge } from "../notification";
 import { MainSearch } from "../search";
@@ -42,6 +50,20 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const MainAppBar = (props: MainAppBarProps) => {
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -67,10 +89,107 @@ const MainAppBar = (props: MainAppBarProps) => {
           <MainSearch />
           <Box sx={{ display: { md: "flex" }, marginRight: 5 }}>
             <NotificationIconBadge />
-            <UserIconBadge />
+            <UserIconBadge onClick={handleClick} />
           </Box>
         </Toolbar>
       </AppBar>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        elevation={0}
+        PaperProps={{
+          style: {
+            backgroundColor: "transparent",
+            borderRadius: 0,
+            padding: 10,
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "row",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            mt: "10px",
+            "&::after": {
+              backgroundColor: "#fff",
+              content: '""',
+              display: "block",
+              position: "absolute",
+              width: 12,
+              height: 12,
+              left: 60,
+              transform: "rotate(45deg)",
+              top: -16,
+              boxShadow: "-2px 2px 2px 0 rgba( 178, 178, 178, .4 )",
+            },
+          }}
+        />
+        <Grid
+          container
+          p={2}
+          alignItems="center"
+          justifyContent="center"
+          direction="column"
+          sx={{
+            backgroundColor: "white",
+            borderRadius: 1,
+            zIndex: 1000,
+            boxShadow: "-2px 2px 2px 2px rgba( 178, 178, 178, .4 )",
+          }}
+        >
+          <Button
+            variant="text"
+            startIcon={<PersonIcon />}
+            onClick={() => {
+              console.log("profile button clicked");
+              handleClose();
+
+              navigate("/profile");
+            }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 1,
+              textTransform: "none",
+            }}
+          >
+            Profile
+          </Button>
+
+          <Button
+            variant="text"
+            startIcon={<LogoutIcon />}
+            onClick={async () => {
+              console.log("Logout button clicked");
+              const user = await dispatch(authLogout());
+              handleClose();
+              navigate("/login");
+            }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 1,
+              textTransform: "none",
+            }}
+          >
+            Logout
+          </Button>
+        </Grid>
+      </Popover>
     </Box>
   );
 };

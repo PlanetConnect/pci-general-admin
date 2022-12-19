@@ -44,14 +44,14 @@ const MenuItems = (props: MenuItemsProps) => {
             component={Link}
             to={item.path}
             onClick={async () => {
-              if (item.label === "Logout") {
-                console.log("logout");
-                const user = await dispatch(authLogout());
-                console.log(
-                  "🚀 ~ file: Login.tsx:35 ~ handleSubmit ~ user",
-                  user
-                );
-              }
+              // if (item.label === "Logout") {
+              //   console.log("logout");
+              //   const user = await dispatch(authLogout());
+              //   console.log(
+              //     "🚀 ~ file: Login.tsx:35 ~ handleSubmit ~ user",
+              //     user
+              //   );
+              // }
             }}
           >
             <ListItemButton

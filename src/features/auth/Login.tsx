@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import { PaperContent, Title } from "~/app/templates/content/";
 import { Actions, Form, Section } from "~/app/templates/formbuilder";
 import LoginField from "~/app/templates/formbuilder/components/LoginField";
 import { useSnackBar } from "~/app/templates/snackbar";
+import { authForgotPassword } from "~/features/auth/actions/authForgotPassword";
 import { authLogin } from "~/features/auth/actions/authLogin";
 import loginSchema from "~/features/auth/form/loginSchema";
 import {
@@ -104,6 +105,15 @@ function Login() {
               </Section>
 
               <Actions>
+                <Button
+                  variant="text"
+                  color="primary"
+                  onClick={() => {
+                    navigate(`/login/forgotPassword`);
+                  }}
+                >
+                  Forgot Password?
+                </Button>
                 <LoginButton />
               </Actions>
             </Form>

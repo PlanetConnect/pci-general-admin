@@ -5,7 +5,7 @@ const newPasswordSchema = Yup.object({
     .max(100, "Must be 100 characters or less")
     .required("Required"),
   password2: Yup.string()
-    .max(100, "Must be 100 characters or less")
+    .oneOf([Yup.ref("password1"), null], "Passwords must match")
     .required("Required"),
 });
 

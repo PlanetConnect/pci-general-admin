@@ -25,7 +25,7 @@ const LoginField = ({
         error={error}
       />
       <TextField
-        type="text"
+        type="password"
         label="Password"
         name={password}
         variant={variant}

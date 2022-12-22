@@ -18,14 +18,14 @@ const LoginNewPasswordField = ({
   return (
     <Stack spacing={1}>
       <TextField
-        type="text"
+        type="password"
         label="New Password"
         name={password1}
         variant={variant}
         error={error}
       />
       <TextField
-        type="text"
+        type="password"
         label="Confirm Password"
         name={password2}
         variant={variant}

@@ -1,7 +1,6 @@
 import { Grid } from "@mui/material";
-import { CognitoUser } from "amazon-cognito-identity-js";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { AppDispatch } from "~/app/store";
@@ -9,19 +8,12 @@ import { LoginButton } from "~/app/templates/button";
 import { PaperContent, Title } from "~/app/templates/content/";
 import { Actions, Form, Section } from "~/app/templates/formbuilder";
 import ForgotPasswordEmailField from "~/app/templates/formbuilder/components/ForgotPasswordEmailField";
-import LoginField from "~/app/templates/formbuilder/components/LoginField";
 import LoginMfaField from "~/app/templates/formbuilder/components/LoginMfaField";
 import LoginNewPasswordField from "~/app/templates/formbuilder/components/LoginNewPasswordField";
 import { useSnackBar } from "~/app/templates/snackbar";
 import { authConfirmPassword } from "~/features/auth/actions/authConfirmPassword";
 import { authForgotPassword } from "~/features/auth/actions/authForgotPassword";
-import { authLogin } from "~/features/auth/actions/authLogin";
 import forgotPasswordSchema from "~/features/auth/form/forgotPasswordSchema";
-import loginSchema from "~/features/auth/form/loginSchema";
-import {
-  getSavedLoginPath,
-  setSavedLoginPath,
-} from "~/features/auth/userSlice";
 
 const defaultValues = {
   email: "",
@@ -33,13 +25,10 @@ function ForgotPassword() {
   const dispatch: AppDispatch = useDispatch();
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
-  const savedLoginPath = useSelector(getSavedLoginPath);
 
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (values: any) => {
-    console.log("forgot password values:", values);
-
     try {
       if (email === "") {
         setEmail(values.email);
@@ -49,7 +38,6 @@ function ForgotPassword() {
           })
         );
       } else {
-        console.log("get code and new password");
         const result = await dispatch(
           authConfirmPassword({
             code: values.code,
@@ -60,7 +48,7 @@ function ForgotPassword() {
         if (result === "success") {
           navigate(`/login`);
           openSnackBar({
-            message: "Password Updated. ",
+            message: "Password Updated. Please login with new password.",
             position: {
               vertical: "top",
               horizontal: "center",
@@ -78,11 +66,6 @@ function ForgotPassword() {
         },
         variant: "error",
       });
-
-      console.log(
-        "🚀 ~ file: ForgotPassword.tsx ~ line 44 ~ handleSubmit ~ e",
-        e.toString()
-      );
     }
   };
   return (

@@ -1,4 +1,3 @@
-import { menuItemClasses } from "@mui/material";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 
 import { AppDispatch } from "~/app/store";
@@ -41,19 +40,7 @@ export const authLogin =
       dispatch(setCognitoUser(cognitoUser));
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: async function (result) {
-          console.log(
-            "🚀 ~ file: Login.tsx ~ line 73 ~ handleSubmit ~ result",
-            result
-          );
           const accessToken = result.getAccessToken().getJwtToken();
-          console.log(
-            "🚀 ~ file: Login.tsx ~ line 78 ~ handleSubmit ~ result.getAccessToken()",
-            result.getAccessToken()
-          );
-          console.log(
-            "🚀 ~ file: Login.tsx ~ line 78 ~ handleSubmit ~ accessToken",
-            accessToken
-          );
 
           dispatch(setAccessToken(accessToken));
           dispatch(setRefreshToken(result.getRefreshToken().getToken()));
@@ -84,16 +71,6 @@ export const authLogin =
           delete userAttributes.email_verified;
           delete userAttributes.phone_number_verified;
           delete userAttributes.phone_number;
-
-          console.log(
-            "🚀 ~ file: authLogin.ts:97 ~ newPromise ~ requiredAttributes",
-            requiredAttributes
-          );
-
-          console.log(
-            "🚀 ~ file: authLogin.ts:91 ~ newPromise ~ userAttributes",
-            userAttributes
-          );
 
           reject("New Password Required");
           // store userAttributes on global variable

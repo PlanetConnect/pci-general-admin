@@ -1,4 +1,5 @@
 import { Button, Grid } from "@mui/material";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +9,6 @@ import { PaperContent, Title } from "~/app/templates/content/";
 import { Actions, Form, Section } from "~/app/templates/formbuilder";
 import LoginField from "~/app/templates/formbuilder/components/LoginField";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { authForgotPassword } from "~/features/auth/actions/authForgotPassword";
 import { authLogin } from "~/features/auth/actions/authLogin";
 import loginSchema from "~/features/auth/form/loginSchema";
 import {
@@ -27,10 +27,13 @@ function Login() {
 
   const savedLoginPath = useSelector(getSavedLoginPath);
 
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
   const handleSubmit = async (values: any) => {
     console.log(values);
 
     try {
+      setButtonDisabled(true);
       const user = await dispatch(
         authLogin({ email: values.email, password: values.password })
       );
@@ -42,6 +45,8 @@ function Login() {
         },
         variant: "success",
       });
+      setButtonDisabled(false);
+
       if (savedLoginPath) {
         dispatch(setSavedLoginPath(""));
         navigate(savedLoginPath);
@@ -49,6 +54,8 @@ function Login() {
         navigate(`/`);
       }
     } catch (e: unknown) {
+      setButtonDisabled(false);
+
       openSnackBar({
         message: "login failed. Error: " + e.toString(),
         position: {
@@ -63,10 +70,6 @@ function Login() {
       if (e.toString() === "New Password Required") {
         navigate(`/login/newPassword`);
       }
-      console.log(
-        "🚀 ~ file: Login.tsx ~ line 44 ~ handleSubmit ~ e",
-        e.toString()
-      );
     }
   };
   return (
@@ -111,10 +114,11 @@ function Login() {
                   onClick={() => {
                     navigate(`/login/forgotPassword`);
                   }}
+                  disabled={buttonDisabled}
                 >
                   Forgot Password?
                 </Button>
-                <LoginButton />
+                <LoginButton disabled={buttonDisabled} />
               </Actions>
             </Form>
           </PaperContent>

@@ -10,7 +10,6 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { CognitoRefreshToken, CognitoUser } from "amazon-cognito-identity-js";
 import jwt_decode from "jwt-decode";
-import { BlockquoteHTMLAttributes } from "react";
 
 import variables from "~/app/data/vars";
 import { RootState } from "~/app/store";
@@ -25,6 +24,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "~/features/auth/authSlice";
+import { CognitoToken } from "~/features/auth/types/CognitoToken";
 import { setCognitoUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 import CreateResult from "~/features/show/data/types/CreateResult";
@@ -35,7 +35,6 @@ import UpdateResult from "~/features/show/data/types/UpdateResult";
 
 const getBaseEnv = () => {
   let env = "dev";
-  console.log("🚀 ~ file: queryApi.ts:36 ~ getBaseUrl ~ variables", variables);
 
   if (variables.env === "beta") {
     env = "beta";
@@ -48,7 +47,7 @@ const getBaseEnv = () => {
 const getBaseUrl = (target: string) => {
   const env = getBaseEnv();
   if (!env) throw new Error(`No environment set: ${variables.env}`);
-  return `https://${target}.serverless-api.planetconnect.com/${env}`;
+  return `https://${target}.${variables.api_endpoint}/${env}`;
 };
 
 const baseQuery = fetchBaseQuery({
@@ -71,11 +70,10 @@ const baseQueryWithReauth: BaseQueryFn<
   const accessToken = getAccessToken(api.getState() as RootState);
 
   if (accessToken) {
-    const decoded = jwt_decode(accessToken);
-    // console.log("🚀 ~ file: authRefresh.ts:29 ~ newPromise ~ decoded", decoded);
+    const decoded: CognitoToken = jwt_decode(accessToken);
 
     // if session expired try to refresh
-    if (decoded?.exp < Date.now() / 1000) {
+    if (decoded.exp < Date.now() / 1000) {
       console.log("session expired");
       const refreshToken = getRefreshToken(api.getState() as RootState);
 
@@ -116,10 +114,8 @@ export const queryApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Show", "Account", "Contact", "Role", "Booth"],
   endpoints: (builder) => ({
-    getMe: builder.query<GetResult<DecodedToken>, void>({
-      query: () =>
-        // TODO: Update when domain is created
-        `https://${getBaseEnv()}.serverless-api.planetconnect.com/authorization/me`,
+    getMe: builder.query<DecodedToken, void>({
+      query: () => `${getBaseUrl("authorization")}/me`,
     }),
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,

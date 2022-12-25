@@ -47,7 +47,7 @@ function Login() {
       } else {
         navigate(`/`);
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       openSnackBar({
         message: "login failed. Error: " + e.toString(),
         position: {

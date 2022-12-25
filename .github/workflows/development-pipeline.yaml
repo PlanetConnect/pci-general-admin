@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     env:
-      VITE_PUBLIC_NODE_ENV: development,
-      VITE_COGNITO_USER_POOL_ID: us-east-1_q0JLpYNG0q,
+      VITE_PUBLIC_NODE_ENV: development
+      VITE_API_ENDPOINT: serverless-api.planetconnect.com
+      VITE_COGNITO_USER_POOL_ID: us-east-1_q0JLpYNG0q
       VITE_COGNITO_CLIENT_ID: 3muheqms3g0t72fu3l8o5bfed5
     steps:
       - uses: actions/checkout@v2

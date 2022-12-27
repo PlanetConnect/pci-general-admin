@@ -1,4 +1,8 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import { Contact } from "@pci/pci-services.types.contact";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
@@ -12,6 +16,10 @@ import {
   TextField,
 } from "~/app/templates/formbuilder";
 import { useSnackBar } from "~/app/templates/snackbar";
+import {
+  useGetContactByEmailQuery,
+  useUpdateContactMutation,
+} from "~/services/queryApi";
 
 import contactSchema from "./data/form/contactSchema";
 
@@ -41,16 +49,90 @@ const contact = {
 
 const EditContactInfo = () => {
   const { openSnackBar } = useSnackBar();
-  const handleSubmit = (values: any) => {
+  const navigate = useNavigate();
+
+  const { email } = useParams();
+  console.log(
+    "🚀 ~ file: EditContactInfo.tsx:47 ~ EditContactInfo ~ email",
+    email
+  );
+
+  const [updateContact, results] = useUpdateContactMutation();
+  const {
+    data: contact,
+    isLoading,
+    isError,
+  } = useGetContactByEmailQuery(email || "");
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Fetching Information</Typography>
+      </div>
+    );
+  }
+  if (isLoading || contact === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
+  }
+  console.log(
+    "🚀 ~ file: EditContactInfo.tsx:91 ~ EditContactInfo ~ account",
+    contact
+  );
+
+  const defaultValues = new Contact({ ...contact?.data });
+  console.log(
+    "🚀 ~ file: EditContactInfo.tsx:95 ~ EditContactInfo ~ defaultValues",
+    defaultValues
+  );
+
+  const handleSubmit = async (values: any) => {
     console.log(values);
-    openSnackBar({
-      message: "Contact successfully updated.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+    try {
+      await updateContact({ contact: values, email: email || "" });
+      navigate(`/contacts`);
+      openSnackBar({
+        message: "Contact successfully updated.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+    } catch (e: any) {
+      console.log(
+        "🚀 ~ file: EditContactInfo.tsx:115 ~ handleSubmit ~ error",
+        e
+      );
+      openSnackBar({
+        message: `Contact cannot be updated. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
   };
 
   return (

@@ -101,14 +101,14 @@ const EditAccountInfo = () => {
 
   const handleSubmit = async (values: Account) => {
     console.log(values);
-    openSnackBar({
-      message: "Account successfully updated.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+    // openSnackBar({
+    //   message: "Account successfully updated.",
+    //   position: {
+    //     vertical: "top",
+    //     horizontal: "center",
+    //   },
+    //   variant: "success",
+    // });
     try {
       await updateAccount({ account: values, id: accountId || "" });
 

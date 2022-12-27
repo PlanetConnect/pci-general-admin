@@ -1,4 +1,5 @@
 import { Account } from "@pci/pci-services.types.account";
+import { Contact } from "@pci/pci-services.types.contact";
 import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { Show } from "@pci/pci-services.types.show";
 import {
@@ -193,37 +194,40 @@ export const queryApi = createApi({
     }),
 
     // //change type to contacts
-    // getContactByEmail: builder.query<GetResult<Show>, string>({
-    //   query: (id: string) => `/contacts/${id}`,
-    //   providesTags: ["Contact"],
-    // }),
-    // deleteContact: builder.mutation<DeleteResult, string>({
-    //   query: (id: string) => ({ url: `/contacts/${id}`, method: "DELETE" }),
-    //   invalidatesTags: ["Contact"],
-    // }),
-    // createContact: builder.mutation<CreateResult<Show>, Show>({
-    //   query: (payload: Show) => ({
-    //     url: `/contacts/`,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    //   invalidatesTags: ["Contact"],
-    // }),
-    // getContacts: builder.query<GetResults<Show>, void>({
-    //   query: () => `/contacts`,
-    //   providesTags: ["Contact"],
-    // }),
-    // updateContact: builder.mutation<
-    //   UpdateResult<Show>,
-    //   { show: Show; id: string }
-    // >({
-    //   query: (payload: { show: Show; id: string }) => ({
-    //     url: `/contacts/${payload.id}`,
-    //     method: "PUT",
-    //     body: payload.show,
-    //   }),
-    //   invalidatesTags: ["Contact"],
-    // }),
+    getContactByEmail: builder.query<GetResult<Contact>, string>({
+      query: (email: string) => `${getBaseUrl("contacts")}/${email}`,
+      providesTags: ["Contact"],
+    }),
+    deleteContact: builder.mutation<DeleteResult, string>({
+      query: (email: string) => ({
+        url: `${getBaseUrl("contacts")}/${email}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Contact"],
+    }),
+    createContact: builder.mutation<CreateResult<Contact>, Contact>({
+      query: (payload: Contact) => ({
+        url: `${getBaseUrl("contacts")}/`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Contact"],
+    }),
+    getContacts: builder.query<GetResults<Contact>, void>({
+      query: () => `${getBaseUrl("contacts")}`,
+      providesTags: ["Contact"],
+    }),
+    updateContact: builder.mutation<
+      UpdateResult<Contact>,
+      { contact: Contact; email: string }
+    >({
+      query: (payload: { contact: Contact; email: string }) => ({
+        url: `${getBaseUrl("contacts")}/${payload.email}`,
+        method: "PUT",
+        body: payload.contact,
+      }),
+      invalidatesTags: ["Contact"],
+    }),
 
     // //change type to roles
     // getRoleById: builder.query<GetResult<Show>, string>({
@@ -330,4 +334,10 @@ export const {
   useGetBoothByAccountQuery,
   useGetBoothsByShowQuery,
   useCreateBoothMutation,
+  //contacts
+  useGetContactByEmailQuery,
+  useDeleteContactMutation,
+  useUpdateContactMutation,
+  useCreateContactMutation,
+  useGetContactsQuery,
 } = queryApi;

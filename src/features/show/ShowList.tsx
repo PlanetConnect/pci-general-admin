@@ -41,6 +41,7 @@ function ShowList() {
       >
         <ErrorIcon color="error" />
         <Typography>Error Loading Shows</Typography>
+        <Typography>{error?.error}</Typography>
       </div>
     );
   }

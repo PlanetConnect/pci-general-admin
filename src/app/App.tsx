@@ -119,7 +119,7 @@ function App() {
           }
         />
         <Route
-          path="contacts/:contactId"
+          path="contacts/:email"
           element={
             <ProtectedRoute>
               <EditContactInfo />

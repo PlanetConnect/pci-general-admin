@@ -37,7 +37,7 @@ function LoginMfa() {
       const mfa = await dispatch(authLoginMfa({ code: values.code }));
       console.log("🚀 ~ file: mfa.tsx:35 ~ handleSubmit ~ mfa", mfa);
       navigate(`/`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (e.toString() === "MFA Required") {
         navigate(`/login/mfa`);
       }

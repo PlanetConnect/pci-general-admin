@@ -46,7 +46,7 @@ function LoginNewPassword() {
         newPass
       );
       navigate(`/`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (e.toString() === "MFA Required") {
         navigate(`/login/mfa`);
       }

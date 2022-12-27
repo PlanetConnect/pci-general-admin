@@ -1,4 +1,5 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -26,10 +27,13 @@ function Login() {
 
   const savedLoginPath = useSelector(getSavedLoginPath);
 
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
   const handleSubmit = async (values: any) => {
     console.log(values);
 
     try {
+      setButtonDisabled(true);
       const user = await dispatch(
         authLogin({ email: values.email, password: values.password })
       );
@@ -41,6 +45,8 @@ function Login() {
         },
         variant: "success",
       });
+      setButtonDisabled(false);
+
       if (savedLoginPath) {
         dispatch(setSavedLoginPath(""));
         navigate(savedLoginPath);
@@ -48,6 +54,7 @@ function Login() {
         navigate(`/`);
       }
     } catch (e: unknown) {
+      setButtonDisabled(false);
       openSnackBar({
         message: "login failed. Error: " + e.toString(),
         position: {
@@ -62,10 +69,6 @@ function Login() {
       if (e.toString() === "New Password Required") {
         navigate(`/login/newPassword`);
       }
-      console.log(
-        "🚀 ~ file: Login.tsx ~ line 44 ~ handleSubmit ~ e",
-        e.toString()
-      );
     }
   };
   return (
@@ -104,7 +107,17 @@ function Login() {
               </Section>
 
               <Actions>
-                <LoginButton />
+                <Button
+                  variant="text"
+                  color="primary"
+                  onClick={() => {
+                    navigate(`/login/forgotPassword`);
+                  }}
+                  disabled={buttonDisabled}
+                >
+                  Forgot Password?
+                </Button>
+                <LoginButton disabled={buttonDisabled} />
               </Actions>
             </Form>
           </PaperContent>

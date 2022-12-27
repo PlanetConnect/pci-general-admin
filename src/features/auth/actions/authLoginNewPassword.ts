@@ -2,12 +2,12 @@ import { CognitoUser, CognitoUserPool } from "amazon-cognito-identity-js";
 
 import { AppDispatch, RootState } from "~/app/store";
 import {
-  getCognitoUser,
   getUsername,
   setAccessToken,
   setRefreshToken,
   setUsername,
 } from "~/features/auth/authSlice";
+import { getCognitoUser } from "~/features/auth/userSlice";
 
 interface authLoginNewPasswordPayload {
   newPassword: string;
@@ -18,6 +18,10 @@ export const authLoginNewPassword =
   (dispatch: AppDispatch, getState: () => RootState) =>
     new Promise((resolve, reject) => {
       const cognitoUser = getCognitoUser(getState());
+      console.log(
+        "🚀 ~ file: authLoginNewPassword.ts:21 ~ newPromise ~ cognitoUser",
+        cognitoUser
+      );
 
       cognitoUser?.completeNewPasswordChallenge(
         newPassword,

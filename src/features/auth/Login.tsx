@@ -55,7 +55,6 @@ function Login() {
       }
     } catch (e: unknown) {
       setButtonDisabled(false);
-
       openSnackBar({
         message: "login failed. Error: " + e.toString(),
         position: {

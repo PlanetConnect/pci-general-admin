@@ -1,3 +1,4 @@
+import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 
 import { AppDispatch } from "~/app/store";
@@ -48,9 +49,9 @@ export const authLogin =
 
           // get me from API
           const me = await dispatch(queryApi.endpoints.getMe.initiate());
-          dispatch(setUser(me));
+          dispatch(setUser(me.data as DecodedToken));
           // is this what we need to send back?
-          resolve(me);
+          resolve(me.data as DecodedToken);
         },
 
         onFailure: function (err) {

@@ -1,0 +1,42 @@
+name: PCI General Admin Portal Development Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    env:
+      VITE_PUBLIC_NODE_ENV: development
+      VITE_API_ENDPOINT: serverless-api.planetconnect.com
+      VITE_COGNITO_USER_POOL_ID: us-east-1_q0JLpYNG0q
+      VITE_COGNITO_CLIENT_ID: 3muheqms3g0t72fu3l8o5bfed5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+      - run: yarn
+      # - run: yarn lint:production # ensure code is properly linted for prod
+      # - run: yarn test
+      - run: yarn build
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.DEV_PCI_ADMIN_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.PCI_DEVELOPMENT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PCI_DEVELOPMENT_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+          SOURCE_DIR: "build"
+
+      - uses: docker://rewindio/github-action-cloudfront-invalidate
+        env:
+          DISTRIBUTION_ID: ${{ secrets.DEV_PCI_ADMIN_DISTRIBUTION_ID }}
+          PATH_TO_INVALIDATE: /
+          AWS_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.PCI_DEVELOPMENT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PCI_DEVELOPMENT_AWS_SECRET_ACCESS_KEY }}

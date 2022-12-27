@@ -1,4 +1,3 @@
-import { menuItemClasses } from "@mui/material";
 import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 

@@ -11,6 +11,7 @@ import { AbstractList, EditAbstractInfo } from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
 import { AttendeeList, EditAttendeeInfo } from "../features/attendee";
 import {
+  ForgotPassword,
   Login,
   LoginMfa,
   LoginNewPassword,
@@ -50,6 +51,8 @@ function App() {
       <Route path="/login/mfa" element={<LoginMfa />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login/newPassword" element={<LoginNewPassword />} />
+      <Route path="/login/forgotPassword" element={<ForgotPassword />} />
+
       <Route
         path="/"
         element={

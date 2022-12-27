@@ -1,3 +1,4 @@
+import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CognitoUser } from "amazon-cognito-identity-js";
 
@@ -5,14 +6,14 @@ import { RootState } from "~/app/store";
 
 export interface userState {
   cognitoUser?: CognitoUser;
-  user?: any;
+  user?: DecodedToken;
   loggedIn: boolean;
   savedLoginPath: string;
 }
 
 const initialState: userState = {
   cognitoUser: undefined,
-  user: null,
+  user: undefined,
   loggedIn: false,
   savedLoginPath: "",
 };
@@ -27,7 +28,7 @@ export const userSlice = createSlice({
     setSavedLoginPath: (state, action: PayloadAction<string>) => {
       state.savedLoginPath = action.payload;
     },
-    setUser: (state, action: PayloadAction<any>) => {
+    setUser: (state, action: PayloadAction<DecodedToken>) => {
       state.user = action.payload;
     },
     setCognitoUser: (state, action: PayloadAction<CognitoUser>) => {

@@ -57,7 +57,7 @@ function ForgotPassword() {
           });
         }
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       openSnackBar({
         message: "email failed. Error: " + e.toString(),
         position: {

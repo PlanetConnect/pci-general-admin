@@ -1,13 +1,14 @@
-name: PCI General Admin Portal Development Pipeline
+name: PCI General Admin Portal Development Pull Request Pipeline
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Test and Build
     env:
       VITE_NODE_ENV: development
       VITE_API_ENDPOINT: serverless-api.planetconnect.com
@@ -30,20 +31,3 @@ jobs:
       # - run: yarn lint:production # ensure code is properly linted for prod
       - run: yarn test
       - run: yarn build
-      - uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.DEV_PCI_ADMIN_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.PCI_DEVELOPMENT_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.PCI_DEVELOPMENT_AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "us-east-1"
-          SOURCE_DIR: "dist"
-
-      - uses: docker://rewindio/github-action-cloudfront-invalidate
-        env:
-          DISTRIBUTION_ID: ${{ secrets.DEV_PCI_ADMIN_DISTRIBUTION_ID }}
-          PATH_TO_INVALIDATE: /
-          AWS_REGION: "us-east-1"
-          AWS_ACCESS_KEY_ID: ${{ secrets.PCI_DEVELOPMENT_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.PCI_DEVELOPMENT_AWS_SECRET_ACCESS_KEY }}

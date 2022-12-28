@@ -1,4 +1,4 @@
-import { Account } from "@pci/pci-services.types.account";
+import { Account, AccountProps } from "@pci/pci-services.types.account";
 import { Contact } from "@pci/pci-services.types.contact";
 import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { Show } from "@pci/pci-services.types.show";
@@ -161,8 +161,8 @@ export const queryApi = createApi({
       }),
       invalidatesTags: ["Account"],
     }),
-    createAccount: builder.mutation<AccountCreateResult, Account>({
-      query: (payload: Account) => ({
+    createAccount: builder.mutation<AccountCreateResult, AccountProps>({
+      query: (payload: AccountProps) => ({
         url: `${getBaseUrl("accounts")}/accounts/`,
         method: "POST",
         body: payload,

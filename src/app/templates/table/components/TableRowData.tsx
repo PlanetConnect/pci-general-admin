@@ -1,44 +1,70 @@
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import MuiTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React from "react";
+import { useState } from "react";
+
+import DataTableSettings from "~/app/templates/datatable/data/DataTableSettings";
+import Row from "~/app/templates/datatable/data/Row";
+import ChangePassword from "~/features/auth/ChangePassword";
 
 interface TableProps {
   data: any[];
-  rows: {
-    name: string;
-    label: string;
-  }[];
+  rows: Row[];
+  settings: DataTableSettings;
 }
 
-const TableRowData = ({ data, rows }: TableProps) => {
+const TableRowData = (props: TableProps) => {
+  const [editPassword, setEditPassword] = useState(false);
   return (
     <TableContainer component={Paper}>
       <MuiTable>
-        {/* <TableHead>
-          {rows.map((row) => (
-            <TableCell key={row.name}>{row.label}</TableCell>
-          ))}
-        </TableHead> */}
         <TableBody>
-          {data.map((row) => {
-            const label = rows.find((r) => r.name === row.name);
-            console.log(
-              "🚀 ~ file: TableRowData.tsx:30 ~ {data.map ~ label",
-              label
-            );
+          {props.data.map((row) => {
+            const label = props.rows.find((r) => r.field === row.name);
+
             if (!label) {
               return null;
             }
             return (
               <TableRow key={row.name}>
-                <TableCell key={`label_${row.name}`}>{label?.label}</TableCell>
+                <TableCell key={`label_${row.name}`}>
+                  {label?.headerName}
+                </TableCell>
 
-                <TableCell key={`value_${row.name}`}>{row.value}</TableCell>
+                {label.headerName !== "Password" && (
+                  <TableCell key={`value_${row.name}`}>{row.value}</TableCell>
+                )}
+
+                {label.headerName === "Password" && editPassword && (
+                  <TableCell key={`value_${row.name}`}>
+                    <ChangePassword
+                      onSubmit={() => {
+                        setEditPassword(false);
+                      }}
+                    />
+                  </TableCell>
+                )}
+                {label.headerName === "Password" && !editPassword && (
+                  <TableCell key={`value_${row.name}`}>{row.value}</TableCell>
+                )}
+                {label.headerName === "Password" && !editPassword && (
+                  <TableCell>
+                    <IconButton
+                      aria-label="edit"
+                      size="small"
+                      onClick={() => {
+                        setEditPassword(true);
+                      }}
+                    >
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}

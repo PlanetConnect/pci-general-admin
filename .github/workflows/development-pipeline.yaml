@@ -19,6 +19,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
+      - run: |
+          echo "Adding bit.cloud to npm registry"
+          echo "always-auth=true" >> ~/.npmrc
+          echo "@pci:registry=https://node.bit.cloud" >> ~/.npmrc
+          echo "@teambit:registry=https:/node.bit.cloud" >> ~/.npmrc
+          echo "//node.bit.cloud/:_authToken=${{ secrets.BIT_TOKEN }}" >> ~/.npmrc
+          echo "Completed adding bit.cloud to npm registry"
       - run: yarn
       # - run: yarn lint:production # ensure code is properly linted for prod
       # - run: yarn test

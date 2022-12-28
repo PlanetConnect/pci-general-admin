@@ -1,23 +1,17 @@
-import {
-  AuthenticationDetails,
-  CognitoRefreshToken,
-  CognitoUser,
-} from "amazon-cognito-identity-js";
+import { DecodedToken } from "@pci/pci-services.types.decoded-token";
+import { CognitoRefreshToken, CognitoUser } from "amazon-cognito-identity-js";
 import jwt_decode from "jwt-decode";
-import { useState } from "react";
-import { useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "~/app/store";
 import { authLogout } from "~/features/auth/actions/authLogout";
 import {
   getAccessToken,
-  getCognitoUser,
   getRefreshToken,
-  getUsername,
   setAccessToken,
   setRefreshToken,
 } from "~/features/auth/authSlice";
-import { setCognitoUser } from "~/features/auth/userSlice";
+import { CognitoToken } from "~/features/auth/types/CognitoToken";
+import { getUser, setCognitoUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 
 export const fetchAccessToken =
@@ -26,25 +20,20 @@ export const fetchAccessToken =
       const accessToken = getAccessToken(getState());
 
       if (!accessToken) {
-        // console.log("no access token");
-        // dispatch(authLogout());
-
-        return;
+        resolve(undefined);
       }
-      const decoded = jwt_decode(accessToken);
+      const decoded: CognitoToken = jwt_decode(accessToken);
       console.log(
         "🚀 ~ file: authRefresh.ts:29 ~ newPromise ~ decoded",
         decoded
       );
 
+      const user: DecodedToken | undefined = getUser(getState());
+
       // if session expired try to refresh
-      if (decoded.exp < Date.now() / 1000) {
+      if (decoded.exp < Date.now() / 1000 && user?.username) {
         console.log("session expired");
         const refreshToken = getRefreshToken(getState());
-
-        const username = getUsername(getState());
-
-        const user = getCognitoUser(getState());
 
         const userData = {
           Username: user?.username,
@@ -57,10 +46,12 @@ export const fetchAccessToken =
           if (err) {
             console.log(err);
             dispatch(authLogout());
+            resolve(undefined);
           } else {
             dispatch(setAccessToken(session.getAccessToken().getJwtToken()));
             dispatch(setRefreshToken(session.getRefreshToken().getToken()));
             dispatch(setCognitoUser(cognitoUser));
+            resolve(token);
           }
         });
       }

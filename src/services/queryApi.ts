@@ -25,7 +25,7 @@ import {
   setRefreshToken,
 } from "~/features/auth/authSlice";
 import { CognitoToken } from "~/features/auth/types/CognitoToken";
-import { setCognitoUser } from "~/features/auth/userSlice";
+import { getUser, setCognitoUser } from "~/features/auth/userSlice";
 import { userPool } from "~/features/auth/utils/userPool";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
@@ -73,16 +73,12 @@ const baseQueryWithReauth: BaseQueryFn<
     const decoded: CognitoToken = jwt_decode(accessToken);
 
     // if session expired try to refresh
-    if (decoded.exp < Date.now() / 1000) {
+    if (decoded.exp < Date.now() / 1000 && decoded?.username) {
       console.log("session expired");
       const refreshToken = getRefreshToken(api.getState() as RootState);
 
-      const username = getUsername(api.getState() as RootState);
-
-      const user = getCognitoUser(api.getState() as RootState);
-
       const userData = {
-        Username: user?.username,
+        Username: decoded.username,
         Pool: userPool,
       };
       const cognitoUser = new CognitoUser(userData);

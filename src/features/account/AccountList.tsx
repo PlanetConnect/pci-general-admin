@@ -71,29 +71,26 @@ const AccountList = () => {
 
   //CREATE ACCOUNT ERRORING ON THE TYPE
 
-  // const onCreate = async () => {
-  //   try {
-  //     console.log("create new account");
-  //     const createResult = await createAccount({
-  //       name: "New Account",
-  //       website: "planetconnect.com",
-  //       validate: function (): Promise<void> {
-  //         throw new Error("Function not implemented.");
-  //       },
-  //     }).unwrap();
+  const onCreate = async () => {
+    try {
+      console.log("create new account");
+      const createResult = await createAccount({
+        name: "New Account",
+        website: "planetconnect.com",
+      }).unwrap();
 
-  //     navigate(`/accounts/${createResult?.inserted_id}`);
-  //   } catch (e: any) {
-  //     openSnackBar({
-  //       message: `Account cannot be created. ${e.data.error}`,
-  //       position: {
-  //         vertical: "top",
-  //         horizontal: "center",
-  //       },
-  //       variant: "error",
-  //     });
-  //   }
-  // };
+      navigate(`/accounts/${createResult?.inserted_id}`);
+    } catch (e: any) {
+      openSnackBar({
+        message: `Account cannot be created. ${e.data.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
+  };
 
   return (
     <PaperContent>

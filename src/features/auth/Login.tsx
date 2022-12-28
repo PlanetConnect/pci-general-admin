@@ -53,7 +53,7 @@ function Login() {
       } else {
         navigate(`/`);
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       setButtonDisabled(false);
       openSnackBar({
         message: "login failed. Error: " + e.toString(),

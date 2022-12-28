@@ -43,7 +43,7 @@ function Signup() {
       );
       console.log("🚀 ~ file: Signup.tsx:44 ~ handleSubmit ~ user", user);
       navigate(`/login/mfa`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       console.log("🚀 ~ file: Signup.tsx:47 ~ handleSubmit ~ e", e);
     }
   };

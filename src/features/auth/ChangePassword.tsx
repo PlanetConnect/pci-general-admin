@@ -35,7 +35,7 @@ function ChangePassword({ onSubmit }: { onSubmit: () => void }) {
         },
         variant: "success",
       });
-    } catch (e: unknown) {
+    } catch (e: any) {
       openSnackBar({
         message: "Password Update Failed: " + e.toString(),
         position: {

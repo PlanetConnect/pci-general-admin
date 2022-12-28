@@ -25,7 +25,7 @@ const TableRowData = (props: TableProps) => {
       <MuiTable>
         <TableBody>
           {props.data.map((row) => {
-            const label = props.rows.find((r) => r.field === row.name);
+            const label: any = props.rows.find((r) => r.field === row.name);
 
             if (!label) {
               return null;

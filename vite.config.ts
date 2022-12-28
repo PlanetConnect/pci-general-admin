@@ -31,7 +31,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       environment: "jsdom",
       setupFiles: "./src/setupTests.ts",
     },
-    // define: { global: {} },
   };
   if (command === "serve" && mode === "development") {
     // the following is only needed for yarn dev

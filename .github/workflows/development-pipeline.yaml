@@ -38,7 +38,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.PCI_DEVELOPMENT_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.PCI_DEVELOPMENT_AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1"
-          SOURCE_DIR: "build"
+          SOURCE_DIR: "dist"
 
       - uses: docker://rewindio/github-action-cloudfront-invalidate
         env:

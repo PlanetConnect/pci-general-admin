@@ -23,29 +23,29 @@ import {
 
 import contactSchema from "./data/form/contactSchema";
 
-const contact = {
-  contact_id: "5caa8244-cc26-4725-bf42-91fd7b27cdba",
-  firstName: "Jamesh",
-  lastName: "Vindua",
-  email: "jvindua@planetconnect.com",
-  accountId: "b0193ac3-f988-464d-bf2e-8accdfba945b",
-  title: "Programmer",
-  department: "Test",
-  site: "Bonham",
-  photoUrl:
-    "https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg",
-  linkedInUrl: "https://www.linkedin.com/in/jamesh-vindua-85aa3380/",
-  expertiseArea: "Programming,Testing,Software Development",
-  phone: "7326643146",
-  bio: "Biological test methods describe standardized experiments that determine the toxicity of a substance or material by evaluating its effect on living organisms. Tests are designed to use appropriate organisms and sensitive effect measurements in the media of interest for a specified test duration.",
-  mailingStreet: "83 Walnut St.",
-  mailingCity: "Loneham",
-  mailingState: "NJ",
-  mailingZip: "09762",
-  mailingCountry: "US",
-  createdTime: "2022-03-25 08:15:31.930392",
-  modifiedTime: "2022-03-25 08:15:31.930392",
-};
+// const contact = {
+//   contact_id: "5caa8244-cc26-4725-bf42-91fd7b27cdba",
+//   firstName: "Jamesh",
+//   lastName: "Vindua",
+//   email: "jvindua@planetconnect.com",
+//   accountId: "b0193ac3-f988-464d-bf2e-8accdfba945b",
+//   title: "Programmer",
+//   department: "Test",
+//   site: "Bonham",
+//   photoUrl:
+//     "https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg",
+//   linkedInUrl: "https://www.linkedin.com/in/jamesh-vindua-85aa3380/",
+//   expertiseArea: "Programming,Testing,Software Development",
+//   phone: "7326643146",
+//   bio: "Biological test methods describe standardized experiments that determine the toxicity of a substance or material by evaluating its effect on living organisms. Tests are designed to use appropriate organisms and sensitive effect measurements in the media of interest for a specified test duration.",
+//   mailingStreet: "83 Walnut St.",
+//   mailingCity: "Loneham",
+//   mailingState: "NJ",
+//   mailingZip: "09762",
+//   mailingCountry: "US",
+//   createdTime: "2022-03-25 08:15:31.930392",
+//   modifiedTime: "2022-03-25 08:15:31.930392",
+// };
 
 const EditContactInfo = () => {
   const { openSnackBar } = useSnackBar();
@@ -139,7 +139,7 @@ const EditContactInfo = () => {
     <PaperContent>
       <Form
         size="lg"
-        defaultValues={contact}
+        defaultValues={defaultValues}
         validationSchema={contactSchema}
         onSubmit={handleSubmit}
       >
@@ -147,14 +147,14 @@ const EditContactInfo = () => {
 
         <Section name="General information">
           <Stack direction="row" spacing={2}>
-            <TextField type="text" label="First Name" name="firstName" />
-            <TextField type="text" label="Last Name" name="lastName" />
+            <TextField type="text" label="First Name" name="first_name" />
+            <TextField type="text" label="Last Name" name="last_name" />
           </Stack>
           <TextField type="text" label="Email" name="email" />
           <TextField type="text" label="Title" name="title" />
           <TextField type="text" label="Department" name="department" />
-          <TextField type="text" label="Photo URL" name="photoUrl" />
-          <TextField type="text" label="LinkedIn URL" name="linkedInUrl" />
+          <TextField type="text" label="Photo URL" name="photo_url" />
+          <TextField type="text" label="LinkedIn URL" name="linked_in_url" />
           <TextArea type="text" label="Bio" name="bio" />
         </Section>
 
@@ -162,11 +162,11 @@ const EditContactInfo = () => {
           <TextField type="text" label="Site" name="site" />
           <AddressField
             address={{
-              address1: "mailingStreet",
-              city: "mailingCity",
-              state: "mailingState",
-              zip: "mailingZip",
-              country: "mailingCountry",
+              address1: "address.street",
+              city: "address.city",
+              state: "address.state",
+              zip: "address.zip",
+              country: "address.country",
             }}
           />
         </Section>

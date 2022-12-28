@@ -24,67 +24,71 @@ const settings = {
 };
 
 function ContactList() {
-  const [contacts] = useState(data.records);
+  // const [contacts] = useState(data.records);
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
 
-  // const { data, isLoading, isError, error } = useGetContactsQuery();
+  const { data, isLoading, isError, error } = useGetContactsQuery();
   const [createContact, results] = useCreateContactMutation();
 
-  // if (isError) {
-  //   return (
-  //     <div
-  //       style={{
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         flexDirection: "column",
-  //         width: "100%",
-  //       }}
-  //     >
-  //       <ErrorIcon color="error" />
-  //       <Typography>Error Loading Contacts:</Typography>
-  //       <Typography>{error?.error}</Typography>
-  //     </div>
-  //   );
-  // }
-  // if (isLoading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         flexDirection: "column",
-  //         width: "100%",
-  //       }}
-  //     >
-  //       <CircularProgress />
-  //       <Typography>Loading...</Typography>
-  //     </div>
-  //   );
-  // }
-  // console.log("🚀 ~ file: ContactList.tsx:21 ~ ContactList ~ data", data);
-  // const contacts = data?.data?.filter((contact: Contact) => {
-  //   if (contact.email) {
-  //     return contact;
-  //   }
-  // });
-  // console.log("🚀 ~ file: ContactList.tsx:23 ~ contacts ~ contacts", contacts);
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Loading Contacts:</Typography>
+        <Typography>{error?.error}</Typography>
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
+  }
+  console.log("🚀 ~ file: ContactList.tsx:21 ~ ContactList ~ data", data);
+  const contacts = data?.data?.filter((contact: Contact) => {
+    if (contact.email) {
+      return contact;
+    }
+  });
+  console.log("🚀 ~ file: ContactList.tsx:23 ~ contacts ~ contacts", contacts);
 
   const onCreate = async () => {
     try {
       console.log("create new contact");
       const createResult = await createContact({
-        first_name: "Firstname",
-        last_name: "Lastname",
-        email: "test@email.com",
+        first_name: "Jane",
+        last_name: "Doe",
+        email: "example@email.com",
         validate: function (): Promise<void> {
           throw new Error("Function not implemented.");
         },
       }).unwrap();
+      console.log(
+        "🚀 ~ file: ContactList.tsx:86 ~ onCreate ~ createResult",
+        createResult
+      );
 
-      navigate(`/contacts/${createResult?.data?.email}`);
+      navigate(`/contacts/${createResult?.inserted_email}`);
     } catch (e: any) {
       openSnackBar({
         message: `Contact cannot be created. ${e.data.error}`,

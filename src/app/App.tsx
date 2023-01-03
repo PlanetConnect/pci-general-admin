@@ -18,7 +18,11 @@ import {
   Profile,
   Signup,
 } from "../features/auth";
-import { ContactList, EditContactInfo } from "../features/contact";
+import {
+  ContactList,
+  CreateContact,
+  EditContactInfo,
+} from "../features/contact";
 import { EditExhibitionInfo, ExhibitionList } from "../features/exhibition";
 import { FormInfoTabs, FormList } from "../features/form";
 import { EditRoleInfo, RoleList } from "../features/security";
@@ -118,6 +122,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ContactList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="contacts/createContact"
+          element={
+            <ProtectedRoute>
+              <CreateContact />
             </ProtectedRoute>
           }
         />

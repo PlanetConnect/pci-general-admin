@@ -27,7 +27,7 @@ const AddressField = ({
     state = "state",
     zip = "zip",
     country = "country",
-    facility = "facility",
+    facility,
   },
   variant = "outlined",
   error,

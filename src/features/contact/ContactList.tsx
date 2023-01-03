@@ -75,20 +75,20 @@ function ContactList() {
   const onCreate = async () => {
     try {
       console.log("create new contact");
-      const createResult = await createContact({
-        first_name: "Jane",
-        last_name: "Doe",
-        email: "example@email.com",
-        validate: function (): Promise<void> {
-          throw new Error("Function not implemented.");
-        },
-      }).unwrap();
-      console.log(
-        "🚀 ~ file: ContactList.tsx:86 ~ onCreate ~ createResult",
-        createResult
-      );
+      // const createResult = await createContact({
+      //   first_name: "Jane",
+      //   last_name: "Doe",
+      //   email: "example@email.com",
+      //   validate: function (): Promise<void> {
+      //     throw new Error("Function not implemented.");
+      //   },
+      // }).unwrap();
+      // console.log(
+      //   "🚀 ~ file: ContactList.tsx:86 ~ onCreate ~ createResult",
+      //   createResult
+      // );
 
-      navigate(`/contacts/${createResult?.inserted_email}`);
+      navigate(`/contacts/createContact`);
     } catch (e: any) {
       openSnackBar({
         message: `Contact cannot be created. ${e.data.error}`,

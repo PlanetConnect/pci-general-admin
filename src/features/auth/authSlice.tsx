@@ -1,3 +1,4 @@
+import { Show } from "@pci/pci-services.types.show";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CognitoUser } from "amazon-cognito-identity-js";
 
@@ -8,6 +9,7 @@ export interface authState {
   refreshToken: string;
   username: string;
   cognitoUser?: CognitoUser;
+  currentShow?: Show;
 }
 
 const initialState: authState = {
@@ -15,6 +17,7 @@ const initialState: authState = {
   refreshToken: "",
   username: "",
   cognitoUser: undefined,
+  currentShow: undefined,
 };
 
 export const authSlice = createSlice({
@@ -30,6 +33,9 @@ export const authSlice = createSlice({
     setUsername: (state, action: PayloadAction<string>) => {
       state.username = action.payload;
     },
+    setCurrentShow: (state, action: PayloadAction<Show>) => {
+      state.currentShow = action.payload;
+    },
     resetTokens: () => initialState,
   },
 });
@@ -38,8 +44,14 @@ export const getRefreshToken = (state: RootState) => state.auth.refreshToken;
 export const getAccessToken = (state: RootState) => state.auth.accessToken;
 export const getUsername = (state: RootState) => state.auth.username;
 export const getCognitoUser = (state: RootState) => state.auth.cognitoUser;
+export const getCurrentShow = (state: RootState) => state.auth.currentShow;
 
-export const { setAccessToken, setRefreshToken, resetTokens, setUsername } =
-  authSlice.actions;
+export const {
+  setAccessToken,
+  setRefreshToken,
+  resetTokens,
+  setUsername,
+  setCurrentShow,
+} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -47,8 +47,8 @@ export const withShowRoutes: MenuItem[] = [
     icon: <ArticleRoundedIcon />,
   },
   {
-    label: "Exhibitions",
-    path: "/exhibitions",
+    label: "booths",
+    path: "/booths",
     icon: <TableBarRoundedIcon />,
   },
   {

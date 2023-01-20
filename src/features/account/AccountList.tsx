@@ -43,7 +43,6 @@ const AccountList = () => {
       >
         <ErrorIcon color="error" />
         <Typography>Error Loading Accounts</Typography>
-        <Typography>{error?.error}</Typography>
       </div>
     );
   }

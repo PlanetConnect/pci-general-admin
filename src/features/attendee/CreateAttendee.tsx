@@ -1,9 +1,10 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import { Attendee } from "@pci/pci-services.types.attendee";
+import { Contact } from "@pci/pci-services.types.contact";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
@@ -18,71 +19,22 @@ import {
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
 import { getCurrentShow } from "~/features/auth/authSlice";
+import { getUser } from "~/features/auth/userSlice";
 import {
-  useGetAttendeeByEmailQuery,
+  useCreateAttendeeMutation,
   useGetContactsQuery,
-  useUpdateAttendeeMutation,
 } from "~/services/queryApi";
 
 import attendeeSchema from "./data/form/attendeeSchema";
 import days from "./data/form/days";
 import roles from "./data/form/roles";
 
-// const attendee = {
-//   attendeeId: "5276827c-0d59-4416-a4ac-f1444a1f93c2",
-//   showId: "5df3b780-ac2e-48b4-9d55-169ab523ac0a",
-//   showName: "Test Show",
-//   attendeeAccountId: "b0193ac3-f988-464d-bf2e-8accdfba945b",
-//   attendeeAcountName: "PlanetConnect Inc.",
-//   badgeKey: "1649871031818",
-//   contactId: "c29ba4b7-0150-45dc-b0aa-d125634eb6f2",
-//   roles: [
-//     "43da751a-50db-43ad-b74d-818cbb77b37e",
-//     "496c6b4a-bbe3-464c-8782-d9ff8f53aa1a",
-//     "81107b52-e46b-4c31-8e6a-4c1e2e46f896",
-//   ],
-//   days: ["Physical Day 2", "Virtual Day 1"],
-//   firstName: "John",
-//   lastName: "Tester",
-//   contactAccountId: "b0193ac3-f988-464d-bf2e-8accdfba945b",
-//   contactAccountName: "PlanetConnect Inc.",
-//   title: "Marketing Leader",
-//   department: "Test Department",
-//   site: "Testing Site",
-//   linkedInUrl: "https://github.com/aws-samples/cookiecutter-aws-sam-pipeline",
-//   expertiseArea: "programming,eating",
-//   phone: "+17326643146",
-//   bio: null,
-//   mailingStreet: "Tinton Falls",
-//   mailingCity: "Red Bank",
-//   mailingZip: "08753",
-//   mailingState: "New Jersey",
-//   mailingCountry: "United States",
-//   createdTime: "2022-04-13T17:30:32.534Z",
-//   modifiedTime: "2022-04-13T17:35:41.872Z",
-// };
-
-const EditAttendeeInfo = () => {
+const CreateAttendee = () => {
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
+  const { data: contacts, isLoading, isError, error } = useGetContactsQuery();
 
-  const { email } = useParams();
-
-  const currentShow = useSelector(getCurrentShow) as Show;
-
-  const [updateAttendee, results] = useUpdateAttendeeMutation();
-  const { data, isLoading, isError } = useGetAttendeeByEmailQuery({
-    email: email as string,
-    showId: currentShow?.show_id as string,
-  });
-
-  const {
-    data: contacts,
-    isLoading: getContactsIsLoading,
-    isError: getContactsIsError,
-  } = useGetContactsQuery();
-
-  if (isError || getContactsIsError) {
+  if (isError) {
     return (
       <div
         style={{
@@ -98,7 +50,7 @@ const EditAttendeeInfo = () => {
       </div>
     );
   }
-  if (isLoading || getContactsIsLoading || data === undefined) {
+  if (isLoading || contacts === undefined) {
     return (
       <div
         style={{
@@ -114,6 +66,24 @@ const EditAttendeeInfo = () => {
       </div>
     );
   }
+
+  const [createAttendee, results] = useCreateAttendeeMutation();
+  const user = useSelector(getUser);
+  if (!user) {
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
+      <ErrorIcon color="error" />
+      <Typography>Please log in again</Typography>
+    </div>;
+  }
+  const currentShow = useSelector(getCurrentShow) as Show;
   if (!currentShow) {
     return (
       <div
@@ -130,23 +100,28 @@ const EditAttendeeInfo = () => {
       </div>
     );
   }
-  const attendee = data.data as Attendee;
+  const defaultValues = new Attendee({
+    attendance_days: [],
+    contact: { email: "" },
+    email: "",
+    roles: [],
+    show_id: currentShow?.show_id as string,
+    account_id: "",
+  });
 
-  const handleSubmit = async (values: any) => {
-    console.log(values);
-    values.email = values.contact.email;
-    values.account_id = values.contact.account_id;
-
-    delete values.contact.address.facility;
+  const handleSubmit = async (values: Attendee) => {
     try {
-      await updateAttendee({
+      values.email = values.contact.email;
+      values.account_id = values.contact.account_id as string;
+      values.contact = values.contact as Contact;
+
+      await createAttendee({
         attendee: values,
-        showId: currentShow?.show_id as string,
-        email: values.email,
+        showId: currentShow.show_id as string,
       }).unwrap();
       navigate(`/attendees`);
       openSnackBar({
-        message: "Attendee successfully updated.",
+        message: "Attendee successfully created.",
         position: {
           vertical: "top",
           horizontal: "center",
@@ -154,8 +129,9 @@ const EditAttendeeInfo = () => {
         variant: "success",
       });
     } catch (e: any) {
+      console.log("🚀 ~ file: CreateAttendee.tsx:115 ~ handleSubmit ~ e", e);
       openSnackBar({
-        message: `Attendee cannot be updated. ${e.error}`,
+        message: `Attendee cannot be created. ${e.error}`,
         position: {
           vertical: "top",
           horizontal: "center",
@@ -164,11 +140,12 @@ const EditAttendeeInfo = () => {
       });
     }
   };
+
   return (
     <PaperContent>
       <Form
         size="md"
-        defaultValues={attendee}
+        defaultValues={defaultValues}
         validationSchema={attendeeSchema}
         onSubmit={handleSubmit}
       >
@@ -187,7 +164,7 @@ const EditAttendeeInfo = () => {
             type="text"
             label="Company"
             name="attendeeAccountName"
-            value={""}
+            value={" "}
             isDisabled
           />
         </Section>
@@ -196,16 +173,18 @@ const EditAttendeeInfo = () => {
           <MultiSelect
             label="Roles"
             name="roles"
-            selected={attendee.roles}
+            // selected={attendee.roles}
             options={roles}
+            selected={undefined}
           />
         </Section>
         <Section name="Attendance">
           <MultiSelect
             label="Days"
             name="attendance_days"
-            selected={attendee.attendance_days}
+            // selected={attendee.days}
             options={days}
+            selected={undefined}
           />
         </Section>
 
@@ -215,7 +194,7 @@ const EditAttendeeInfo = () => {
             name="contact"
             // selected={attendee.days}
             options={contacts?.data}
-            selected={attendee.contact}
+            selected={undefined}
           />
         </Section>
 
@@ -227,4 +206,4 @@ const EditAttendeeInfo = () => {
   );
 };
 
-export default EditAttendeeInfo;
+export default CreateAttendee;

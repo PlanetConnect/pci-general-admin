@@ -2,11 +2,10 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
-import { Attendee } from "@pci/pci-services.types.attendee";
 import { Booth } from "@pci/pci-services.types.booth";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
@@ -26,19 +25,16 @@ import TagsAutoComplete from "~/app/templates/formbuilder/components/TagsAutoCom
 import { useSnackBar } from "~/app/templates/snackbar";
 import { getCurrentShow } from "~/features/auth/authSlice";
 import {
+  useCreateBoothMutation,
   useGetAttendeeByShowQuery,
-  useGetBoothByIdQuery,
-  useUpdateBoothMutation,
 } from "~/services/queryApi";
 
 import exhibitionTypes from "../account/data/form/exhibitionTypes";
 import exhibitionSchema from "./data/form/exhibitionSchema";
 
-const EditExhibitionInfo = () => {
+const CreateExhibit = () => {
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
-
-  const { exhibitionId } = useParams();
 
   const currentShow = useSelector(getCurrentShow) as Show;
 
@@ -59,17 +55,19 @@ const EditExhibitionInfo = () => {
     );
   }
   const {
-    data: attendeesList,
-    isLoading: getAttendeeIsLoading,
-    isError: getAttendeeIsError,
+    data: attendeeList,
+    isLoading,
+    isError,
+    error: loadAttendeeError,
   } = useGetAttendeeByShowQuery(currentShow?.show_id as string);
-  const [updateBooth, results] = useUpdateBoothMutation();
-  const { data, isLoading, isError } = useGetBoothByIdQuery({
-    id: exhibitionId as string,
-    showId: currentShow?.show_id as string,
-  });
 
-  if (isError || getAttendeeIsError) {
+  const [createBooth, result] = useCreateBoothMutation();
+  // console.log(
+  //   "🚀 ~ file: CreateAttendee.tsx:97 ~ handleSubmit ~ results",
+  //   results,
+  //   results?.error
+  // );
+  if (isError) {
     return (
       <div
         style={{
@@ -81,11 +79,11 @@ const EditExhibitionInfo = () => {
         }}
       >
         <ErrorIcon color="error" />
-        <Typography>Error Loading Booths</Typography>
+        <Typography>Error Loading Attendees</Typography>
       </div>
     );
   }
-  if (isLoading || getAttendeeIsLoading) {
+  if (isLoading) {
     return (
       <div
         style={{
@@ -102,40 +100,48 @@ const EditExhibitionInfo = () => {
     );
   }
 
-  const attendees = attendeesList?.data?.map((attendee: Attendee) => {
+  const attendees = attendeeList?.data?.map((attendee) => {
     return {
       value: attendee,
       label: attendee.contact.first_name + " " + attendee.contact.last_name,
     };
   });
 
-  const exhibition = data?.data as Booth;
+  const defaultValues = new Booth({
+    type: "",
+    show_id: currentShow?.show_id as string,
+    account_id: "",
+    is_active: false,
+    is_public: false,
+    description: "",
+    tags: [],
+    attendees: [],
+  });
 
   const handleSubmit = async (values: Booth) => {
-    console.log(values);
-    values.account_id = values.attendees[0].account_id;
     try {
-      await updateBooth({
+      values.account_id = values.attendees[0].account_id;
+
+      const createResult = await createBooth({
         booth: values,
-        showId: currentShow?.show_id as string,
-        boothId: exhibitionId as string,
+        showId: currentShow.show_id as string,
       }).unwrap();
-      navigate(`/booths`);
-      openSnackBar({
-        message: "Booth successfully updated.",
-        position: {
-          vertical: "top",
-          horizontal: "center",
-        },
-        variant: "success",
-      });
+
+      if (createResult) {
+        navigate(`/booths`);
+        openSnackBar({
+          message: "Booth successfully created.",
+          position: {
+            vertical: "top",
+            horizontal: "center",
+          },
+          variant: "success",
+        });
+      }
     } catch (e: any) {
-      console.log(
-        "🚀 ~ file: EditExhibitionInfo.tsx:179 ~ handleSubmit ~ e",
-        e
-      );
+      console.log("🚀 ~ file: CreateExhibit.tsx:170 ~ handleSubmit ~ e", e);
       openSnackBar({
-        message: `Booth cannot be updated. ${e.error}`,
+        message: `Booth cannot be created. ${e.error}`,
         position: {
           vertical: "top",
           horizontal: "center",
@@ -148,11 +154,11 @@ const EditExhibitionInfo = () => {
     <PaperContent>
       <Form
         size="md"
-        defaultValues={exhibition}
+        defaultValues={defaultValues}
         validationSchema={exhibitionSchema}
         onSubmit={handleSubmit}
       >
-        <Header>Edit Exhibition Information</Header>
+        <Header>Create Exhibition Information</Header>
 
         <Section name="General information">
           <Switch label="Is Active?" name="is_active" isChecked={false} />
@@ -169,11 +175,7 @@ const EditExhibitionInfo = () => {
           <TextField type="text" label="Website URL" name="website" />
           <TextField type="text" label="Logo URL" name="logo_url" />
           <TextArea type="text" label="Description" name="description" />
-          <TagsAutoComplete
-            label="Tags"
-            name="tags"
-            options={exhibition.tags}
-          />
+          <TagsAutoComplete label="Tags" name="tags" />
         </Section>
         <Section name="Attendance">
           <MultiSelect
@@ -181,7 +183,7 @@ const EditExhibitionInfo = () => {
             name="attendees"
             // selected={attendee.days}
             options={attendees as any[]}
-            selected={exhibition?.attendees as any[]}
+            selected={undefined}
           />
         </Section>
 
@@ -246,4 +248,4 @@ const EditExhibitionInfo = () => {
   );
 };
 
-export default EditExhibitionInfo;
+export default CreateExhibit;

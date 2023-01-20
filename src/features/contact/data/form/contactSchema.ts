@@ -17,6 +17,13 @@ const contactSchema = Yup.object({
   photo_url: Yup.string().url("Must be a valid url"),
   linked_in_url: Yup.string().url("Must be a valid url"),
   bio: Yup.string().max(1000, "must be 1000 characters or less"),
+  // address: Yup.object({
+  //   street: Yup.string().required("Required"),
+  //   city: Yup.string().required("Required"),
+  //   state: Yup.string().required("Required"),
+  //   zip: Yup.string().required("Required"),
+  //   country: Yup.string().required("Required"),
+  // }),
 });
 
 export default contactSchema;

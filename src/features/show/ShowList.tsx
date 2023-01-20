@@ -7,11 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { PaperContent, Title } from "~/app/templates/content/";
 import { DataTable } from "~/app/templates/datatable";
 import { useSnackBar } from "~/app/templates/snackbar";
-import {
-  useCreateShowMutation,
-  useGetMeQuery,
-  useGetShowsQuery,
-} from "~/services/queryApi";
+import { useCreateShowMutation, useGetShowsQuery } from "~/services/queryApi";
 
 import showListColumns from "./data/datatable/showListColumns";
 
@@ -41,7 +37,6 @@ function ShowList() {
       >
         <ErrorIcon color="error" />
         <Typography>Error Loading Shows</Typography>
-        <Typography>{error?.error}</Typography>
       </div>
     );
   }
@@ -77,6 +72,9 @@ function ShowList() {
         start_date: new Date(),
         end_date: new Date(),
         validate: function (): Promise<void> {
+          throw new Error("Function not implemented.");
+        },
+        toDynamoDb: function () {
           throw new Error("Function not implemented.");
         },
       }).unwrap();

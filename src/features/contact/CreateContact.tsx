@@ -1,7 +1,10 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import { Account } from "@pci/pci-services.types.account";
 import { Contact } from "@pci/pci-services.types.contact";
+import { Show } from "@pci/pci-services.types.show";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -15,9 +18,14 @@ import {
   TextArea,
   TextField,
 } from "~/app/templates/formbuilder";
+import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
+import SelectAccountAutoComplete from "~/app/templates/formbuilder/components/SelectAccountAutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
+import { getCurrentShow } from "~/features/auth/authSlice";
+import contacts from "~/features/contact/data/data";
 import {
   useCreateContactMutation,
+  useGetAccountsQuery,
   useGetContactByEmailQuery,
   useUpdateContactMutation,
 } from "~/services/queryApi";
@@ -53,6 +61,44 @@ const CreateContact = () => {
   const navigate = useNavigate();
 
   const [createContact, results] = useCreateContactMutation();
+  const { data, isLoading, isError, error } = useGetAccountsQuery();
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Fetching Information</Typography>
+      </div>
+    );
+  }
+  if (isLoading || data === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
+  }
+  const accounts = data?.data?.filter((account: Account) => {
+    if (account.account_id) {
+      return account;
+    }
+  });
 
   const defaultValues = new Contact({
     first_name: "",
@@ -67,18 +113,16 @@ const CreateContact = () => {
     phone: "",
     address: {},
   });
-  console.log(
-    "🚀 ~ file: CreateContact.tsx:95 ~ CreateContact ~ defaultValues",
-    defaultValues
-  );
 
   const handleSubmit = async (values: any) => {
-    console.log(values);
+    values.account_id = values.company.account_id;
+    delete values.company;
+
     try {
-      await createContact(values);
+      await createContact(values).unwrap();
       navigate(`/contacts`);
       openSnackBar({
-        message: "Contact successfully updated.",
+        message: "Contact successfully created.",
         position: {
           vertical: "top",
           horizontal: "center",
@@ -91,7 +135,7 @@ const CreateContact = () => {
         e
       );
       openSnackBar({
-        message: `Contact cannot be updated. ${e.data.error}`,
+        message: `Contact cannot be created. ${e.data.error}`,
         position: {
           vertical: "top",
           horizontal: "center",
@@ -117,6 +161,12 @@ const CreateContact = () => {
             <TextField type="text" label="Last Name" name="last_name" />
           </Stack>
           <TextField type="text" label="Email" name="email" />
+          <SelectAccountAutoComplete
+            label="Company"
+            name="company"
+            options={accounts}
+            selected={undefined}
+          />
           <TextField type="text" label="Title" name="title" />
           <TextField type="text" label="Department" name="department" />
           <TextField type="text" label="Photo URL" name="photo_url" />

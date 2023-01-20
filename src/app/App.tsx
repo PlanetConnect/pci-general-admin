@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 
 import { startupAsync } from "~/app/actions/startupAsync";
-import { AppDispatch, useAppDispatch } from "~/app/store";
-import { getCognitoUser } from "~/features/auth/authSlice";
+import { AppDispatch } from "~/app/store";
 import ProtectedRoute from "~/features/auth/ProtectedRoute";
 
 import { AbstractList, EditAbstractInfo } from "../features/abstract";

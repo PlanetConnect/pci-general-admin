@@ -11,25 +11,13 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { CognitoRefreshToken, CognitoUser } from "amazon-cognito-identity-js";
-import jwt_decode from "jwt-decode";
 
 import variables from "~/app/data/vars";
 import { RootState } from "~/app/store";
 import HealthCheckResult from "~/features/account/data/types/HealthCheckResult";
 import AccountCreateResult from "~/features/account/types/AccountCreateResult";
-import { authLogout } from "~/features/auth/actions/authLogout";
-import {
-  getAccessToken,
-  getCognitoUser,
-  getRefreshToken,
-  getUsername,
-  setAccessToken,
-  setRefreshToken,
-} from "~/features/auth/authSlice";
-import { CognitoToken } from "~/features/auth/types/CognitoToken";
-import { getUser, setCognitoUser } from "~/features/auth/userSlice";
-import { userPool } from "~/features/auth/utils/userPool";
+import { refreshAccessToken } from "~/features/auth/actions/refreshAccessToken";
+import { getAccessToken } from "~/features/auth/authSlice";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
 import GetResult from "~/features/show/data/types/GetResult";
@@ -59,6 +47,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: async (headers, { getState }) => {
     const token = getAccessToken(getState() as RootState);
     if (token) {
+      // console.log(`setting token: ${token}`);
       headers.set("Authorization", `Bearer ${token}`);
     }
 
@@ -70,37 +59,8 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const accessToken = getAccessToken(api.getState() as RootState);
-
-  if (accessToken) {
-    const decoded: CognitoToken = jwt_decode(accessToken);
-
-    // if session expired try to refresh
-    if (decoded.exp < Date.now() / 1000 && decoded?.username) {
-      console.log("session expired");
-      const refreshToken = getRefreshToken(api.getState() as RootState);
-
-      const userData = {
-        Username: decoded.username,
-        Pool: userPool,
-      };
-      const cognitoUser = new CognitoUser(userData);
-      const token = new CognitoRefreshToken({ RefreshToken: refreshToken });
-
-      console.log("Starting refresh session");
-
-      cognitoUser.refreshSession(token, (err, session) => {
-        if (err) {
-          console.log(err);
-          api.dispatch(authLogout());
-        } else {
-          api.dispatch(setAccessToken(session.getAccessToken().getJwtToken()));
-          api.dispatch(setRefreshToken(session.getRefreshToken().getToken()));
-          api.dispatch(setCognitoUser(cognitoUser));
-        }
-      });
-    }
-  }
+  // refresh access token if needed
+  await api.dispatch(refreshAccessToken());
 
   const result = await baseQuery(args, api, extraOptions);
 

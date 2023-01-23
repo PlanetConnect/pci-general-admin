@@ -8,7 +8,11 @@ import ProtectedRoute from "~/features/auth/ProtectedRoute";
 
 import { AbstractList, EditAbstractInfo } from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
-import { AttendeeList, EditAttendeeInfo } from "../features/attendee";
+import {
+  AttendeeList,
+  CreateAttendee,
+  EditAttendeeInfo,
+} from "../features/attendee";
 import {
   ForgotPassword,
   Login,
@@ -17,8 +21,16 @@ import {
   Profile,
   Signup,
 } from "../features/auth";
-import { ContactList, EditContactInfo } from "../features/contact";
-import { EditExhibitionInfo, ExhibitionList } from "../features/exhibition";
+import {
+  ContactList,
+  CreateContact,
+  EditContactInfo,
+} from "../features/contact";
+import {
+  CreateExhibit,
+  EditExhibitionInfo,
+  ExhibitionList,
+} from "../features/exhibition";
 import { FormInfoTabs, FormList } from "../features/form";
 import { EditRoleInfo, RoleList } from "../features/security";
 import { ShowInfoTabs, ShowList } from "../features/show";
@@ -104,10 +116,18 @@ function App() {
           }
         />
         <Route
-          path="attendees/:attendeeId"
+          path="attendees/:email"
           element={
             <ProtectedRoute>
               <EditAttendeeInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attendees/createAttendee"
+          element={
+            <ProtectedRoute>
+              <CreateAttendee />
             </ProtectedRoute>
           }
         />
@@ -121,7 +141,15 @@ function App() {
           }
         />
         <Route
-          path="contacts/:contactId"
+          path="contacts/createContact"
+          element={
+            <ProtectedRoute>
+              <CreateContact />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="contacts/:email"
           element={
             <ProtectedRoute>
               <EditContactInfo />
@@ -130,7 +158,7 @@ function App() {
         />
         {/* Exhibition Routes */}
         <Route
-          path="exhibitions"
+          path="booths"
           element={
             <ProtectedRoute>
               <ExhibitionList />
@@ -138,10 +166,18 @@ function App() {
           }
         />
         <Route
-          path="exhibitions/:exhibitionId"
+          path="booths/:exhibitionId"
           element={
             <ProtectedRoute>
               <EditExhibitionInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="booths/CreateExhibit"
+          element={
+            <ProtectedRoute>
+              <CreateExhibit />
             </ProtectedRoute>
           }
         />

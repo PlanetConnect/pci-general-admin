@@ -1,4 +1,7 @@
 import { Account, AccountProps } from "@pci/pci-services.types.account";
+import { Attendee } from "@pci/pci-services.types.attendee";
+import { Booth } from "@pci/pci-services.types.booth";
+import { Contact } from "@pci/pci-services.types.contact";
 import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 import { Show } from "@pci/pci-services.types.show";
 import {
@@ -68,11 +71,12 @@ const baseQueryWithReauth: BaseQueryFn<
 export const queryApi = createApi({
   reducerPath: "queryApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Show", "Account", "Contact", "Role", "Booth"],
+  tagTypes: ["Show", "Account", "Contact", "Role", "Booth", "Attendee"],
   endpoints: (builder) => ({
     getMe: builder.query<DecodedToken, void>({
       query: () => `${getBaseUrl("authorization")}/me`,
     }),
+    // Shows
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,
       providesTags: ["Show"],
@@ -108,7 +112,7 @@ export const queryApi = createApi({
       invalidatesTags: ["Show"],
     }),
 
-    //Change type to accounts
+    //Accounts
     getAccountById: builder.query<GetResult<Account>, string>({
       query: (id: string) => `${getBaseUrl("accounts")}/accounts/${id}`,
       providesTags: ["Account"],
@@ -149,87 +153,54 @@ export const queryApi = createApi({
     }),
 
     // //change type to contacts
-    // getContactByEmail: builder.query<GetResult<Show>, string>({
-    //   query: (id: string) => `/contacts/${id}`,
-    //   providesTags: ["Contact"],
-    // }),
-    // deleteContact: builder.mutation<DeleteResult, string>({
-    //   query: (id: string) => ({ url: `/contacts/${id}`, method: "DELETE" }),
-    //   invalidatesTags: ["Contact"],
-    // }),
-    // createContact: builder.mutation<CreateResult<Show>, Show>({
-    //   query: (payload: Show) => ({
-    //     url: `/contacts/`,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    //   invalidatesTags: ["Contact"],
-    // }),
-    // getContacts: builder.query<GetResults<Show>, void>({
-    //   query: () => `/contacts`,
-    //   providesTags: ["Contact"],
-    // }),
-    // updateContact: builder.mutation<
-    //   UpdateResult<Show>,
-    //   { show: Show; id: string }
-    // >({
-    //   query: (payload: { show: Show; id: string }) => ({
-    //     url: `/contacts/${payload.id}`,
-    //     method: "PUT",
-    //     body: payload.show,
-    //   }),
-    //   invalidatesTags: ["Contact"],
-    // }),
-
-    // //change type to roles
-    // getRoleById: builder.query<GetResult<Show>, string>({
-    //   query: (id: string) => `/PCIApiGateway/${id}`,
-    //   providesTags: ["Role"],
-    // }),
-    // deleteRole: builder.mutation<DeleteResult, string>({
-    //   query: (id: string) => ({
-    //     url: `/PCIApiGateway/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["Role"],
-    // }),
-    // createRole: builder.mutation<CreateResult<Show>, Show>({
-    //   query: (payload: Show) => ({
-    //     url: `/PCIApiGateway/`,
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    //   invalidatesTags: ["Role"],
-    // }),
-    // getRoles: builder.query<GetResults<Show>, void>({
-    //   query: () => `/PCIApiGateway`,
-    //   providesTags: ["Role"],
-    // }),
-    // updateRole: builder.mutation<
-    //   UpdateResult<Show>,
-    //   { show: Show; id: string }
-    // >({
-    //   query: (payload: { show: Show; id: string }) => ({
-    //     url: `/PCIApiGateway/${payload.id}`,
-    //     method: "PUT",
-    //     body: payload.show,
-    //   }),
-    //   invalidatesTags: ["Role"],
-    // }),
-
-    //Change type to Booths
-    getBooths: builder.query<
-      GetResult<Show>,
-      { email: string; showId: string }
-    >({
-      query: (payload: { email: string; showId: string }) =>
-        `${getBaseUrl("booths")}/shows/${payload.showId}/booths/${
-          payload.email
-        }`,
-      providesTags: ["Booth"],
+    getContactByEmail: builder.query<GetResult<Contact>, string>({
+      query: (email: string) => `${getBaseUrl("contacts")}/${email}`,
+      providesTags: ["Contact"],
     }),
+    deleteContact: builder.mutation<DeleteResult, string>({
+      query: (email: string) => ({
+        url: `${getBaseUrl("contacts")}/${email}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Contact"],
+    }),
+    createContact: builder.mutation<CreateResult<Contact>, Contact>({
+      query: (payload: Contact) => ({
+        url: `${getBaseUrl("contacts")}/`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Contact"],
+    }),
+    getContacts: builder.query<GetResults<Contact>, void>({
+      query: () => `${getBaseUrl("contacts")}`,
+      providesTags: ["Contact"],
+    }),
+    updateContact: builder.mutation<
+      UpdateResult<Contact>,
+      { contact: Contact; email: string }
+    >({
+      query: (payload: { contact: Contact; email: string }) => ({
+        url: `${getBaseUrl("contacts")}/${payload.email}`,
+        method: "PUT",
+        body: payload.contact,
+      }),
+      invalidatesTags: ["Contact"],
+    }),
+
+    //Booths
+    // getBooths: builder.query<
+    //   GetResult<Booth>,
+    //   { email: string; showId: string }
+    // >({
+    //   query: (payload: { email: string; showId: string }) =>
+    //     `${getBaseUrl("booths")}/shows/${payload.showId}/booths/${
+    //       payload.email
+    //     }`,
+    //   providesTags: ["Booth"],
+    // }),
     getBoothById: builder.query<
-      GetResult<Show>,
+      GetResult<Booth>,
       { id: string; showId: string }
     >({
       query: (payload: { id: string; showId: string }) =>
@@ -237,7 +208,7 @@ export const queryApi = createApi({
       providesTags: ["Booth"],
     }),
     getBoothByAccount: builder.query<
-      GetResult<Show>,
+      GetResult<Booth>,
       { accountId: string; showId: string }
     >({
       query: (payload: { accountId: string; showId: string }) =>
@@ -246,20 +217,91 @@ export const queryApi = createApi({
         }/booths`,
       providesTags: ["Booth"],
     }),
-    getBoothsByShow: builder.query<GetResults<Show>, string>({
+    getBoothsByShow: builder.query<GetResults<Booth>, string>({
       query: (id: string) => `${getBaseUrl("booths")}/shows/${id}/booths`,
       providesTags: ["Booth"],
     }),
     createBooth: builder.mutation<
       AccountCreateResult,
-      { booth: Show; showId: string }
+      { booth: Booth; showId: string }
     >({
-      query: (payload: { booth: Show; showId: string }) => ({
-        url: `${getBaseUrl("booth")}shows/${payload.showId}/booths/`,
+      query: (payload: { booth: Booth; showId: string }) => ({
+        url: `${getBaseUrl("booths")}/shows/${payload.showId}/booths`,
         method: "POST",
         body: payload.booth,
       }),
       invalidatesTags: ["Booth"],
+    }),
+    updateBooth: builder.mutation<
+      UpdateResult<Booth>,
+      { booth: Booth; boothId: string; showId: string }
+    >({
+      query: (payload: { booth: Booth; boothId: string; showId: string }) => ({
+        url: `${getBaseUrl("booths")}/shows/${payload.showId}/booths/${
+          payload.boothId
+        }`,
+        method: "PUT",
+        body: payload.booth,
+      }),
+      invalidatesTags: ["Booth"],
+    }),
+
+    // Attendees
+    getAttendeeByEmail: builder.query<
+      GetResult<Attendee>,
+      { email: string; showId: string }
+    >({
+      query: (payload: { email: string; showId: string }) =>
+        `${getBaseUrl("attendees")}/shows/${payload.showId}/attendees/${
+          payload.email
+        }`,
+      providesTags: ["Attendee"],
+    }),
+    getAttendeeByShow: builder.query<GetResults<Attendee>, string>({
+      query: (showId: string) =>
+        `${getBaseUrl("attendees")}/shows/${showId}/attendees`,
+      providesTags: ["Attendee"],
+    }),
+    createAttendee: builder.mutation<
+      CreateResult<Attendee>,
+      { attendee: Attendee; showId: string }
+    >({
+      query: (payload: { attendee: Attendee; showId: string }) => ({
+        url: `${getBaseUrl("attendees")}/shows/${payload.showId}/attendees`,
+        method: "POST",
+        body: payload.attendee,
+      }),
+      invalidatesTags: ["Attendee"],
+    }),
+
+    updateAttendee: builder.mutation<
+      UpdateResult<Attendee>,
+      { attendee: Attendee; email: string; showId: string }
+    >({
+      query: (payload: {
+        attendee: Attendee;
+        email: string;
+        showId: string;
+      }) => ({
+        url: `${getBaseUrl("attendees")}/shows/${payload.showId}/attendees/${
+          payload.email
+        }`,
+        method: "PUT",
+        body: payload.attendee,
+      }),
+      invalidatesTags: ["Attendee"],
+    }),
+    deleteAttendee: builder.mutation<
+      DeleteResult,
+      { email: string; showId: string }
+    >({
+      query: (payload: { email: string; showId: string }) => ({
+        url: `${getBaseUrl("attendees")}/shows/${payload.showId}/attendees/${
+          payload.email
+        }`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Attendee"],
     }),
   }),
 });
@@ -281,9 +323,22 @@ export const {
   useGetAccountByIdQuery,
   useGetAccountsHealthCheckQuery,
   //booths
-  useGetBoothsQuery,
+  // useGetBoothsQuery,
   useGetBoothByIdQuery,
   useGetBoothByAccountQuery,
   useGetBoothsByShowQuery,
   useCreateBoothMutation,
+  useUpdateBoothMutation,
+  //contacts
+  useGetContactByEmailQuery,
+  useDeleteContactMutation,
+  useUpdateContactMutation,
+  useCreateContactMutation,
+  useGetContactsQuery,
+  //attendees
+  useGetAttendeeByEmailQuery,
+  useCreateAttendeeMutation,
+  useUpdateAttendeeMutation,
+  useGetAttendeeByShowQuery,
+  useDeleteAttendeeMutation,
 } = queryApi;

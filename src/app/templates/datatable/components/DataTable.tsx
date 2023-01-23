@@ -17,6 +17,7 @@ interface DataTableProps {
 }
 
 const DataTable = (props: DataTableProps) => {
+  console.log("🚀 ~ file: DataTable.tsx:20 ~ DataTable ~ props", props);
   // eslint-disable-next-line
   const [checkboxSelection, setCheckboxSelection] = useState(
     props.settings.isCheckBoxEnabled

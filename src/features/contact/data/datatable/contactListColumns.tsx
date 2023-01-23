@@ -3,6 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 
+import DeleteContact from "~/features/contact/DeleteContact";
+
 const contactListColumns = [
   {
     field: "contact_id",
@@ -75,12 +77,16 @@ const contactListColumns = [
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
           component={Link}
-          to={`/contacts/${params.row.contact_id}`}
+          to={`/contacts/${params.row.email}`}
           aria-label="edit"
           size="small"
         >
           <EditIcon fontSize="small" />
         </IconButton>
+        <DeleteContact
+          email={params.row.email}
+          accountName={params.row.firstName}
+        />
       </Stack>
     ),
   },

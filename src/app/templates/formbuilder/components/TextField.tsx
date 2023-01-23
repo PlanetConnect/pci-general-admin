@@ -48,6 +48,7 @@ const TextField = ({
         render={({ field: { onChange, value } }) => {
           return (
             <MuiTextField
+              // InputLabelProps={{ shrink: true }}
               value={value}
               onChange={(e) => {
                 onChange(e.target.value);

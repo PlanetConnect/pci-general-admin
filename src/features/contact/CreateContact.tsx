@@ -2,6 +2,9 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Account } from "@pci/pci-services.types.account";
+import { Contact } from "@pci/pci-services.types.contact";
+import { Show } from "@pci/pci-services.types.show";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -15,9 +18,13 @@ import {
   TextArea,
   TextField,
 } from "~/app/templates/formbuilder";
+import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import SelectAccountAutoComplete from "~/app/templates/formbuilder/components/SelectAccountAutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
+import { getCurrentShow } from "~/features/auth/authSlice";
+import contacts from "~/features/contact/data/data";
 import {
+  useCreateContactMutation,
   useGetAccountsQuery,
   useGetContactByEmailQuery,
   useUpdateContactMutation,
@@ -25,30 +32,37 @@ import {
 
 import contactSchema from "./data/form/contactSchema";
 
-const EditContactInfo = () => {
+// const contact = {
+//   contact_id: "5caa8244-cc26-4725-bf42-91fd7b27cdba",
+//   firstName: "Jamesh",
+//   lastName: "Vindua",
+//   email: "jvindua@planetconnect.com",
+//   accountId: "b0193ac3-f988-464d-bf2e-8accdfba945b",
+//   title: "Programmer",
+//   department: "Test",
+//   site: "Bonham",
+//   photoUrl:
+//     "https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg",
+//   linkedInUrl: "https://www.linkedin.com/in/jamesh-vindua-85aa3380/",
+//   expertiseArea: "Programming,Testing,Software Development",
+//   phone: "7326643146",
+//   bio: "Biological test methods describe standardized experiments that determine the toxicity of a substance or material by evaluating its effect on living organisms. Tests are designed to use appropriate organisms and sensitive effect measurements in the media of interest for a specified test duration.",
+//   mailingStreet: "83 Walnut St.",
+//   mailingCity: "Loneham",
+//   mailingState: "NJ",
+//   mailingZip: "09762",
+//   mailingCountry: "US",
+//   createdTime: "2022-03-25 08:15:31.930392",
+//   modifiedTime: "2022-03-25 08:15:31.930392",
+// };
+
+const CreateContact = () => {
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
 
-  const { email } = useParams();
-
-  const {
-    data,
-    isLoading: isGetAccountsLoading,
-    isError: isGetAccountsError,
-  } = useGetAccountsQuery();
-  const accounts = data?.data?.filter((account: Account) => {
-    if (account.account_id) {
-      return account;
-    }
-  });
-
-  const [updateContact, results] = useUpdateContactMutation();
-  const {
-    data: contact,
-    isLoading,
-    isError,
-  } = useGetContactByEmailQuery(email || "");
-  if (isError || isGetAccountsError) {
+  const [createContact, results] = useCreateContactMutation();
+  const { data, isLoading, isError, error } = useGetAccountsQuery();
+  if (isError) {
     return (
       <div
         style={{
@@ -64,7 +78,7 @@ const EditContactInfo = () => {
       </div>
     );
   }
-  if (isLoading || isGetAccountsLoading || contact === undefined) {
+  if (isLoading || data === undefined) {
     return (
       <div
         style={{
@@ -80,24 +94,35 @@ const EditContactInfo = () => {
       </div>
     );
   }
+  const accounts = data?.data?.filter((account: Account) => {
+    if (account.account_id) {
+      return account;
+    }
+  });
 
-  const selectedCompany = accounts?.find(
-    (account) => account.account_id === contact?.data?.account_id
-  );
-
-  const defaultValues = {
-    ...contact?.data,
-    company: selectedCompany,
-  };
+  const defaultValues = new Contact({
+    first_name: "",
+    last_name: "",
+    email: "",
+    title: "",
+    department: "",
+    site: "",
+    photo_url: "",
+    linked_in_url: "",
+    expertise_area: "",
+    phone: "",
+    address: {},
+  });
 
   const handleSubmit = async (values: any) => {
     values.account_id = values.company.account_id;
     delete values.company;
+
     try {
-      await updateContact({ contact: values, email: email || "" });
+      await createContact(values).unwrap();
       navigate(`/contacts`);
       openSnackBar({
-        message: "Contact successfully updated.",
+        message: "Contact successfully created.",
         position: {
           vertical: "top",
           horizontal: "center",
@@ -110,7 +135,7 @@ const EditContactInfo = () => {
         e
       );
       openSnackBar({
-        message: `Contact cannot be updated. ${e.data.error}`,
+        message: `Contact cannot be created. ${e.data.error}`,
         position: {
           vertical: "top",
           horizontal: "center",
@@ -140,7 +165,7 @@ const EditContactInfo = () => {
             label="Company"
             name="company"
             options={accounts}
-            selected={defaultValues.company}
+            selected={undefined}
           />
           <TextField type="text" label="Title" name="title" />
           <TextField type="text" label="Department" name="department" />
@@ -169,4 +194,4 @@ const EditContactInfo = () => {
   );
 };
 
-export default EditContactInfo;
+export default CreateContact;

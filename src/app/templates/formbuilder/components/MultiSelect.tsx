@@ -12,7 +12,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import Error from "./Error";
 
 interface Option {
-  value: string;
+  value: any;
   label: string | number;
 }
 
@@ -20,7 +20,7 @@ interface MultiSelectProps {
   label: string;
   name: string;
   variant?: "standard" | "filled" | "outlined" | undefined;
-  selected: string[] | undefined;
+  selected: any[] | undefined;
   options: Option[];
   isDisabled?: boolean;
   error?: string;
@@ -34,8 +34,8 @@ const MultiSelect = ({
   options,
   error,
 }: MultiSelectProps) => {
-  const [selectedOptions, setSelectedOptions] = React.useState(selected);
-  const [selectOptions] = React.useState(options);
+  const [selectedOptions, setSelectedOptions] = React.useState(selected || []);
+  const [selectOptions] = React.useState(options || []);
   const { control, setValue } = useFormContext();
 
   const handleChange = (event: any) => {
@@ -54,11 +54,21 @@ const MultiSelect = ({
     setSelectedOptions(remaining);
   };
 
-  const preview = (selected: string[]) => {
+  const preview = (selected: any[]) => {
     return (
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
         {selected.map((option: any) => {
-          const label = selectOptions.find(({ value }) => value === option);
+          console.log(
+            "🚀 ~ file: MultiSelect.tsx:61 ~ {selected.map ~ option",
+            option
+          );
+          const label = selectOptions.find(({ value }) => {
+            if (value?.email) {
+              return value.email === option?.email;
+            }
+            return value === option;
+          });
+
           return (
             <Chip
               key={option}

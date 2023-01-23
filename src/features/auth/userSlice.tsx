@@ -34,6 +34,7 @@ export const userSlice = createSlice({
     setCognitoUser: (state, action: PayloadAction<CognitoUser>) => {
       state.cognitoUser = action.payload;
     },
+
     resetUser: () => initialState,
   },
 });

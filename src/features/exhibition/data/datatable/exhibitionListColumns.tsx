@@ -61,7 +61,7 @@ const exhibitionListColumns = [
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
           component={Link}
-          to={`/exhibitions/${params.row.exhibition_id}`}
+          to={`/booths/${params.row.booth_id}`}
           aria-label="edit"
           size="small"
         >

@@ -67,10 +67,6 @@ const EditShowInfo = () => {
   }
   console.log("🚀 ~ file: EditShowInfo.tsx:68 ~ EditShowInfo ~ show", show);
   const defaultValues = new Show({ ...show.data });
-  console.log(
-    "🚀 ~ file: EditShowInfo.tsx:67 ~ EditShowInfo ~ defaultValues",
-    defaultValues
-  );
 
   if (!defaultValues.start_date) {
     defaultValues.start_date = new Date();

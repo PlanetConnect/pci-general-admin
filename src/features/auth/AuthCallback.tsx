@@ -1,14 +1,10 @@
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
-import { useAuth } from "oidc-react";
-import { useEffect, useState } from "react";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { AppDispatch } from "~/app/store";
-import { LoginButton } from "~/app/templates/button";
 import { PaperContent, Title } from "~/app/templates/content/";
-import { Actions, Form, Section } from "~/app/templates/formbuilder";
-import LoginField from "~/app/templates/formbuilder/components/LoginField";
 import { useSnackBar } from "~/app/templates/snackbar";
 import {
   setAccessToken,
@@ -16,12 +12,11 @@ import {
   setRefreshToken,
 } from "~/features/auth/authSlice";
 // import { authLogin } from "~/features/auth/actions/authLogin";
-import loginSchema from "~/features/auth/form/loginSchema";
+import { userManager } from "~/features/auth/utils/userManager";
 import {
   getSavedLoginPath,
   setSavedLoginPath,
-} from "~/features/auth/userSlice";
-import { userManager } from "~/features/auth/utils/userManager";
+} from "~/features/persist/persistSlice";
 import { queryApi } from "~/services/queryApi";
 
 const defaultValues = {
@@ -33,11 +28,11 @@ function AuthCallback() {
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
   const location = useLocation();
+  const savedLoginPath = useSelector(getSavedLoginPath);
 
   const params = new URLSearchParams(location.search);
   const error_description = params.get("error_description");
   const error = params.get("error");
-
   const code = params.get("code");
 
   useEffect(() => {
@@ -50,6 +45,8 @@ function AuthCallback() {
         dispatch(setExpiresAt(user.expires_at || 0));
         // load me from api
         const me = await dispatch(queryApi.endpoints.getMe.initiate());
+        // load shows from api
+        await dispatch(queryApi.endpoints.getShows.initiate());
         if (savedLoginPath) {
           dispatch(setSavedLoginPath(""));
           navigate(savedLoginPath);
@@ -59,11 +56,6 @@ function AuthCallback() {
       }
     })();
   }, [code]);
-  // const auth = useAuth();
-
-  const savedLoginPath = useSelector(getSavedLoginPath);
-
-  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   return (
     <div className="main">

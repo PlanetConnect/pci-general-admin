@@ -24,17 +24,19 @@ import authSlice from "../features/auth/authSlice";
 import userSlice from "../features/auth/userSlice";
 import counterReducer from "../features/counter/counterSlice";
 import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
+import persistSlice from "../features/persist/persistSlice";
 
 const persistConfig = {
   key: "user",
   storage: storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "persist"],
 };
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   mainAppDrawer: mainAppDrawerReducer,
   auth: authSlice,
+  persist: persistSlice,
   user: userSlice,
   shows: showsReducer,
   [queryApi.reducerPath]: queryApi.reducer,

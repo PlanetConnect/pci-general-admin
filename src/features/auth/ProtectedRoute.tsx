@@ -10,8 +10,9 @@ import {
   setRefreshToken,
   setUsername,
 } from "~/features/auth/authSlice";
-import { getUser, setSavedLoginPath, setUser } from "~/features/auth/userSlice";
+import { getUser } from "~/features/auth/userSlice";
 import { userManager } from "~/features/auth/utils/userManager";
+import { setSavedLoginPath } from "~/features/persist/persistSlice";
 import { queryApi } from "~/services/queryApi";
 
 const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
@@ -23,7 +24,7 @@ const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!user) {
-      setSavedLoginPath(location.pathname);
+      dispatch(setSavedLoginPath(location.pathname));
       navigate("/login");
     }
   }, [user]);

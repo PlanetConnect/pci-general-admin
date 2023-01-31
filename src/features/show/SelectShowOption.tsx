@@ -2,20 +2,25 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import ListSubheader from "@mui/material/ListSubheader";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 
 import { useAppDispatch } from "~/app/hooks";
-import { getCurrentShow, setCurrentShow } from "~/features/auth/authSlice";
+import {
+  getCurrentShowId,
+  setCurrentShowId,
+} from "~/features/persist/persistSlice";
 import { useGetShowsQuery } from "~/services/queryApi";
 
 const SelectShowOption = () => {
   const { data, isLoading, isError } = useGetShowsQuery();
   const dispatch = useAppDispatch();
-  const currentShow = useSelector(getCurrentShow) as Show;
+  const currentShowId = useSelector(getCurrentShowId);
+
+  // useEffect(() => {
+
+  // }, [currentShowId, data])
 
   if (isError) {
     return (
@@ -33,7 +38,7 @@ const SelectShowOption = () => {
       </div>
     );
   }
-  if (isLoading || data === undefined) {
+  if (isLoading || data === undefined || !currentShowId) {
     return (
       <div
         style={{
@@ -68,13 +73,13 @@ const SelectShowOption = () => {
     const selectedShow = shows?.find(
       (show) => show.show_id === event.target.value
     );
-    dispatch(setCurrentShow(selectedShow as Show));
+    if (selectedShow?.show_id) dispatch(setCurrentShowId(selectedShow.show_id));
   };
   return (
     <FormControl sx={{ minWidth: 250 }} size="small">
       <InputLabel htmlFor="grouped-show-select">Select a Show</InputLabel>
       <Select
-        defaultValue={currentShow?.show_id || shows[0].show_id}
+        value={currentShowId}
         id="grouped-show-select"
         label="Select a show"
         autoWidth

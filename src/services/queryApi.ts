@@ -19,6 +19,7 @@ import AccountCreateResult from "~/features/account/types/AccountCreateResult";
 import { refreshAccessToken } from "~/features/auth/actions/refreshAccessToken";
 import { getAccessToken } from "~/features/auth/authSlice";
 import { setUser } from "~/features/auth/userSlice";
+import { setCurrentShowId } from "~/features/persist/persistSlice";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
 import GetResult from "~/features/show/data/types/GetResult";
@@ -90,6 +91,7 @@ export const queryApi = createApi({
     // Shows
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,
+
       providesTags: ["Show"],
     }),
     deleteShow: builder.mutation<DeleteResult, string>({
@@ -110,6 +112,21 @@ export const queryApi = createApi({
     getShows: builder.query<GetResults<Show>, void>({
       query: () => `${getBaseUrl("shows")}/shows`,
       providesTags: ["Show"],
+      async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+        try {
+          // `onSuccess` side-effect
+          const { data } = await queryFulfilled;
+          const state: RootState = getState() as RootState;
+          // If the user has not selected a show, set it to the first show
+          if (!state.persist.currentShowId && data.data?.[0]?.show_id) {
+            console.log("setting current show");
+            dispatch(setCurrentShowId(data.data[0].show_id));
+          }
+        } catch (err) {
+          // `onError` side-effect
+          console.log("getShows ~ err", err);
+        }
+      },
     }),
     updateShow: builder.mutation<
       UpdateResult<Show>,

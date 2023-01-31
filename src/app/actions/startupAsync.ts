@@ -2,7 +2,7 @@ import { DecodedToken } from "@pci/pci-services.types.decoded-token";
 
 import { AppDispatch, RootState } from "~/app/store";
 import { refreshAccessToken } from "~/features/auth/actions/refreshAccessToken";
-import { getAccessToken } from "~/features/auth/authSlice";
+import { getAccessToken, getCurrentShow } from "~/features/auth/authSlice";
 import { setUser } from "~/features/auth/userSlice";
 import { queryApi } from "~/services/queryApi";
 
@@ -10,6 +10,7 @@ export const startupAsync =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
     console.log("startup async");
     const accessToken = getAccessToken(getState());
+    const currentShow = getCurrentShow(getState());
 
     if (accessToken) {
       // force a refresh of access token. Access token will return null if refresh fails
@@ -17,7 +18,9 @@ export const startupAsync =
       if (newAccessToken) {
         const me = await dispatch(queryApi.endpoints.getMe.initiate());
         console.log("user loaded", me.data?.username);
-        dispatch(setUser(me.data as DecodedToken));
+        // dispatch(setUser(me.data as DecodedToken));
+        // dispatch(queryApi.endpoints.getShows.initiate());
+
         return me.data;
       }
     }

@@ -18,6 +18,7 @@ import HealthCheckResult from "~/features/account/data/types/HealthCheckResult";
 import AccountCreateResult from "~/features/account/types/AccountCreateResult";
 import { refreshAccessToken } from "~/features/auth/actions/refreshAccessToken";
 import { getAccessToken } from "~/features/auth/authSlice";
+import { setUser } from "~/features/auth/userSlice";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
 import GetResult from "~/features/show/data/types/GetResult";
@@ -75,6 +76,16 @@ export const queryApi = createApi({
   endpoints: (builder) => ({
     getMe: builder.query<DecodedToken, void>({
       query: () => `${getBaseUrl("authorization")}/me`,
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          // `onSuccess` side-effect
+          dispatch(setUser(data));
+        } catch (err) {
+          // `onError` side-effect
+          console.log("getMe ~ err", err);
+        }
+      },
     }),
     // Shows
     getShowById: builder.query<GetResult<Show>, string>({

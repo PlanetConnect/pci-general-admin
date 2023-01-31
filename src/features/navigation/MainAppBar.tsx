@@ -174,11 +174,9 @@ const MainAppBar = (props: MainAppBarProps) => {
             variant="text"
             startIcon={<LogoutIcon />}
             onClick={async () => {
-              console.log("Logout button clicked");
-              userManager.signoutRedirect();
-              // const user = await dispatch(authLogout());
-              // handleClose();
-              // navigate("/login");
+              const user = await dispatch(authLogout());
+              handleClose();
+              navigate("/login");
             }}
             sx={{
               display: "flex",

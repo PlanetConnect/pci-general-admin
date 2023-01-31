@@ -9,12 +9,13 @@ import { PaperContent, Title } from "~/app/templates/content/";
 import { Actions, Form, Section } from "~/app/templates/formbuilder";
 import LoginField from "~/app/templates/formbuilder/components/LoginField";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { authLogin } from "~/features/auth/actions/authLogin";
+// import { authLogin } from "~/features/auth/actions/authLogin";
 import loginSchema from "~/features/auth/form/loginSchema";
 import {
   getSavedLoginPath,
   setSavedLoginPath,
 } from "~/features/auth/userSlice";
+import { userManager } from "~/features/auth/utils/userManager";
 
 const defaultValues = {
   email: "",
@@ -30,47 +31,46 @@ function Login() {
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const handleSubmit = async (values: any) => {
-    console.log(values);
-
-    try {
-      setButtonDisabled(true);
-      const user = await dispatch(
-        authLogin({ email: values.email, password: values.password })
-      );
-      openSnackBar({
-        message: "login Success.",
-        position: {
-          vertical: "top",
-          horizontal: "center",
-        },
-        variant: "success",
-      });
-      setButtonDisabled(false);
-
-      if (savedLoginPath) {
-        dispatch(setSavedLoginPath(""));
-        navigate(savedLoginPath);
-      } else {
-        navigate(`/`);
-      }
-    } catch (e: any) {
-      setButtonDisabled(false);
-      openSnackBar({
-        message: "login failed. Error: " + e.toString(),
-        position: {
-          vertical: "top",
-          horizontal: "center",
-        },
-        variant: "error",
-      });
-      if (e.toString() === "MFA Required") {
-        navigate(`/login/mfa`);
-      }
-      if (e.toString() === "New Password Required") {
-        navigate(`/login/newPassword`);
-      }
-    }
+    // console.log(values);
+    // try {
+    //   setButtonDisabled(true);
+    //   const user = await dispatch(
+    //     authLogin({ email: values.email, password: values.password })
+    //   );
+    //   openSnackBar({
+    //     message: "login Success.",
+    //     position: {
+    //       vertical: "top",
+    //       horizontal: "center",
+    //     },
+    //     variant: "success",
+    //   });
+    //   setButtonDisabled(false);
+    //   if (savedLoginPath) {
+    //     dispatch(setSavedLoginPath(""));
+    //     navigate(savedLoginPath);
+    //   } else {
+    //     navigate(`/`);
+    //   }
+    // } catch (e: any) {
+    //   setButtonDisabled(false);
+    //   openSnackBar({
+    //     message: "login failed. Error: " + e.toString(),
+    //     position: {
+    //       vertical: "top",
+    //       horizontal: "center",
+    //     },
+    //     variant: "error",
+    //   });
+    //   if (e.toString() === "MFA Required") {
+    //     navigate(`/login/mfa`);
+    //   }
+    //   if (e.toString() === "New Password Required") {
+    //     navigate(`/login/newPassword`);
+    //   }
+    // }
   };
+
   return (
     <div className="main">
       <Grid container>
@@ -111,7 +111,8 @@ function Login() {
                   variant="text"
                   color="primary"
                   onClick={() => {
-                    navigate(`/login/forgotPassword`);
+                    userManager.signinRedirect();
+                    // navigate(`/login/forgotPassword`);
                   }}
                   disabled={buttonDisabled}
                 >

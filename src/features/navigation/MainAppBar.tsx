@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AppDispatch } from "~/app/store";
 import { authLogout } from "~/features/auth/actions/authLogout";
+import { userManager } from "~/features/auth/utils/userManager";
 
 import { NotificationIconBadge } from "../notification";
 import { MainSearch } from "../search";
@@ -174,9 +175,10 @@ const MainAppBar = (props: MainAppBarProps) => {
             startIcon={<LogoutIcon />}
             onClick={async () => {
               console.log("Logout button clicked");
-              const user = await dispatch(authLogout());
-              handleClose();
-              navigate("/login");
+              userManager.signoutRedirect();
+              // const user = await dispatch(authLogout());
+              // handleClose();
+              // navigate("/login");
             }}
             sx={{
               display: "flex",

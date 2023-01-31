@@ -12,7 +12,7 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 
-import variables from "~/app/data/vars";
+import { API_ENDPOINT, ENV } from "~/app/data/vars";
 import { RootState } from "~/app/store";
 import HealthCheckResult from "~/features/account/data/types/HealthCheckResult";
 import AccountCreateResult from "~/features/account/types/AccountCreateResult";
@@ -27,9 +27,9 @@ import UpdateResult from "~/features/show/data/types/UpdateResult";
 const getBaseEnv = () => {
   let env = "dev";
 
-  if (variables.env === "beta") {
+  if (ENV === "beta") {
     env = "beta";
-  } else if (variables.env === "production" || variables.env === "prod") {
+  } else if (ENV === "production" || ENV === "prod") {
     env = "prod";
   }
   return env;
@@ -37,8 +37,8 @@ const getBaseEnv = () => {
 
 const getBaseUrl = (target: string) => {
   const env = getBaseEnv();
-  if (!env) throw new Error(`No environment set: ${variables.env}`);
-  return `https://${target}.${variables.api_endpoint}/${env}`;
+  if (!env) throw new Error(`No environment set: ${ENV}`);
+  return `https://${target}.${API_ENDPOINT}/${env}`;
 };
 
 const baseQuery = fetchBaseQuery({

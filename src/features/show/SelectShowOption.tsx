@@ -8,7 +8,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 
-import { useAppDispatch } from "~/app/store";
+import { useAppDispatch } from "~/app/hooks";
 import { getCurrentShow, setCurrentShow } from "~/features/auth/authSlice";
 import { useGetShowsQuery } from "~/services/queryApi";
 

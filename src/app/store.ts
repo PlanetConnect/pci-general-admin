@@ -5,7 +5,6 @@ import {
   ThunkAction,
 } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { useDispatch } from "react-redux";
 import {
   FLUSH,
   PAUSE,
@@ -25,17 +24,19 @@ import authSlice from "../features/auth/authSlice";
 import userSlice from "../features/auth/userSlice";
 import counterReducer from "../features/counter/counterSlice";
 import mainAppDrawerReducer from "../features/navigation/mainAppDrawerSlice";
+import persistSlice from "../features/persist/persistSlice";
 
 const persistConfig = {
   key: "user",
   storage: storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "persist"],
 };
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   mainAppDrawer: mainAppDrawerReducer,
   auth: authSlice,
+  persist: persistSlice,
   user: userSlice,
   shows: showsReducer,
   [queryApi.reducerPath]: queryApi.reducer,
@@ -48,15 +49,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [
-          FLUSH,
-          REHYDRATE,
-          PAUSE,
-          PERSIST,
-          PURGE,
-          REGISTER,
-          "user/setCognitoUser",
-        ],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(queryApi.middleware),
 });
@@ -66,7 +59,6 @@ setupListeners(store.dispatch);
 export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = () => useDispatch<AppDispatch>(); // Export a hook that can be reused to resolve types
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

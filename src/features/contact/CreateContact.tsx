@@ -21,7 +21,7 @@ import {
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import SelectAccountAutoComplete from "~/app/templates/formbuilder/components/SelectAccountAutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/auth/authSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import contacts from "~/features/contact/data/data";
 import {
   useCreateContactMutation,

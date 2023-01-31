@@ -3,22 +3,15 @@ import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Attendee } from "@pci/pci-services.types.attendee";
 import { Show } from "@pci/pci-services.types.show";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { PaperContent, Title } from "~/app/templates/content/";
 import { DataTable } from "~/app/templates/datatable";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/auth/authSlice";
-import { getUser } from "~/features/auth/userSlice";
-import {
-  useCreateAttendeeMutation,
-  useGetAttendeeByEmailQuery,
-  useGetAttendeeByShowQuery,
-} from "~/services/queryApi";
+import { getCurrentShow } from "~/features/persist/persistSlice";
+import { useGetAttendeeByShowQuery } from "~/services/queryApi";
 
-import data from "./data/data";
 import attendeeListColumns from "./data/datatable/attendeeListColumns";
 
 const settings = {
@@ -34,10 +27,6 @@ function AttendeeList() {
   const { openSnackBar } = useSnackBar();
 
   const currentShow = useSelector(getCurrentShow) as Show;
-  console.log(
-    "🚀 ~ file: AttendeeList.tsx:32 ~ AttendeeList ~ currentShow",
-    currentShow
-  );
 
   if (!currentShow) {
     return (
@@ -58,10 +47,6 @@ function AttendeeList() {
 
   const { data, isLoading, isError, error } = useGetAttendeeByShowQuery(
     currentShow?.show_id as string
-  );
-  console.log(
-    "🚀 ~ file: AttendeeList.tsx:44 ~ AttendeeList ~ attendeews",
-    data
   );
 
   if (isError) {

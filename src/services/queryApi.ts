@@ -12,12 +12,14 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 
-import variables from "~/app/data/vars";
+import { API_ENDPOINT, ENV } from "~/app/data/vars";
 import { RootState } from "~/app/store";
 import HealthCheckResult from "~/features/account/data/types/HealthCheckResult";
 import AccountCreateResult from "~/features/account/types/AccountCreateResult";
 import { refreshAccessToken } from "~/features/auth/actions/refreshAccessToken";
 import { getAccessToken } from "~/features/auth/authSlice";
+import { setUser } from "~/features/auth/userSlice";
+import { setCurrentShowId } from "~/features/persist/persistSlice";
 import CreateResult from "~/features/show/data/types/CreateResult";
 import DeleteResult from "~/features/show/data/types/DeleteResult";
 import GetResult from "~/features/show/data/types/GetResult";
@@ -27,9 +29,9 @@ import UpdateResult from "~/features/show/data/types/UpdateResult";
 const getBaseEnv = () => {
   let env = "dev";
 
-  if (variables.env === "beta") {
+  if (ENV === "beta") {
     env = "beta";
-  } else if (variables.env === "production" || variables.env === "prod") {
+  } else if (ENV === "production" || ENV === "prod") {
     env = "prod";
   }
   return env;
@@ -37,8 +39,8 @@ const getBaseEnv = () => {
 
 const getBaseUrl = (target: string) => {
   const env = getBaseEnv();
-  if (!env) throw new Error(`No environment set: ${variables.env}`);
-  return `https://${target}.${variables.api_endpoint}/${env}`;
+  if (!env) throw new Error(`No environment set: ${ENV}`);
+  return `https://${target}.${API_ENDPOINT}/${env}`;
 };
 
 const baseQuery = fetchBaseQuery({
@@ -75,10 +77,21 @@ export const queryApi = createApi({
   endpoints: (builder) => ({
     getMe: builder.query<DecodedToken, void>({
       query: () => `${getBaseUrl("authorization")}/me`,
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          // `onSuccess` side-effect
+          dispatch(setUser(data));
+        } catch (err) {
+          // `onError` side-effect
+          console.log("getMe ~ err", err);
+        }
+      },
     }),
     // Shows
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,
+
       providesTags: ["Show"],
     }),
     deleteShow: builder.mutation<DeleteResult, string>({
@@ -99,6 +112,21 @@ export const queryApi = createApi({
     getShows: builder.query<GetResults<Show>, void>({
       query: () => `${getBaseUrl("shows")}/shows`,
       providesTags: ["Show"],
+      async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+        try {
+          // `onSuccess` side-effect
+          const { data } = await queryFulfilled;
+          const state: RootState = getState() as RootState;
+          // If the user has not selected a show, set it to the first show
+          if (!state.persist.currentShowId && data.data?.[0]?.show_id) {
+            console.log("setting current show");
+            dispatch(setCurrentShowId(data.data[0].show_id));
+          }
+        } catch (err) {
+          // `onError` side-effect
+          console.log("getShows ~ err", err);
+        }
+      },
     }),
     updateShow: builder.mutation<
       UpdateResult<Show>,

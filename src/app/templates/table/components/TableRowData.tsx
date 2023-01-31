@@ -10,7 +10,7 @@ import { useState } from "react";
 
 import DataTableSettings from "~/app/templates/datatable/data/DataTableSettings";
 import Row from "~/app/templates/datatable/data/Row";
-import ChangePassword from "~/features/auth/ChangePassword";
+// import ChangePassword from "~/features/auth/ChangePassword";
 
 interface TableProps {
   data: any[];
@@ -42,11 +42,11 @@ const TableRowData = (props: TableProps) => {
 
                 {label.headerName === "Password" && editPassword && (
                   <TableCell key={`value_${row.name}`}>
-                    <ChangePassword
+                    {/* <ChangePassword
                       onSubmit={() => {
                         setEditPassword(false);
                       }}
-                    />
+                    /> */}
                   </TableCell>
                 )}
                 {label.headerName === "Password" && !editPassword && (

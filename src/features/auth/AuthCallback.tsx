@@ -9,6 +9,7 @@ import { useSnackBar } from "~/app/templates/snackbar";
 import {
   setAccessToken,
   setExpiresAt,
+  setIdToken,
   setRefreshToken,
 } from "~/features/auth/authSlice";
 // import { authLogin } from "~/features/auth/actions/authLogin";
@@ -40,6 +41,7 @@ function AuthCallback() {
       if (code) {
         const user = await userManager.signinRedirectCallback();
         console.log("user", user);
+        dispatch(setIdToken(user.id_token || ""));
         dispatch(setAccessToken(user.access_token));
         dispatch(setRefreshToken(user.refresh_token || ""));
         dispatch(setExpiresAt(user.expires_at || 0));

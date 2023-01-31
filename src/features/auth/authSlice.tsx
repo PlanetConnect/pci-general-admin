@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "~/app/store";
 
 export interface authState {
+  idToken: string;
   accessToken: string;
   refreshToken: string;
   expiresAt: number;
@@ -10,6 +11,7 @@ export interface authState {
 }
 
 const initialState: authState = {
+  idToken: "",
   accessToken: "",
   refreshToken: "",
   expiresAt: 0,
@@ -20,6 +22,9 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setIdToken: (state, action: PayloadAction<string>) => {
+      state.idToken = action.payload;
+    },
     setAccessToken: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
     },
@@ -36,12 +41,14 @@ export const authSlice = createSlice({
   },
 });
 
-export const getRefreshToken = (state: RootState) => state.auth.refreshToken;
+export const getIdToken = (state: RootState) => state.auth.idToken;
 export const getAccessToken = (state: RootState) => state.auth.accessToken;
+export const getRefreshToken = (state: RootState) => state.auth.refreshToken;
 export const getExpiresAt = (state: RootState) => state.auth.expiresAt;
 export const getUsername = (state: RootState) => state.auth.username;
 
 export const {
+  setIdToken,
   setAccessToken,
   setRefreshToken,
   setExpiresAt,

@@ -42,6 +42,7 @@ const TableRowData = (props: TableProps) => {
 
                 {label.headerName === "Password" && editPassword && (
                   <TableCell key={`value_${row.name}`}>
+                    Change Password
                     {/* <ChangePassword
                       onSubmit={() => {
                         setEditPassword(false);

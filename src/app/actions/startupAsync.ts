@@ -1,6 +1,7 @@
 import { AppDispatch, RootState } from "~/app/store";
 import { refreshAccessToken } from "~/features/auth/actions/refreshAccessToken";
 import { getAccessToken } from "~/features/auth/authSlice";
+import { userManager } from "~/features/auth/utils/userManager";
 import { queryApi } from "~/services/queryApi";
 
 export const startupAsync =
@@ -16,7 +17,7 @@ export const startupAsync =
         console.log("user loaded", me.data?.username);
         // dispatch(setUser(me.data as DecodedToken));
         await dispatch(queryApi.endpoints.getShows.initiate());
-
+        // console.log("userManager", userManager);
         return me.data;
       }
     }

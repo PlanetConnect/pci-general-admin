@@ -71,7 +71,7 @@ const MultiSelect = ({
 
           return (
             <Chip
-              key={option}
+              key={option?.email}
               label={label?.label}
               color="primary"
               onDelete={() => handleDelete(option)}

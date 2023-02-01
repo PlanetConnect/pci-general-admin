@@ -1,3 +1,4 @@
+import { joiResolver } from "@hookform/resolvers/joi";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/system/Container";
@@ -23,6 +24,7 @@ const Form = ({
   const methods = useForm({
     defaultValues: defaultValues,
     resolver: yupResolver(validationSchema),
+    // resolver: joiResolver(validationSchema),
   });
 
   // const values = methods.watch();

@@ -855,6 +855,16 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@pci/pci-services.types.abstract@^0.9.0":
+  version "0.9.0"
+  resolved "https://node.bit.cloud/@pci/pci-services.types.abstract/-/@pci-pci-services.types.abstract-0.9.0.tgz#4d2815f3b554150e7c19b37d90fe930213bf0dce"
+  integrity sha1-TSgV87VUFQ58GbN9kP6TAhO/Dc4=
+  dependencies:
+    "@pci/pci-services.types.contact" "0.9.0"
+    "@pci/pci-services.types.item" "0.11.0"
+    "@pci/pci-services.types.show" "0.16.0"
+    joi "^17.6.0"
+
 "@pci/pci-services.types.account@^0.14.0":
   version "0.14.0"
   resolved "https://node.bit.cloud/@pci/pci-services.types.account/-/@pci-pci-services.types.account-0.14.0.tgz#18b0a95b00c698ed500d463ff9daeee36c577dfc"
@@ -890,11 +900,28 @@
     "@pci/pci-services.types.item" "0.9.0"
     joi "^17.6.0"
 
+"@pci/pci-services.types.contact@0.9.0":
+  version "0.9.0"
+  resolved "https://node.bit.cloud/@pci/pci-services.types.contact/-/@pci-pci-services.types.contact-0.9.0.tgz#95586a677c12bce978dbfaffc99c462645963bad"
+  integrity sha1-lVhqZ3wSvOl42/r/yZxGJkWWO60=
+  dependencies:
+    "@pci/pci-services.types.item" "0.11.0"
+    joi "^17.6.0"
+
 "@pci/pci-services.types.decoded-token@^0.4.0":
   version "0.4.0"
   resolved "https://node.bit.cloud/@pci/pci-services.types.decoded-token/-/@pci-pci-services.types.decoded-token-0.4.0.tgz#ccdbe52ca2632c1a92639f2c2d6cd570dc4a5686"
   integrity sha1-zNvlLKJjLBqSY58sLWzVcNxKVoY=
   dependencies:
+    joi "^17.6.0"
+
+"@pci/pci-services.types.item@0.11.0":
+  version "0.11.0"
+  resolved "https://node.bit.cloud/@pci/pci-services.types.item/-/@pci-pci-services.types.item-0.11.0.tgz#a55fc553882ffe719fed53e11801c105042c37aa"
+  integrity sha1-pV/FU4gv/nGf7VPhGAHBBQQsN6o=
+  dependencies:
+    "@pci/pci-services.utils.filter-undefined" "0.7.0"
+    "@pci/pci-services.utils.to-dynamodb-date" "0.6.0"
     joi "^17.6.0"
 
 "@pci/pci-services.types.item@0.9.0":
@@ -915,15 +942,34 @@
     "@pci/pci-services.utils.to-dynamodb-date" "0.4.0"
     joi "^17.6.0"
 
+"@pci/pci-services.types.show@0.16.0":
+  version "0.16.0"
+  resolved "https://node.bit.cloud/@pci/pci-services.types.show/-/@pci-pci-services.types.show-0.16.0.tgz#78d4833930d214016377b156ec4908fe59335a1f"
+  integrity sha1-eNSDOTDSFAFjd7FW7EkI/lkzWh8=
+  dependencies:
+    "@pci/pci-services.utils.filter-undefined" "0.7.0"
+    "@pci/pci-services.utils.to-dynamodb-date" "0.6.0"
+    joi "^17.6.0"
+
 "@pci/pci-services.utils.filter-undefined@0.5.0":
   version "0.5.0"
   resolved "https://node.bit.cloud/@pci/pci-services.utils.filter-undefined/-/@pci-pci-services.utils.filter-undefined-0.5.0.tgz#5c060801a9300da0d1480f7ef44f3caa8bdaa3f1"
   integrity sha1-XAYIAakwDaDRSA9+9E88qovao/E=
 
+"@pci/pci-services.utils.filter-undefined@0.7.0":
+  version "0.7.0"
+  resolved "https://node.bit.cloud/@pci/pci-services.utils.filter-undefined/-/@pci-pci-services.utils.filter-undefined-0.7.0.tgz#9e1c9e80bce9d422b2ecf0062abb35eb16a669b7"
+  integrity sha1-nhyegLzp1CKy7PAGKrs16xamabc=
+
 "@pci/pci-services.utils.to-dynamodb-date@0.4.0":
   version "0.4.0"
   resolved "https://node.bit.cloud/@pci/pci-services.utils.to-dynamodb-date/-/@pci-pci-services.utils.to-dynamodb-date-0.4.0.tgz#8ac91c84be14df9525966c2b163a5915e1a89ae4"
   integrity sha1-iskchL4U35UllmwrFjpZFeGomuQ=
+
+"@pci/pci-services.utils.to-dynamodb-date@0.6.0":
+  version "0.6.0"
+  resolved "https://node.bit.cloud/@pci/pci-services.utils.to-dynamodb-date/-/@pci-pci-services.utils.to-dynamodb-date-0.6.0.tgz#2b2ba69d674070fdd8e1edb259ed7356fa770c8c"
+  integrity sha1-KyumnWdAcP3Y4e2yWe1zVvp3DIw=
 
 "@popperjs/core@^2.11.6":
   version "2.11.6"
@@ -2787,7 +2833,7 @@ jest-util@^29.1.2:
     graceful-fs "^4.2.9"
     picomatch "^2.2.3"
 
-joi@^17.6.0:
+joi@^17.6.0, joi@^17.7.0:
   version "17.7.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.7.0.tgz#591a33b1fe1aca2bc27f290bcad9b9c1c570a6b3"
   integrity sha512-1/ugc8djfn93rTE3WRKdCzGGt/EtiYKxITMO4Wiv6q5JL1gl9ePt4kBsl1S499nbosspfctIQTpYIhSmHA3WAg==

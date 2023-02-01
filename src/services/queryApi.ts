@@ -1,3 +1,4 @@
+import { Abstract } from "@pci/pci-services.types.abstract";
 import { Account, AccountProps } from "@pci/pci-services.types.account";
 import { Attendee } from "@pci/pci-services.types.attendee";
 import { Booth } from "@pci/pci-services.types.booth";
@@ -71,7 +72,15 @@ const baseQueryWithReauth: BaseQueryFn<
 export const queryApi = createApi({
   reducerPath: "queryApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Show", "Account", "Contact", "Role", "Booth", "Attendee"],
+  tagTypes: [
+    "Show",
+    "Account",
+    "Contact",
+    "Role",
+    "Booth",
+    "Attendee",
+    "Abstract",
+  ],
   endpoints: (builder) => ({
     getMe: builder.query<DecodedToken, void>({
       query: () => `${getBaseUrl("authorization")}/me`,
@@ -303,6 +312,64 @@ export const queryApi = createApi({
       }),
       invalidatesTags: ["Attendee"],
     }),
+
+    // Abstract
+    getAbstractByShowId: builder.query<GetResults<Abstract>, string>({
+      query: (showId: string) =>
+        `${getBaseUrl("abstracts")}/shows/${showId}/abstracts/`,
+      providesTags: ["Abstract"],
+    }),
+    getAbstractByShowAndId: builder.query<
+      GetResult<Abstract>,
+      { showId: string; abstractId: string }
+    >({
+      query: (payload: { showId: string; abstractId: string }) =>
+        `${getBaseUrl("abstracts")}/shows/${payload.showId}/abstracts/${
+          payload.abstractId
+        }`,
+      providesTags: ["Abstract"],
+    }),
+    createAbstract: builder.mutation<
+      CreateResult<Abstract>,
+      { abstract: Abstract; showId: string }
+    >({
+      query: (payload: { abstract: Abstract; showId: string }) => ({
+        url: `${getBaseUrl("abstracts")}/shows/${payload.showId}/abstracts`,
+        method: "POST",
+        body: payload.abstract,
+      }),
+      invalidatesTags: ["Abstract"],
+    }),
+
+    updateAbstract: builder.mutation<
+      UpdateResult<Abstract>,
+      { abstract: Abstract; abstractId: string; showId: string }
+    >({
+      query: (payload: {
+        abstract: Abstract;
+        abstractId: string;
+        showId: string;
+      }) => ({
+        url: `${getBaseUrl("abstracts")}/shows/${payload.showId}/abstracts/${
+          payload.abstractId
+        }`,
+        method: "PUT",
+        body: payload.abstract,
+      }),
+      invalidatesTags: ["Abstract"],
+    }),
+    deleteAbstract: builder.mutation<
+      DeleteResult,
+      { abstractId: string; showId: string }
+    >({
+      query: (payload: { abstractId: string; showId: string }) => ({
+        url: `${getBaseUrl("abstracts")}/shows/${payload.showId}/abstracts/${
+          payload.abstractId
+        }`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Abstract"],
+    }),
   }),
 });
 
@@ -341,4 +408,10 @@ export const {
   useUpdateAttendeeMutation,
   useGetAttendeeByShowQuery,
   useDeleteAttendeeMutation,
+  //abstracts
+  useGetAbstractByShowIdQuery,
+  useGetAbstractByShowAndIdQuery,
+  useCreateAbstractMutation,
+  useUpdateAbstractMutation,
+  useDeleteAbstractMutation,
 } = queryApi;

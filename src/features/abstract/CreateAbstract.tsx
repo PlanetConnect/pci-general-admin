@@ -1,10 +1,9 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
 import { Abstract } from "@pci/pci-services.types.abstract";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
@@ -12,23 +11,19 @@ import {
   Actions,
   Form,
   Header,
-  LookupField,
+  MultiSelect,
   Section,
   Select,
-  Switch,
-  TextArea,
   TextField,
 } from "~/app/templates/formbuilder";
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
 import abstractStatus from "~/features/abstract/data/form/abstractStatus";
 import { getCurrentShow } from "~/features/auth/authSlice";
+import { getUser } from "~/features/auth/userSlice";
 import {
-  useGetAbstractByShowAndIdQuery,
-  useGetAttendeeByEmailQuery,
+  useCreateAbstractMutation,
   useGetContactsQuery,
-  useUpdateAbstractMutation,
-  useUpdateAttendeeMutation,
 } from "~/services/queryApi";
 
 import abstractSchema from "./data/form/abstractSchema";
@@ -68,14 +63,25 @@ const abstract = {
   modified_time: "2022-03-29T14:32:56.619Z",
 };
 
-const EditAbstractInfo = () => {
+const CreateAbstract = () => {
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
-
-  const { abstractId } = useParams();
-
+  const user = useSelector(getUser);
+  if (!user) {
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
+      <ErrorIcon color="error" />
+      <Typography>Please log in again</Typography>
+    </div>;
+  }
   const currentShow = useSelector(getCurrentShow) as Show;
-
   if (!currentShow) {
     return (
       <div
@@ -92,20 +98,10 @@ const EditAbstractInfo = () => {
       </div>
     );
   }
+  const { data, isLoading, isError } = useGetContactsQuery();
+  const [createAabstract, results] = useCreateAbstractMutation();
 
-  const [updateAbstract, results] = useUpdateAbstractMutation();
-  const { data, isLoading, isError } = useGetAbstractByShowAndIdQuery({
-    abstractId: abstractId as string,
-    showId: currentShow?.show_id as string,
-  });
-
-  const {
-    data: contacts,
-    isLoading: getContactsIsLoading,
-    isError: getContactsIsError,
-  } = useGetContactsQuery();
-
-  if (isError || getContactsIsError) {
+  if (isError) {
     return (
       <div
         style={{
@@ -121,7 +117,7 @@ const EditAbstractInfo = () => {
       </div>
     );
   }
-  if (isLoading || getContactsIsLoading || data === undefined) {
+  if (isLoading || data === undefined) {
     return (
       <div
         style={{
@@ -138,20 +134,34 @@ const EditAbstractInfo = () => {
     );
   }
 
-  const abstract = data.data as Abstract;
+  const contacts = data?.data?.map((contact) => {
+    return {
+      value: contact,
+      label: contact.first_name + " " + contact.last_name,
+    };
+  });
 
+  const defaultValues = new Abstract({
+    contacts: [
+      { contact: { account_id: "", email: "" }, roles: ["Speaker"], order: 1 },
+    ],
+    content: "",
+    status: "",
+    show_id: currentShow?.show_id as string,
+    title: "",
+  });
   const handleSubmit = async (values: any) => {
     console.log(
-      "🚀 ~ file: EditAbstractInfo.tsx:143 ~ handleSubmit ~ values",
+      "🚀 ~ file: CreateAbstract.tsx:151 ~ handleSubmit ~ values",
       values
     );
     try {
-      await updateAbstract({
+      await createAabstract({
         abstract: values,
-        showId: currentShow?.show_id as string,
-        abstractId: abstractId as string,
+        showId: currentShow.show_id as string,
       }).unwrap();
       navigate(`/abstracts`);
+
       openSnackBar({
         message: "Abstract successfully updated.",
         position: {
@@ -162,7 +172,7 @@ const EditAbstractInfo = () => {
       });
     } catch (e: any) {
       openSnackBar({
-        message: `Abstract cannot be updated. ${e.error}`,
+        message: `Abstract cannot be created. ${e.error}`,
         position: {
           vertical: "top",
           horizontal: "center",
@@ -175,24 +185,31 @@ const EditAbstractInfo = () => {
     <PaperContent>
       <Form
         size="md"
-        defaultValues={abstract}
+        defaultValues={defaultValues}
         validationSchema={abstractSchema}
         onSubmit={handleSubmit}
       >
-        <Header>Edit Abstract Information</Header>
+        <Header>Create Abstract Information</Header>
 
         <Section name="General information">
           <TextField type="text" label="Title" name="title" />
           <Select label="Status" name="status" options={abstractStatus} />
           <TextField type="text" label="Content" name="content" />
-
+          {/* <MultiSelect
+            label="Contacts"
+            name="contacts"
+            // selected={attendee.days}
+            options={contacts as any[]}
+            selected={undefined}
+          /> */}
           <AutoComplete
             label="Contact"
             name="contacts[0].contact"
             // selected={attendee.days}
-            options={contacts?.data as any[]}
+            options={data?.data as any[]}
             selected={undefined}
           />
+          {/* <LookupField /> */}
         </Section>
         <Actions>
           <SaveButton />
@@ -202,4 +219,4 @@ const EditAbstractInfo = () => {
   );
 };
 
-export default EditAbstractInfo;
+export default CreateAbstract;

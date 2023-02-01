@@ -1,20 +1,24 @@
 import * as Yup from "yup";
 
 const abstractSchema = Yup.object({
-  status: Yup.string().required(),
-  showId: Yup.string().required("Show is Required"),
-  accountId: Yup.string().required("Account is Required"),
-  isPublic: Yup.boolean().required(),
-  acceptedType: Yup.string().max(200, "Must be 200 characters or less"),
-  submissionTypes: Yup.array().min(1, "Required"),
+  status: Yup.string(),
+  show_id: Yup.string(),
+  account_id: Yup.string(),
+  accepted_type: Yup.string().max(200, "Must be 200 characters or less"),
+  submission_types: Yup.array(),
   topic: Yup.string().max(200, "Must be 500 characters or less"),
-  areaOfScience: Yup.string(),
+  area_of_science: Yup.string(),
   phase: Yup.string(),
   track: Yup.string(),
+  note: Yup.string(),
+  seq_no: Yup.string(),
+  source: Yup.string(),
   trackNumber: Yup.number(),
-  isLive: Yup.boolean(),
+  is_live: Yup.boolean(),
+  is_public: Yup.boolean(),
   keywords: Yup.string(),
   title: Yup.string().max(500, "Must be 500 characters or less"),
+  // schedule
   content: Yup.string().max(2000, "Must be 2000 characters or less"),
   links: Yup.object({
     presentation: Yup.string().url("Must be a valid url"),
@@ -25,8 +29,8 @@ const abstractSchema = Yup.object({
   }),
   contacts: Yup.array().of(
     Yup.object().shape({
-      contactId: Yup.string().required(),
-      roles: Yup.array().min(1, "Required"),
+      contactId: Yup.string(),
+      roles: Yup.array(),
       order: Yup.number(),
     })
   ),

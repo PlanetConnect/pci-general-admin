@@ -47,7 +47,7 @@ const AutoComplete = ({
     options: options || [],
     getOptionLabel: (option: Contact) => option.email,
   });
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch, control } = useFormContext();
   const selectedContact = watch(name);
 
   const getAccountName = async (accountId: string) => {
@@ -82,78 +82,91 @@ const AutoComplete = ({
   };
 
   return (
-    <Autocomplete
-      filterOptions={(x) => x}
-      {...searchResults}
-      defaultValue={selectedContact}
-      renderOption={(props, option) => {
-        return (
-          <li {...props}>
-            <Box
-              style={{
-                display: "flex",
-                flex: 1,
-                flexDirection: "row",
-                width: "100%",
-                borderBottom: `1px solid `,
-                cursor: "pointer",
+    <Box sx={{ flex: 1 }}>
+      <Stack spacing={1}>
+        <Controller
+          name={name}
+          control={control}
+          render={() => (
+            <Autocomplete
+              filterOptions={(x) => x}
+              {...searchResults}
+              defaultValue={selectedContact}
+              renderOption={(props, option) => {
+                return (
+                  <li {...props}>
+                    <Box
+                      style={{
+                        display: "flex",
+                        flex: 1,
+                        flexDirection: "row",
+                        width: "100%",
+                        borderBottom: `1px solid `,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          overflow: "hidden",
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          noWrap
+                          style={{
+                            width: "100%",
+                            lineClamp: 2,
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {option.first_name} {option.last_name}
+                        </Typography>
+                        <Typography
+                          noWrap
+                          style={{
+                            width: "100%",
+                            lineClamp: 2,
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {option.email}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </li>
+                );
               }}
-            >
-              <Box
-                sx={{
-                  overflow: "hidden",
-                  width: "100%",
-                }}
-              >
-                <Typography
-                  noWrap
-                  style={{
-                    width: "100%",
-                    lineClamp: 2,
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {option.first_name} {option.last_name}
-                </Typography>
-                <Typography
-                  noWrap
-                  style={{
-                    width: "100%",
-                    lineClamp: 2,
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {option.email}
-                </Typography>
-              </Box>
-            </Box>
-          </li>
-        );
-      }}
-      onChange={(event, value) => {
-        if (!value) {
-          setSearchResults({
-            options: options || [],
-            getOptionLabel: (option) => option.email,
-          });
-        }
-        selectAttendeeSearch(value);
-      }}
-      onOpen={() => {
-        handleSearchTypeAhead(selectedContact?.email || "");
-      }}
-      renderInput={(params) => {
-        return (
-          <TextField
-            name={name}
-            onChange={(event) => handleSearchTypeAhead(event.target.value)}
-            {...params}
-            label={label}
-            fullWidth
-          />
-        );
-      }}
-    />
+              onChange={(event, value) => {
+                if (!value) {
+                  setSearchResults({
+                    options: options || [],
+                    getOptionLabel: (option) => option.email,
+                  });
+                }
+                selectAttendeeSearch(value);
+              }}
+              onOpen={() => {
+                handleSearchTypeAhead(selectedContact?.email || "");
+              }}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    name={name}
+                    onChange={(event) =>
+                      handleSearchTypeAhead(event.target.value)
+                    }
+                    {...params}
+                    label={label}
+                    fullWidth
+                  />
+                );
+              }}
+            />
+          )}
+        />
+        <Error name={name} error={error} />
+      </Stack>
+    </Box>
   );
 };
 

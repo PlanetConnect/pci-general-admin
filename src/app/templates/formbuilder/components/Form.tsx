@@ -1,16 +1,15 @@
 import { joiResolver } from "@hookform/resolvers/joi";
-import { yupResolver } from "@hookform/resolvers/yup";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/system/Container";
+import Joi from "joi";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { AnyObjectSchema } from "yup";
 
 interface FormProps {
   size: "xs" | "sm" | "md" | "lg" | "xl";
   children: React.ReactNode;
   defaultValues: object;
-  validationSchema: AnyObjectSchema;
+  validationSchema: Joi.Schema<any>;
   onSubmit: (values: any) => void;
 }
 
@@ -23,8 +22,7 @@ const Form = ({
 }: FormProps) => {
   const methods = useForm({
     defaultValues: defaultValues,
-    resolver: yupResolver(validationSchema),
-    // resolver: joiResolver(validationSchema),
+    resolver: joiResolver(validationSchema),
   });
 
   // const values = methods.watch();

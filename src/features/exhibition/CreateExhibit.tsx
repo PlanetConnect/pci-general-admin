@@ -2,7 +2,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
-import { Booth } from "@pci/pci-services.types.booth";
+import { Booth, BoothSchema } from "@pci/pci-services.types.booth";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -155,7 +155,7 @@ const CreateExhibit = () => {
       <Form
         size="md"
         defaultValues={defaultValues}
-        validationSchema={exhibitionSchema}
+        validationSchema={BoothSchema}
         onSubmit={handleSubmit}
       >
         <Header>Create Exhibition Information</Header>

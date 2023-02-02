@@ -1,30 +1,48 @@
-import * as Yup from "yup";
+import * as Joi from "joi";
 
-const exhibitionSchema = Yup.object({
-  show_id: Yup.string().required("Show is Required"),
-  type: Yup.string().required(),
-  is_public: Yup.boolean().required(),
-  is_active: Yup.boolean().required(),
-  // account_id: Yup.string(),
+const exhibitionSchema = Joi.object({
+  show_id: Joi.string()
+    .required()
+    .messages({ "any.required": "Show is Required" }),
+  type: Joi.string().required().messages({ "any.required": "Required" }),
+  is_public: Joi.boolean().required().messages({ "any.required": "Required" }),
+  is_active: Joi.boolean().required().messages({ "any.required": "Required" }),
+  // account_id: Joi.string(),
 
-  design_number: Yup.number(),
-  display_name: Yup.string().max(200, "Must be 200 characters or less"),
-  number: Yup.number(),
-  website: Yup.string().url("Must be a valid url"),
-  logo_url: Yup.string().url("Must be a valid url"),
-  color: Yup.object({
-    primary: Yup.string(),
-    secondary: Yup.string(),
-  }),
-  description: Yup.string().max(1000, "Must be 1000 characters or less"),
-  tags: Yup.array().of(Yup.string()),
-  sponsorship: Yup.string(),
-  virtual_staff_limit: Yup.number(),
-  onsite_staff_limit: Yup.number(),
-  product_showcase_limit: Yup.number(),
-  meetingRoom_client_link: Yup.string().url("Must be a valid url"),
-  meetingRoomHost_link: Yup.string().url("Must be a valid url"),
-  meetingRoom_number: Yup.number(),
+  design_number: Joi.number().allow(null),
+  display_name: Joi.string()
+    .max(200)
+    .messages({
+      "string.max": "Must be 200 characters or less",
+    })
+    .allow(null),
+  number: Joi.number().allow(null),
+  website: Joi.string().uri().message("Must be a valid url").allow(null),
+  logo_url: Joi.string().uri().message("Must be a valid url").allow(null),
+  color: Joi.object({
+    primary: Joi.string().allow(null),
+    secondary: Joi.string().allow(null),
+  }).allow(null),
+  description: Joi.string()
+    .max(1000)
+    .messages({
+      "string.max": "Must be 1000 characters or less",
+    })
+    .allow(null),
+  tags: Joi.array().items(Joi.string()).allow(null),
+  sponsorship: Joi.string().allow(null),
+  virtual_staff_limit: Joi.number().allow(null),
+  onsite_staff_limit: Joi.number().allow(null),
+  product_showcase_limit: Joi.number().allow(null),
+  meetingRoom_client_link: Joi.string()
+    .uri()
+    .message("Must be a valid url")
+    .allow(null),
+  meetingRoomHost_link: Joi.string()
+    .uri()
+    .message("Must be a valid url")
+    .allow(null),
+  meetingRoom_number: Joi.number().allow(null),
 });
 
 export default exhibitionSchema;

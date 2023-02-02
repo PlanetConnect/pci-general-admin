@@ -1,15 +1,18 @@
-import * as Yup from "yup";
+import * as Joi from "joi";
 
-const changePasswordSchema = Yup.object({
-  oldPassword: Yup.string()
-    .max(100, "Must be 100 characters or less")
-    .required("Required"),
-  password1: Yup.string()
-    .max(100, "Must be 100 characters or less")
-    .required("Required"),
-  password2: Yup.string()
-    .oneOf([Yup.ref("password1"), null], "Passwords must match")
-    .required("Required"),
+const changePasswordSchema = Joi.object({
+  oldPassword: Joi.string().max(100).required().messages({
+    "any.required": "Required",
+    "string.max": "Must be 100 characters or less",
+  }),
+  password1: Joi.string().max(100).required().messages({
+    "any.required": "Required",
+    "string.max": "Must be 100 characters or less",
+  }),
+  password2: Joi.string().valid(Joi.ref("password1")).required().messages({
+    "any.required": "Required",
+    "any.only": "Passwords must match",
+  }),
 });
 
 export default changePasswordSchema;

@@ -2,6 +2,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Account } from "@pci/pci-services.types.account";
+import { ContactSchema } from "@pci/pci-services.types.contact";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -125,7 +126,7 @@ const EditContactInfo = () => {
       <Form
         size="lg"
         defaultValues={defaultValues}
-        validationSchema={contactSchema}
+        validationSchema={ContactSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Contact Information</Header>

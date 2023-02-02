@@ -95,6 +95,7 @@ const AccountList = () => {
   return (
     <PaperContent>
       {/*</PaperContent> Title onCreate={onCreate}>Accounts</Title>*/}
+      <Title onCreate={onCreate}>Accounts</Title>
       <DataTable
         columns={accountListColumns}
         rows={filteredAccounts as any[]}

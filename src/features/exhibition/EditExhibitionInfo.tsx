@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { Attendee } from "@pci/pci-services.types.attendee";
-import { Booth } from "@pci/pci-services.types.booth";
+import { Booth, BoothSchema } from "@pci/pci-services.types.booth";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -149,7 +149,7 @@ const EditExhibitionInfo = () => {
       <Form
         size="md"
         defaultValues={exhibition}
-        validationSchema={exhibitionSchema}
+        validationSchema={BoothSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Exhibition Information</Header>

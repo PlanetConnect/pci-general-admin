@@ -1,6 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Account } from "@pci/pci-services.types.account";
+import { Account, AccountSchema } from "@pci/pci-services.types.account";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -139,7 +139,7 @@ const EditAccountInfo = () => {
       <Form
         size="md"
         defaultValues={defaultValues}
-        validationSchema={accountSchema}
+        validationSchema={AccountSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Account Information</Header>
@@ -147,18 +147,18 @@ const EditAccountInfo = () => {
         <Section name="General information">
           <TextField type="text" label="Name" name="name" />
           <TextField type="text" label="Website" name="website" />
-          <TextField type="text" label="Logo URL" name="logoUrl" />
+          <TextField type="text" label="Logo URL" name="logo_url" />
           <TextArea type="text" label="Description" name="description" />
         </Section>
 
         <Section name="Address">
           <AddressField
             address={{
-              address1: "billingStreet",
-              city: "billingCity",
-              state: "billingState",
-              zip: "billingCode",
-              country: "billingCountry",
+              address1: "address.street",
+              city: "address.city",
+              state: "address.state",
+              zip: "address.zip",
+              country: "address.country",
             }}
           />
         </Section>

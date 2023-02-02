@@ -1,7 +1,8 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Abstract } from "@pci/pci-services.types.abstract";
+import { Abstract, AbstractSchema } from "@pci/pci-services.types.abstract";
 import { Show } from "@pci/pci-services.types.show";
+import { useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -142,19 +143,18 @@ const CreateAbstract = () => {
   });
 
   const defaultValues = new Abstract({
-    contacts: [
-      { contact: { account_id: "", email: "" }, roles: ["Speaker"], order: 1 },
-    ],
+    contacts: [],
     content: "",
     status: "",
     show_id: currentShow?.show_id as string,
     title: "",
   });
   const handleSubmit = async (values: any) => {
-    console.log(
-      "🚀 ~ file: CreateAbstract.tsx:151 ~ handleSubmit ~ values",
-      values
-    );
+    values.contacts[0] = {
+      ...values.contacts[0],
+      order: 1,
+      roles: ["Submitter"],
+    };
     try {
       await createAabstract({
         abstract: values,
@@ -181,12 +181,13 @@ const CreateAbstract = () => {
       });
     }
   };
+
   return (
     <PaperContent>
       <Form
         size="md"
         defaultValues={defaultValues}
-        validationSchema={abstractSchema}
+        validationSchema={AbstractSchema}
         onSubmit={handleSubmit}
       >
         <Header>Create Abstract Information</Header>

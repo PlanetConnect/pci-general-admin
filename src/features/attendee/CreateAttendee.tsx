@@ -1,6 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Attendee } from "@pci/pci-services.types.attendee";
+import { Attendee, AttendeeSchema } from "@pci/pci-services.types.attendee";
 import { Contact } from "@pci/pci-services.types.contact";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
@@ -32,6 +32,38 @@ import roles from "./data/form/roles";
 const CreateAttendee = () => {
   const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
+  const user = useSelector(getUser);
+  if (!user) {
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
+      <ErrorIcon color="error" />
+      <Typography>Please log in again</Typography>
+    </div>;
+  }
+  const currentShow = useSelector(getCurrentShow) as Show;
+  if (!currentShow) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Please select a show first</Typography>
+      </div>
+    );
+  }
   const { data: contacts, isLoading, isError, error } = useGetContactsQuery();
 
   if (isError) {
@@ -68,38 +100,7 @@ const CreateAttendee = () => {
   }
 
   const [createAttendee, results] = useCreateAttendeeMutation();
-  const user = useSelector(getUser);
-  if (!user) {
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        width: "100%",
-      }}
-    >
-      <ErrorIcon color="error" />
-      <Typography>Please log in again</Typography>
-    </div>;
-  }
-  const currentShow = useSelector(getCurrentShow) as Show;
-  if (!currentShow) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
-        <ErrorIcon color="error" />
-        <Typography>Please select a show first</Typography>
-      </div>
-    );
-  }
+
   const defaultValues = new Attendee({
     attendance_days: [],
     contact: { email: "" },
@@ -146,10 +147,10 @@ const CreateAttendee = () => {
       <Form
         size="md"
         defaultValues={defaultValues}
-        validationSchema={attendeeSchema}
+        validationSchema={AttendeeSchema}
         onSubmit={handleSubmit}
       >
-        <Header>Edit Attendee Information</Header>
+        <Header>Create Attendee Information</Header>
 
         <Section name="Show information">
           <TextField type="text" label="Badge Key" name="badgeKey" isDisabled />

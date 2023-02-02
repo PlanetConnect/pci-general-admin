@@ -31,7 +31,7 @@ const abstractListColumns = [
     flex: 1,
   },
   {
-    field: "account_id",
+    field: "attendeeAccountName",
     headerName: "Account",
     width: 100,
     flex: 1,

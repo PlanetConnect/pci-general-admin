@@ -1,6 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Show } from "@pci/pci-services.types.show";
+import { Show, ShowSchema } from "@pci/pci-services.types.show";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -116,7 +116,7 @@ const EditShowInfo = () => {
     <Form
       size="lg"
       defaultValues={defaultValues}
-      validationSchema={showSchema}
+      validationSchema={ShowSchema}
       onSubmit={handleSubmit}
     >
       <Header>Edit Show Information</Header>

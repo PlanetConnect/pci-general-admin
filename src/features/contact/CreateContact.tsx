@@ -2,7 +2,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Account } from "@pci/pci-services.types.account";
-import { Contact } from "@pci/pci-services.types.contact";
+import { Contact, ContactSchema } from "@pci/pci-services.types.contact";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -150,7 +150,7 @@ const CreateContact = () => {
       <Form
         size="lg"
         defaultValues={defaultValues}
-        validationSchema={contactSchema}
+        validationSchema={ContactSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Contact Information</Header>

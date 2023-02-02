@@ -1,6 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Attendee } from "@pci/pci-services.types.attendee";
+import { Attendee, AttendeeSchema } from "@pci/pci-services.types.attendee";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -169,7 +169,7 @@ const EditAttendeeInfo = () => {
       <Form
         size="md"
         defaultValues={attendee}
-        validationSchema={attendeeSchema}
+        validationSchema={AttendeeSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Attendee Information</Header>

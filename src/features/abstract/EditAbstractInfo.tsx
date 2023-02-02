@@ -1,7 +1,7 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { Abstract } from "@pci/pci-services.types.abstract";
+import { Abstract, AbstractSchema } from "@pci/pci-services.types.abstract";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -176,7 +176,7 @@ const EditAbstractInfo = () => {
       <Form
         size="md"
         defaultValues={abstract}
-        validationSchema={abstractSchema}
+        validationSchema={AbstractSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Abstract Information</Header>

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import { ConfirmationDialog } from "~/app/templates/dialog";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/auth/authSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import { useDeleteAttendeeMutation } from "~/services/queryApi";
 
 interface DeleteAttendeeProps {

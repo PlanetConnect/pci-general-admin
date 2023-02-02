@@ -13,6 +13,9 @@ jobs:
       VITE_API_ENDPOINT: serverless-api.planetconnect.com
       VITE_COGNITO_USER_POOL_ID: us-east-1_q0JLpYNG0
       VITE_COGNITO_CLIENT_ID: 3muheqms3g0t72fu3l8o5bfed5
+      VITE_DOMAIN_NAME: https://development.pci-admin.planetconnect.com
+      VITE_COGNITO_USER_POOL_NAME: dev-pci-pool-no-mfa
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x

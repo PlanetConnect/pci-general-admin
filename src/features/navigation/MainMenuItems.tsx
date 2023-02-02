@@ -14,8 +14,6 @@ import {
   withShowRoutes,
 } from "~/app/data/routes";
 import { AppDispatch } from "~/app/store";
-import { authLogout } from "~/features/auth/actions/authLogout";
-import { fetchAccessToken } from "~/features/auth/actions/fetchAccessToken";
 
 import MenuItem from "./data/MenuItem";
 

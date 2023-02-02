@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { startupAsync } from "~/app/actions/startupAsync";
 import { AppDispatch } from "~/app/store";
+import AuthCallback from "~/features/auth/AuthCallback";
 import ProtectedRoute from "~/features/auth/ProtectedRoute";
 
 import {
@@ -17,14 +18,7 @@ import {
   CreateAttendee,
   EditAttendeeInfo,
 } from "../features/attendee";
-import {
-  ForgotPassword,
-  Login,
-  LoginMfa,
-  LoginNewPassword,
-  Profile,
-  Signup,
-} from "../features/auth";
+import { Login, Profile } from "../features/auth";
 import {
   ContactList,
   CreateContact,
@@ -63,10 +57,11 @@ function App() {
     <Routes>
       {/* Login Routes */}
       <Route path="/login" element={<Login />} />
-      <Route path="/login/mfa" element={<LoginMfa />} />
+      <Route path="/callback" element={<AuthCallback />} />
+      {/* <Route path="/login/mfa" element={<LoginMfa />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login/newPassword" element={<LoginNewPassword />} />
-      <Route path="/login/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/login/forgotPassword" element={<ForgotPassword />} /> */}
 
       <Route
         path="/"

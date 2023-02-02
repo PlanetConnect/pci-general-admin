@@ -24,7 +24,7 @@ import {
 } from "~/app/templates/formbuilder";
 import TagsAutoComplete from "~/app/templates/formbuilder/components/TagsAutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/auth/authSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import {
   useGetAttendeeByShowQuery,
   useGetBoothByIdQuery,

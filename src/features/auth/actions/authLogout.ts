@@ -1,22 +1,19 @@
-import { CognitoUser } from "amazon-cognito-identity-js";
-
 import { AppDispatch, RootState } from "~/app/store";
 import { resetTokens } from "~/features/auth/authSlice";
 import { getUser, resetUser } from "~/features/auth/userSlice";
-import { userPool } from "~/features/auth/utils/userPool";
 
 export const authLogout =
   () => (dispatch: AppDispatch, getState: () => RootState) => {
     const user = getUser(getState());
 
     if (user?.username) {
-      const userData = {
-        Username: user?.username,
-        Pool: userPool,
-      };
-      const cognitoUser = new CognitoUser(userData);
+      // const userData = {
+      //   Username: user?.username,
+      //   Pool: userPool,
+      // };
+      // const cognitoUser = new CognitoUser(userData);
 
-      cognitoUser.signOut();
+      // cognitoUser.signOut();
       console.log("logout success");
       dispatch(resetTokens());
       dispatch(resetUser());

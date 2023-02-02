@@ -18,7 +18,7 @@ import {
 } from "~/app/templates/formbuilder";
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/auth/authSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import { getUser } from "~/features/auth/userSlice";
 import {
   useCreateAttendeeMutation,

@@ -3,9 +3,7 @@ import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Account } from "@pci/pci-services.types.account";
 import { Contact, ContactSchema } from "@pci/pci-services.types.contact";
-import { Show } from "@pci/pci-services.types.show";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
@@ -18,19 +16,12 @@ import {
   TextArea,
   TextField,
 } from "~/app/templates/formbuilder";
-import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import SelectAccountAutoComplete from "~/app/templates/formbuilder/components/SelectAccountAutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/persist/persistSlice";
-import contacts from "~/features/contact/data/data";
 import {
   useCreateContactMutation,
   useGetAccountsQuery,
-  useGetContactByEmailQuery,
-  useUpdateContactMutation,
 } from "~/services/queryApi";
-
-import contactSchema from "./data/form/contactSchema";
 
 // const contact = {
 //   contact_id: "5caa8244-cc26-4725-bf42-91fd7b27cdba",

@@ -22,7 +22,7 @@ import {
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
 import abstractStatus from "~/features/abstract/data/form/abstractStatus";
-import { getCurrentShow } from "~/features/auth/authSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import {
   useGetAbstractByShowAndIdQuery,
   useGetAttendeeByEmailQuery,

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { PaperContent, Title } from "~/app/templates/content/";
 import { DataTable } from "~/app/templates/datatable";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/auth/authSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import { useGetAbstractByShowIdQuery } from "~/services/queryApi";
 
 import data from "./data/data";

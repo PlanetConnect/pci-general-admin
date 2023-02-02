@@ -14,6 +14,7 @@ interface TextFieldProps {
   error?: string;
   isDisabled?: boolean;
   onChange?: (text: string) => void;
+  required?: boolean;
 }
 
 const TextField = ({
@@ -25,6 +26,7 @@ const TextField = ({
   isDisabled = false,
   error,
   onChange,
+  required,
 }: TextFieldProps) => {
   const { control, setValue } = useFormContext();
 
@@ -45,7 +47,9 @@ const TextField = ({
       <Controller
         control={control}
         name={name}
-        render={({ field: { onChange, value } }) => {
+        render={({ field: { onChange, value }, fieldState: { error } }) => {
+          console.log("🚀 ~ file: TextField.tsx:71 ~ error", error);
+
           return (
             <MuiTextField
               // InputLabelProps={{ shrink: true }}
@@ -55,7 +59,7 @@ const TextField = ({
                 handleChange(e.target.value);
               }}
               type={type}
-              label={label}
+              label={required ? `${label} *` : label}
               variant={variant}
               disabled={isDisabled}
             />

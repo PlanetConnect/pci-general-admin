@@ -145,8 +145,8 @@ const EditAccountInfo = () => {
         <Header>Edit Account Information</Header>
 
         <Section name="General information">
-          <TextField type="text" label="Name" name="name" />
-          <TextField type="text" label="Website" name="website" />
+          <TextField type="text" label="Name" name="name" required />
+          <TextField type="text" label="Website" name="website" required />
           <TextField type="text" label="Logo URL" name="logo_url" />
           <TextArea type="text" label="Description" name="description" />
         </Section>

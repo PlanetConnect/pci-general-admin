@@ -1,20 +1,13 @@
 import Autocomplete from "@mui/lab/Autocomplete";
-import { colors, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import { Account } from "@pci/pci-services.types.account";
-import { Contact, ContactProps } from "@pci/pci-services.types.contact";
-import React, { useEffect, useState } from "react";
+import { Contact } from "@pci/pci-services.types.contact";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { useAppDispatch } from "~/app/hooks";
-import { queryApi, useGetAccountByIdQuery } from "~/services/queryApi";
+import { queryApi } from "~/services/queryApi";
 
 import Error from "./Error";
 
@@ -31,6 +24,7 @@ interface MultiSelectProps {
   options?: Contact[];
   isDisabled?: boolean;
   error?: string;
+  manualOnChange?: (value: Contact | null) => void;
 }
 
 const AutoComplete = ({
@@ -40,13 +34,19 @@ const AutoComplete = ({
   selected,
   options,
   error,
+  manualOnChange,
 }: MultiSelectProps) => {
   const dispatch = useAppDispatch();
 
   const [searchResults, setSearchResults] = useState({
     options: options || [],
-    getOptionLabel: (option: Contact) => option.email,
+    getOptionLabel: (option: Contact) => {
+      console.log("🚀 ~ file: AutoComplete.tsx:47 ~ option", option);
+
+      return option?.email;
+    },
   });
+  console.log("🚀 ~ file: AutoComplete.tsx:49 ~ options", options);
   const { setValue, watch, control } = useFormContext();
   const selectedContact = watch(name);
 
@@ -77,6 +77,11 @@ const AutoComplete = ({
   };
 
   const selectAttendeeSearch = async (value: Contact | null) => {
+    if (manualOnChange) {
+      manualOnChange(value);
+      return;
+    }
+
     setValue(name, value as Contact);
     await getAccountName(value?.account_id || "");
   };
@@ -88,7 +93,7 @@ const AutoComplete = ({
           name={name}
           control={control}
           render={({ fieldState: { error } }) => {
-            console.log("🚀 ~ file: AutoComplete.tsx:177 ~ error", error);
+            // console.log("🚀 ~ file: AutoComplete.tsx:177 ~ error", error);
 
             return (
               <>

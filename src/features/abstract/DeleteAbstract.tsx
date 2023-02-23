@@ -19,8 +19,8 @@ const DeleteAbstract = (props: DeleteAbstractProps) => {
 
   const [deletShow, results] = useDeleteAbstractMutation();
   const title = "Confirm";
-  const message = `Delete abstract??`;
-  const currentShow = useSelector(getCurrentShow) as Show;
+  const message = `Delete abstract?`;
+  const currentShow = useSelector(getCurrentShow);
 
   const handleDialogOpen = () => {
     setIsConfirmDialogOpen(true);
@@ -30,7 +30,7 @@ const DeleteAbstract = (props: DeleteAbstractProps) => {
     try {
       await deletShow({
         abstractId: props.abstractId,
-        showId: currentShow?.show_id || "",
+        showId: currentShow?.show_id,
       });
 
       openSnackBar({

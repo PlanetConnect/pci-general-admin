@@ -6,7 +6,6 @@ import { Actions, Field, Form, Header } from "~/app/templates/formbuilder";
 
 import configData from "./data/config/configData";
 import configForm from "./data/config/configForm";
-import showSchema from "./data/form/showSchema";
 
 const EditShowConfig = () => {
   const handleSubmit = (values: any) => {

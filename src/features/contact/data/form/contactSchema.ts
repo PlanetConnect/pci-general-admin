@@ -58,11 +58,11 @@ const contactSchema = Joi.object({
     .uri()
     .message("Must be a valid url")
     .allow(null, ""),
-  bio: Joi.string().max(1000).required().messages({
-    "any.required": "Required",
-    "string.max": "Must be 1000 characters or less",
-    "string.empty": "Required",
-  }),
+  // bio: Joi.string().max(1000).required().messages({
+  //   "any.required": "Required",
+  //   "string.max": "Must be 1000 characters or less",
+  //   "string.empty": "Required",
+  // }),
   address: Joi.object({
     street: Joi.string().allow(null, ""),
     city: Joi.string().allow(null, ""),

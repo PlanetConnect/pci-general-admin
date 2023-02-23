@@ -1,8 +1,11 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Abstract, AbstractSchema } from "@pci/pci-services.types.abstract";
+import {
+  Abstract,
+  AbstractProps,
+  AbstractSchema,
+} from "@pci/pci-services.types.abstract";
 import { Show } from "@pci/pci-services.types.show";
-import { useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -13,13 +16,11 @@ import {
   DateField,
   Form,
   Header,
-  MultiSelect,
   Section,
   Select,
   Switch,
   TextField,
 } from "~/app/templates/formbuilder";
-import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import TagsAutoComplete from "~/app/templates/formbuilder/components/TagsAutoComplete";
 import TimeField from "~/app/templates/formbuilder/components/TimeField";
 import { useSnackBar } from "~/app/templates/snackbar";
@@ -67,41 +68,7 @@ const CreateAbstract = () => {
       </div>
     );
   }
-  const { data, isLoading, isError } = useGetContactsQuery();
   const [createAabstract, results] = useCreateAbstractMutation();
-
-  if (isError) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
-        <ErrorIcon color="error" />
-        <Typography>Error Fetching Information</Typography>
-      </div>
-    );
-  }
-  if (isLoading || data === undefined) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
-        <CircularProgress />
-        <Typography>Loading...</Typography>
-      </div>
-    );
-  }
 
   const defaultValues = new Abstract({
     contacts: [],
@@ -110,41 +77,32 @@ const CreateAbstract = () => {
     show_id: currentShow?.show_id as string,
     title: "",
   });
-  const handleSubmit = async (values: any) => {
-    console.log(
-      "🚀 ~ file: CreateAbstract.tsx:110 ~ handleSubmit ~ values",
-      values
-    );
-    // values.contacts[0] = {
-    //   ...values.contacts[0],
-    //   order: 1,
-    //   roles: ["Submitter"],
-    // };
-    // try {
-    //   await createAabstract({
-    //     abstract: values,
-    //     showId: currentShow.show_id as string,
-    //   }).unwrap();
-    //   navigate(`/abstracts`);
+  const handleSubmit = async (values: AbstractProps) => {
+    try {
+      await createAabstract({
+        abstract: new Abstract(values),
+        showId: currentShow?.show_id as string,
+      }).unwrap();
+      navigate(`/abstracts`);
 
-    //   openSnackBar({
-    //     message: "Abstract successfully updated.",
-    //     position: {
-    //       vertical: "top",
-    //       horizontal: "center",
-    //     },
-    //     variant: "success",
-    //   });
-    // } catch (e: any) {
-    //   openSnackBar({
-    //     message: `Abstract cannot be created. ${e.error}`,
-    //     position: {
-    //       vertical: "top",
-    //       horizontal: "center",
-    //     },
-    //     variant: "error",
-    //   });
-    // }
+      openSnackBar({
+        message: "Abstract successfully updated.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+    } catch (e: any) {
+      openSnackBar({
+        message: `Abstract cannot be created. ${e.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -165,14 +123,6 @@ const CreateAbstract = () => {
           <Select label="Status*" name="status" options={abstractStatus} />
           <TextField type="text" label="Content*" name="content" />
 
-          {/* 
-          <AutoComplete
-            label="Contact"
-            name={`contacts`}
-            // selected={attendee.days}
-            options={data?.data as any[]}
-            selected={undefined}
-          /> */}
           <FieldArray fieldArrayName="contacts" />
         </Section>
         <Section name="Schedule">

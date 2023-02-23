@@ -1,7 +1,11 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { Abstract, AbstractSchema } from "@pci/pci-services.types.abstract";
+import {
+  Abstract,
+  AbstractProps,
+  AbstractSchema,
+} from "@pci/pci-services.types.abstract";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,6 +14,7 @@ import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
 import {
   Actions,
+  DateField,
   Form,
   Header,
   LookupField,
@@ -20,7 +25,10 @@ import {
   TextField,
 } from "~/app/templates/formbuilder";
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
+import TagsAutoComplete from "~/app/templates/formbuilder/components/TagsAutoComplete";
+import TimeField from "~/app/templates/formbuilder/components/TimeField";
 import { useSnackBar } from "~/app/templates/snackbar";
+import FieldArray from "~/features/abstract/AbstractFieldArray";
 import abstractStatus from "~/features/abstract/data/form/abstractStatus";
 import { getCurrentShow } from "~/features/persist/persistSlice";
 import {
@@ -99,13 +107,7 @@ const EditAbstractInfo = () => {
     showId: currentShow?.show_id as string,
   });
 
-  const {
-    data: contacts,
-    isLoading: getContactsIsLoading,
-    isError: getContactsIsError,
-  } = useGetContactsQuery();
-
-  if (isError || getContactsIsError) {
+  if (isError) {
     return (
       <div
         style={{
@@ -121,7 +123,7 @@ const EditAbstractInfo = () => {
       </div>
     );
   }
-  if (isLoading || getContactsIsLoading || data === undefined) {
+  if (isLoading || data === undefined) {
     return (
       <div
         style={{
@@ -140,14 +142,10 @@ const EditAbstractInfo = () => {
 
   const abstract = data.data as Abstract;
 
-  const handleSubmit = async (values: any) => {
-    console.log(
-      "🚀 ~ file: EditAbstractInfo.tsx:143 ~ handleSubmit ~ values",
-      values
-    );
+  const handleSubmit = async (values: AbstractProps) => {
     try {
       await updateAbstract({
-        abstract: values,
+        abstract: new Abstract(values),
         showId: currentShow?.show_id as string,
         abstractId: abstractId as string,
       }).unwrap();
@@ -181,17 +179,61 @@ const EditAbstractInfo = () => {
       >
         <Header>Edit Abstract Information</Header>
 
-        <Section name="General information">
-          <TextField type="text" label="Title" name="title" />
-          <Select label="Status" name="status" options={abstractStatus} />
-          <TextField type="text" label="Content" name="content" />
+        <Section name="General Information">
+          <Switch label="Is Public?" name="is_public" isChecked={false} />
+          <Switch label="Is Live?" name="is_live" isChecked={false} />
+          <TextField type="text" label="Title*" name="title" />
 
-          <AutoComplete
-            label="Contact"
-            name="contacts[0].contact"
-            // selected={attendee.days}
-            options={contacts?.data as any[]}
-            selected={undefined}
+          <Select label="Status*" name="status" options={abstractStatus} />
+          <TextField type="text" label="Content*" name="content" />
+
+          <FieldArray fieldArrayName="contacts" />
+        </Section>
+        <Section name="Schedule">
+          <DateField label="Date" name="schedule.date" />
+          <TimeField label="Start Time" name="schedule.start_time" />
+          <TimeField label="End Time" name="schedule.end_time" />
+          <TextField type="text" label="Room" name="schedule.room" />
+        </Section>
+        <Section name="Other Information">
+          <TextField
+            type="text"
+            label="Area of Science"
+            name="area_of_science"
+          />
+          <TagsAutoComplete label="Keywords" name="keywords" />
+          <TextField type="text" label="Note" name="note" />
+          <TextField type="text" label="Phase" name="phase" />
+          <TextField type="text" label="Sequence Number" name="seq_no" />
+          <TextField type="text" label="Source" name="source" />
+          <TextField type="text" label="Topic" name="topic" />
+        </Section>
+
+        <Section name="Links">
+          <TextField
+            type="text"
+            label="Archive Link"
+            name="links.archive_link"
+          />
+          <TextField
+            type="text"
+            label="host Presentation Link"
+            name="links.host_presentation_link"
+          />
+          <TextField
+            type="text"
+            label="Presentation Link"
+            name="links.presentation_link"
+          />
+          <TextField
+            type="text"
+            label="Presentation PDF"
+            name="links.presentation_pdf"
+          />
+          <TextField
+            type="text"
+            label="Presentation Video"
+            name="links.presentation_video"
           />
         </Section>
         <Actions>

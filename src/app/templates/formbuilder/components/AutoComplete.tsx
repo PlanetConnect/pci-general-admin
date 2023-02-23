@@ -2,7 +2,7 @@ import Autocomplete from "@mui/lab/Autocomplete";
 import { TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import { Contact } from "@pci/pci-services.types.contact";
+import { Contact, ContactProps } from "@pci/pci-services.types.contact";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -20,11 +20,11 @@ interface MultiSelectProps {
   label: string;
   name: string;
   variant?: "standard" | "filled" | "outlined" | undefined;
-  selected: Contact | undefined;
-  options?: Contact[];
+  selected: ContactProps | undefined;
+  options?: ContactProps[];
   isDisabled?: boolean;
   error?: string;
-  manualOnChange?: (value: Contact | null) => void;
+  manualOnChange?: (value: ContactProps | null) => void;
 }
 
 const AutoComplete = ({
@@ -40,7 +40,7 @@ const AutoComplete = ({
 
   const [searchResults, setSearchResults] = useState({
     options: options || [],
-    getOptionLabel: (option: Contact) => {
+    getOptionLabel: (option: ContactProps) => {
       console.log("🚀 ~ file: AutoComplete.tsx:47 ~ option", option);
 
       return option?.email;
@@ -76,14 +76,20 @@ const AutoComplete = ({
     });
   };
 
-  const selectAttendeeSearch = async (value: Contact | null) => {
+  const selectAttendeeSearch = async (value: any | null) => {
     if (manualOnChange) {
       manualOnChange(value);
       return;
     }
 
-    setValue(name, value as Contact);
-    await getAccountName(value?.account_id || "");
+    // setValue(name, value as Contact);
+    if (value) {
+      if (value?.address?.facility) {
+        delete value?.address?.facility;
+      }
+      setValue(name, new Contact(value));
+      // await getAccountName(value?.account_id || "");
+    }
   };
 
   return (

@@ -1,10 +1,10 @@
-import { Abstract } from "@pci/pci-services.types.abstract";
+import { Abstract, AbstractProps } from "@pci/pci-services.types.abstract";
 import { Account, AccountProps } from "@pci/pci-services.types.account";
-import { Attendee } from "@pci/pci-services.types.attendee";
-import { Booth } from "@pci/pci-services.types.booth";
-import { Contact } from "@pci/pci-services.types.contact";
+import { Attendee, AttendeeProps } from "@pci/pci-services.types.attendee";
+import { Booth, BoothProps } from "@pci/pci-services.types.booth";
+import { Contact, ContactProps } from "@pci/pci-services.types.contact";
 import { DecodedToken } from "@pci/pci-services.types.decoded-token";
-import { Show } from "@pci/pci-services.types.show";
+import { Show, ShowProps } from "@pci/pci-services.types.show";
 import {
   BaseQueryFn,
   createApi,
@@ -100,7 +100,9 @@ export const queryApi = createApi({
     // Shows
     getShowById: builder.query<GetResult<Show>, string>({
       query: (id: string) => `${getBaseUrl("shows")}/shows/${id}`,
-
+      transformResponse: (response: GetResult<ShowProps>) => {
+        return { count: response.count, data: new Show(response.data) };
+      },
       providesTags: ["Show"],
     }),
     deleteShow: builder.mutation<DeleteResult, string>({
@@ -136,6 +138,12 @@ export const queryApi = createApi({
           console.log("getShows ~ err", err);
         }
       },
+      transformResponse: (response: GetResults<ShowProps>) => {
+        const newShows = response.data.map((show) => {
+          return new Show(show);
+        });
+        return { count: response.count, data: newShows };
+      },
     }),
     updateShow: builder.mutation<
       UpdateResult<Show>,
@@ -146,12 +154,21 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.show,
       }),
+      transformResponse: (response: UpdateResult<ShowProps>) => {
+        return {
+          success: response.success,
+          updated_data: new Show(response.updated_data),
+        };
+      },
       invalidatesTags: ["Show"],
     }),
 
     //Accounts
     getAccountById: builder.query<GetResult<Account>, string>({
       query: (id: string) => `${getBaseUrl("accounts")}/accounts/${id}`,
+      transformResponse: (response: GetResult<AccountProps>) => {
+        return { count: response.count, data: new Account(response.data) };
+      },
       providesTags: ["Account"],
     }),
     deleteAccount: builder.mutation<DeleteResult, string>({
@@ -171,6 +188,12 @@ export const queryApi = createApi({
     }),
     getAccounts: builder.query<GetResults<Account>, void>({
       query: () => `${getBaseUrl("accounts")}/accounts`,
+      transformResponse: (response: GetResults<AccountProps>) => {
+        const newAccounts = response.data.map((account) => {
+          return new Account(account);
+        });
+        return { count: response.count, data: newAccounts };
+      },
       providesTags: ["Account"],
     }),
     updateAccount: builder.mutation<
@@ -182,8 +205,15 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.account,
       }),
+      transformResponse: (response: UpdateResult<AccountProps>) => {
+        return {
+          success: response.success,
+          updated_data: new Account(response.updated_data),
+        };
+      },
       invalidatesTags: ["Account"],
     }),
+
     getAccountsHealthCheck: builder.query<HealthCheckResult, void>({
       query: () => `${getBaseUrl("accounts")}/accounts/health-check`,
       providesTags: ["Account"],
@@ -192,6 +222,9 @@ export const queryApi = createApi({
     // //change type to contacts
     getContactByEmail: builder.query<GetResult<Contact>, string>({
       query: (email: string) => `${getBaseUrl("contacts")}/${email}`,
+      transformResponse: (response: GetResult<ContactProps>) => {
+        return { count: response.count, data: new Contact(response.data) };
+      },
       providesTags: ["Contact"],
     }),
     deleteContact: builder.mutation<DeleteResult, string>({
@@ -211,6 +244,12 @@ export const queryApi = createApi({
     }),
     getContacts: builder.query<GetResults<Contact>, void>({
       query: () => `${getBaseUrl("contacts")}`,
+      transformResponse: (response: GetResults<ContactProps>) => {
+        const newContacts = response.data.map((contact) => {
+          return new Contact(contact);
+        });
+        return { count: response.count, data: newContacts };
+      },
       providesTags: ["Contact"],
     }),
     updateContact: builder.mutation<
@@ -222,6 +261,12 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.contact,
       }),
+      transformResponse: (response: UpdateResult<ContactProps>) => {
+        return {
+          success: response.success,
+          updated_data: new Contact(response.updated_data),
+        };
+      },
       invalidatesTags: ["Contact"],
     }),
 
@@ -242,6 +287,9 @@ export const queryApi = createApi({
     >({
       query: (payload: { id: string; showId: string }) =>
         `${getBaseUrl("booths")}/shows/${payload.showId}/booths/${payload.id}`,
+      transformResponse: (response: GetResult<BoothProps>) => {
+        return { count: response.count, data: new Booth(response.data) };
+      },
       providesTags: ["Booth"],
     }),
     getBoothByAccount: builder.query<
@@ -252,10 +300,19 @@ export const queryApi = createApi({
         `${getBaseUrl("booths")}/shows/${payload.showId}/accounts/${
           payload.accountId
         }/booths`,
+      transformResponse: (response: GetResult<BoothProps>) => {
+        return { count: response.count, data: new Booth(response.data) };
+      },
       providesTags: ["Booth"],
     }),
     getBoothsByShow: builder.query<GetResults<Booth>, string>({
       query: (id: string) => `${getBaseUrl("booths")}/shows/${id}/booths`,
+      transformResponse: (response: GetResults<BoothProps>) => {
+        const newBooths = response.data.map((booth) => {
+          return new Booth(booth);
+        });
+        return { count: response.count, data: newBooths };
+      },
       providesTags: ["Booth"],
     }),
     createBooth: builder.mutation<
@@ -280,6 +337,12 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.booth,
       }),
+      transformResponse: (response: UpdateResult<BoothProps>) => {
+        return {
+          success: response.success,
+          updated_data: new Booth(response.updated_data),
+        };
+      },
       invalidatesTags: ["Booth"],
     }),
 
@@ -292,11 +355,20 @@ export const queryApi = createApi({
         `${getBaseUrl("attendees")}/shows/${payload.showId}/attendees/${
           payload.email
         }`,
+      transformResponse: (response: GetResult<AttendeeProps>) => {
+        return { count: response.count, data: new Attendee(response.data) };
+      },
       providesTags: ["Attendee"],
     }),
     getAttendeeByShow: builder.query<GetResults<Attendee>, string>({
       query: (showId: string) =>
         `${getBaseUrl("attendees")}/shows/${showId}/attendees`,
+      transformResponse: (response: GetResults<AttendeeProps>) => {
+        const newAttendees = response.data.map((attendee) => {
+          return new Attendee(attendee);
+        });
+        return { count: response.count, data: newAttendees };
+      },
       providesTags: ["Attendee"],
     }),
     createAttendee: builder.mutation<
@@ -326,6 +398,12 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.attendee,
       }),
+      transformResponse: (response: UpdateResult<AttendeeProps>) => {
+        return {
+          success: response.success,
+          updated_data: new Attendee(response.updated_data),
+        };
+      },
       invalidatesTags: ["Attendee"],
     }),
     deleteAttendee: builder.mutation<
@@ -345,6 +423,12 @@ export const queryApi = createApi({
     getAbstractByShowId: builder.query<GetResults<Abstract>, string>({
       query: (showId: string) =>
         `${getBaseUrl("abstracts")}/shows/${showId}/abstracts/`,
+      transformResponse: (response: GetResults<AbstractProps>) => {
+        const newAbstracts = response.data.map((abstract) => {
+          return new Abstract(abstract);
+        });
+        return { count: response.count, data: newAbstracts };
+      },
       providesTags: ["Abstract"],
     }),
     getAbstractByShowAndId: builder.query<
@@ -355,6 +439,9 @@ export const queryApi = createApi({
         `${getBaseUrl("abstracts")}/shows/${payload.showId}/abstracts/${
           payload.abstractId
         }`,
+      transformResponse: (response: GetResult<AbstractProps>) => {
+        return { count: response.count, data: new Abstract(response.data) };
+      },
       providesTags: ["Abstract"],
     }),
     createAbstract: builder.mutation<
@@ -384,6 +471,12 @@ export const queryApi = createApi({
         method: "PUT",
         body: payload.abstract,
       }),
+      transformResponse: (response: UpdateResult<AbstractProps>) => {
+        return {
+          success: response.success,
+          updated_data: new Abstract(response.updated_data),
+        };
+      },
       invalidatesTags: ["Abstract"],
     }),
     deleteAbstract: builder.mutation<

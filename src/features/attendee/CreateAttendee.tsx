@@ -1,7 +1,11 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Attendee, AttendeeSchema } from "@pci/pci-services.types.attendee";
-import { Contact } from "@pci/pci-services.types.contact";
+import {
+  Attendee,
+  AttendeeProps,
+  AttendeeSchema,
+} from "@pci/pci-services.types.attendee";
+import { ContactProps } from "@pci/pci-services.types.contact";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,14 +22,13 @@ import {
 } from "~/app/templates/formbuilder";
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
 import { useSnackBar } from "~/app/templates/snackbar";
-import { getCurrentShow } from "~/features/persist/persistSlice";
 import { getUser } from "~/features/auth/userSlice";
+import { getCurrentShow } from "~/features/persist/persistSlice";
 import {
   useCreateAttendeeMutation,
   useGetContactsQuery,
 } from "~/services/queryApi";
 
-import attendeeSchema from "./data/form/attendeeSchema";
 import days from "./data/form/days";
 import roles from "./data/form/roles";
 
@@ -64,7 +67,7 @@ const CreateAttendee = () => {
       </div>
     );
   }
-  const { data: contacts, isLoading, isError, error } = useGetContactsQuery();
+  const { data: contacts, isLoading, isError } = useGetContactsQuery();
 
   if (isError) {
     return (
@@ -110,15 +113,15 @@ const CreateAttendee = () => {
     account_id: "",
   });
 
-  const handleSubmit = async (values: Attendee) => {
+  const handleSubmit = async (values: AttendeeProps) => {
     try {
       values.email = values.contact.email;
       values.account_id = values.contact.account_id as string;
-      values.contact = values.contact as Contact;
+      values.contact = values.contact as ContactProps;
 
       await createAttendee({
-        attendee: values,
-        showId: currentShow.show_id as string,
+        attendee: new Attendee(values),
+        showId: currentShow?.show_id as string,
       }).unwrap();
       navigate(`/attendees`);
       openSnackBar({
@@ -174,7 +177,6 @@ const CreateAttendee = () => {
           <MultiSelect
             label="Roles"
             name="roles"
-            // selected={attendee.roles}
             options={roles}
             selected={undefined}
           />
@@ -183,7 +185,6 @@ const CreateAttendee = () => {
           <MultiSelect
             label="Days"
             name="attendance_days"
-            // selected={attendee.days}
             options={days}
             selected={undefined}
           />
@@ -193,8 +194,7 @@ const CreateAttendee = () => {
           <AutoComplete
             label="Attendee"
             name="contact"
-            // selected={attendee.days}
-            options={contacts?.data}
+            options={contacts?.data as any[]}
             selected={undefined}
           />
         </Section>

@@ -1,8 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Show } from "@pci/pci-services.types.show";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +10,6 @@ import { useSnackBar } from "~/app/templates/snackbar";
 import { getCurrentShow } from "~/features/persist/persistSlice";
 import { useGetAbstractByShowIdQuery } from "~/services/queryApi";
 
-import data from "./data/data";
 import abstractListColumns from "./data/datatable/abstractListColumns";
 
 const settings = {
@@ -23,10 +20,9 @@ const settings = {
 };
 
 function AbstractList() {
-  // const [abstracts] = useState(data.records);
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
-  const currentShow = useSelector(getCurrentShow) as Show;
+  const currentShow = useSelector(getCurrentShow);
 
   if (!currentShow) {
     return (
@@ -48,11 +44,8 @@ function AbstractList() {
     data: abstracts,
     isLoading,
     isError,
-  } = useGetAbstractByShowIdQuery(currentShow?.show_id as string);
-  console.log(
-    "🚀 ~ file: AbstractList.tsx:48 ~ AbstractList ~ shows",
-    abstracts
-  );
+  } = useGetAbstractByShowIdQuery(currentShow?.show_id);
+
   if (isError) {
     return (
       <div

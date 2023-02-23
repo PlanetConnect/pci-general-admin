@@ -1,6 +1,10 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Account, AccountSchema } from "@pci/pci-services.types.account";
+import {
+  Account,
+  AccountProps,
+  AccountSchema,
+} from "@pci/pci-services.types.account";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -20,35 +24,10 @@ import {
   useUpdateAccountMutation,
 } from "~/services/queryApi";
 
-import accountSchema from "./data/form/accountSchema";
-
-const account = {
-  accountId: "b0193ac3-f988-464d-bf2e-8accdfba945b",
-  name: "PlanetConnect Inc.",
-  website: "https://events.planetconnect.com",
-  type: null,
-  logoUrl: "https://events.planetconnect.com/logo.png",
-  tags: null,
-  billingStreet: "1 Dr Drive",
-  billingCity: "Boston",
-  billingState: "MA",
-  billingCode: "09876",
-  billingCountry: "US",
-  phone: null,
-  description: "Test",
-  createdTime: "2022-03-25 08:18:50.478628",
-  modifiedTime: "2022-03-25 08:18:50.478628",
-};
-
 const EditAccountInfo = () => {
   const { openSnackBar } = useSnackBar();
   const { accountId } = useParams();
   const navigate = useNavigate();
-
-  console.log(
-    "🚀 ~ file: EditAccountInfo.tsx:43 ~ EditAccountInfo ~ accountId",
-    accountId
-  );
 
   const [updateAccount, results] = useUpdateAccountMutation();
   const {
@@ -88,29 +67,15 @@ const EditAccountInfo = () => {
       </div>
     );
   }
-  console.log(
-    "🚀 ~ file: EditAccountInfo.tsx:91 ~ EditAccountInfo ~ account",
-    account
-  );
 
   const defaultValues = new Account({ ...account?.data });
-  console.log(
-    "🚀 ~ file: EditAccountInfo.tsx:95 ~ EditAccountInfo ~ defaultValues",
-    defaultValues
-  );
 
-  const handleSubmit = async (values: Account) => {
-    console.log(values);
-    // openSnackBar({
-    //   message: "Account successfully updated.",
-    //   position: {
-    //     vertical: "top",
-    //     horizontal: "center",
-    //   },
-    //   variant: "success",
-    // });
+  const handleSubmit = async (values: AccountProps) => {
     try {
-      await updateAccount({ account: values, id: accountId || "" });
+      await updateAccount({
+        account: new Account(values),
+        id: accountId || "",
+      });
 
       openSnackBar({
         message: "Show successfully updated.",

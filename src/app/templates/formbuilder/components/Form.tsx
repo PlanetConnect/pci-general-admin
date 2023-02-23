@@ -26,7 +26,9 @@ const Form = ({
   });
 
   // const values = methods.watch();
-  // console.log("🚀 ~ file: Form.tsx ~ line 32 ~ values", values);
+  const errors = methods.formState.errors;
+  console.log("🚀 ~ file: Form.tsx:30 ~ errors", errors);
+  // // console.log("🚀 ~ file: Form.tsx ~ line 32 ~ values", values);
   const handleFormSubmit = (data: unknown) => {
     onSubmit(data);
   };

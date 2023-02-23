@@ -19,13 +19,8 @@ import {
 } from "~/features/persist/persistSlice";
 import { queryApi } from "~/services/queryApi";
 
-const defaultValues = {
-  email: "",
-  password: "",
-};
 function AuthCallback() {
   const dispatch: AppDispatch = useDispatch();
-  const { openSnackBar } = useSnackBar();
   const navigate = useNavigate();
   const location = useLocation();
   const savedLoginPath = useSelector(getSavedLoginPath);

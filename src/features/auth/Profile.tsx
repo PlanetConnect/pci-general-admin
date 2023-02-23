@@ -15,7 +15,6 @@ const settings = {
 
 function Profile() {
   const user = useSelector(getUser);
-  console.log("🚀 ~ file: Profile.tsx:10 ~ Profile ~ user", user);
 
   const data = [
     {

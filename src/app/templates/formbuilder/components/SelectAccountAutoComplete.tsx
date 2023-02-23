@@ -1,7 +1,7 @@
 import Autocomplete from "@mui/lab/Autocomplete";
 import { Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Account } from "@pci/pci-services.types.account";
+import { Account, AccountProps } from "@pci/pci-services.types.account";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -50,8 +50,8 @@ const SelectAccountAutoComplete = ({
     });
   };
 
-  const selectAttendeeSearch = async (value: Account | null) => {
-    setValue(name, value);
+  const selectAttendeeSearch = async (value: AccountProps | null) => {
+    setValue(name, value?.account_id || "");
   };
 
   return (
@@ -60,11 +60,12 @@ const SelectAccountAutoComplete = ({
         <Controller
           name={name}
           control={control}
-          render={() => (
+          render={({ field: { value, onChange }, formState: { errors } }) => (
             <Autocomplete
               filterOptions={(x) => x}
               {...searchResults}
-              defaultValue={selectedAccount}
+              // defaultValue={selectedAccount}
+              value={options?.find((option) => option.account_id === value)}
               renderOption={(props, option) => {
                 return (
                   <li {...props}>
@@ -93,13 +94,7 @@ const SelectAccountAutoComplete = ({
                 );
               }}
               onChange={(event, value) => {
-                if (!value) {
-                  setSearchResults({
-                    options: options || [],
-                    getOptionLabel: (option) => option.name,
-                  });
-                }
-                selectAttendeeSearch(value);
+                onChange(value?.account_id || "");
               }}
               onOpen={() => {
                 handleSearchTypeAhead(selectedAccount?.name || "");

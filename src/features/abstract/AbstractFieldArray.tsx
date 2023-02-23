@@ -6,84 +6,19 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Abstract, AbstractSchema } from "@pci/pci-services.types.abstract";
-import { Contact } from "@pci/pci-services.types.contact";
-import { Show } from "@pci/pci-services.types.show";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  useFieldArray,
-  UseFieldArrayUpdate,
-  useForm,
-  useFormContext,
-  useWatch,
-} from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { SaveButton } from "~/app/templates/button";
-import { PaperContent } from "~/app/templates/content/";
-import {
-  Actions,
-  Form,
-  Header,
-  MultiSelect,
-  Section,
-  Select,
-  TextField,
-} from "~/app/templates/formbuilder";
+import { MultiSelect, Section } from "~/app/templates/formbuilder";
 import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
-import { useSnackBar } from "~/app/templates/snackbar";
 import abstractRoles from "~/features/abstract/data/form/abstractRoles";
-import { getUser } from "~/features/auth/userSlice";
-import { getCurrentShow } from "~/features/persist/persistSlice";
-import {
-  useCreateAbstractMutation,
-  useGetContactsQuery,
-} from "~/services/queryApi";
+import { useGetContactsQuery } from "~/services/queryApi";
 
 interface FieldArrayProps {
   fieldArrayName: string;
 }
 
 const FieldArray = ({ fieldArrayName }: FieldArrayProps) => {
-  const { openSnackBar } = useSnackBar();
-  const navigate = useNavigate();
-  const user = useSelector(getUser);
-  if (!user) {
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        width: "100%",
-      }}
-    >
-      <ErrorIcon color="error" />
-      <Typography>Please log in again</Typography>
-    </div>;
-  }
-  const currentShow = useSelector(getCurrentShow) as Show;
-  if (!currentShow) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
-        <ErrorIcon color="error" />
-        <Typography>Please select a show first</Typography>
-      </div>
-    );
-  }
   const { data, isLoading, isError } = useGetContactsQuery();
-  const [createAabstract, results] = useCreateAbstractMutation();
 
   if (isError) {
     return (
@@ -118,65 +53,49 @@ const FieldArray = ({ fieldArrayName }: FieldArrayProps) => {
     );
   }
 
-  const { control, register, watch, setValue } = useFormContext();
-  const values = watch();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
   console.log(
-    "🚀 ~ file: AbstractFieldArray.tsx:195 ~ FieldArray ~ values",
-    values
+    "🚀 ~ file: AbstractFieldArray.tsx:124 ~ FieldArray ~ errors",
+    errors
   );
-  const { fields, append, update, remove } = useFieldArray({
+
+  const { fields, append, remove } = useFieldArray({
     control,
     name: fieldArrayName,
   });
-
-  const handleSelectContactSubmit = async (values: any, name: string) => {
-    console.log(
-      "🚀 ~ file: AbstractFieldArray.tsx:209 ~ FieldArray ~ name",
-      name
-    );
-    console.log(
-      "🚀 ~ file: AbstractFieldArray.tsx:109 ~ handleSubmit ~ values",
-      values
-    );
-    if (values?.address?.facility) {
-      const newValue = values;
-      delete newValue.address.facility;
-    }
-
-    setValue(name, values as Contact);
-  };
 
   return (
     <Box sx={{ flex: 1 }}>
       <Stack spacing={1}>
         <Section name="Contacts*">
-          {fields?.map((item, index) => (
+          {fields?.map((item: any, index) => (
             <fieldset key={item.id}>
               <AutoComplete
-                label="Contact"
+                label="Contact*"
                 name={`${fieldArrayName}[${index}].contact`}
-                // selected={attendee.days}
                 options={data?.data as any[]}
-                selected={undefined}
-                // manualOnChange={(values: Contact | null) => {
-                //   handleSelectContactSubmit(
-                //     values,
-                //     `${fieldArrayName}[${index}].contact`
-                //   );
-                // }}
+                selected={item?.contact || undefined}
               />
               <MultiSelect
-                label="Roles"
+                label="Roles*"
                 name={`${fieldArrayName}[${index}].roles`}
                 options={abstractRoles}
-                selected={undefined}
+                selected={item?.roles || undefined}
               />
               <button type="button" onClick={() => remove(index)}>
                 Delete
               </button>
             </fieldset>
           ))}
-          <Button onClick={() => append({ contact: [], roles: ["speaker"] })}>
+          <Button
+            onClick={() =>
+              append({ contact: [], roles: [], order: fields.length })
+            }
+          >
             Add Contact
           </Button>
         </Section>

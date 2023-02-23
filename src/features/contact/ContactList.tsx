@@ -22,7 +22,7 @@ function ContactList() {
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
 
-  const { data, isLoading, isError, error } = useGetContactsQuery();
+  const { data, isLoading, isError } = useGetContactsQuery();
 
   if (isError) {
     return (

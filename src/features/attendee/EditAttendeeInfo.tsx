@@ -1,6 +1,7 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Attendee } from "@pci/pci-services.types.attendee";
+import { Attendee, AttendeeSchema } from "@pci/pci-services.types.attendee";
+import { ContactProps } from "@pci/pci-services.types.contact";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -130,17 +131,16 @@ const EditAttendeeInfo = () => {
       </div>
     );
   }
-  const attendee = data.data as Attendee;
+  const attendee = data.data;
 
   const handleSubmit = async (values: any) => {
-    console.log(values);
     values.email = values.contact.email;
     values.account_id = values.contact.account_id;
 
     delete values.contact.address.facility;
     try {
       await updateAttendee({
-        attendee: values,
+        attendee: new Attendee(values),
         showId: currentShow?.show_id as string,
         email: values.email,
       }).unwrap();
@@ -169,7 +169,7 @@ const EditAttendeeInfo = () => {
       <Form
         size="md"
         defaultValues={attendee}
-        validationSchema={attendeeSchema}
+        validationSchema={AttendeeSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Attendee Information</Header>
@@ -214,8 +214,8 @@ const EditAttendeeInfo = () => {
             label="Attendee"
             name="contact"
             // selected={attendee.days}
-            options={contacts?.data}
-            selected={attendee.contact}
+            options={contacts?.data as any[]}
+            selected={attendee.contact as any}
           />
         </Section>
 

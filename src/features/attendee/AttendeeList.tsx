@@ -22,11 +22,10 @@ const settings = {
 };
 
 function AttendeeList() {
-  // const [attendees] = useState(data.records);
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
 
-  const currentShow = useSelector(getCurrentShow) as Show;
+  const currentShow = useSelector(getCurrentShow);
 
   if (!currentShow) {
     return (
@@ -45,7 +44,7 @@ function AttendeeList() {
     );
   }
 
-  const { data, isLoading, isError, error } = useGetAttendeeByShowQuery(
+  const { data, isLoading, isError } = useGetAttendeeByShowQuery(
     currentShow?.show_id as string
   );
 

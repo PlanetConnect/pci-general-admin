@@ -2,7 +2,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
-import { Booth } from "@pci/pci-services.types.booth";
+import { Booth, BoothProps, BoothSchema } from "@pci/pci-services.types.booth";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,6 @@ import {
 } from "~/services/queryApi";
 
 import exhibitionTypes from "../account/data/form/exhibitionTypes";
-import exhibitionSchema from "./data/form/exhibitionSchema";
 
 const CreateExhibit = () => {
   const { openSnackBar } = useSnackBar();
@@ -58,15 +57,10 @@ const CreateExhibit = () => {
     data: attendeeList,
     isLoading,
     isError,
-    error: loadAttendeeError,
   } = useGetAttendeeByShowQuery(currentShow?.show_id as string);
 
   const [createBooth, result] = useCreateBoothMutation();
-  // console.log(
-  //   "🚀 ~ file: CreateAttendee.tsx:97 ~ handleSubmit ~ results",
-  //   results,
-  //   results?.error
-  // );
+
   if (isError) {
     return (
       <div
@@ -118,12 +112,12 @@ const CreateExhibit = () => {
     attendees: [],
   });
 
-  const handleSubmit = async (values: Booth) => {
+  const handleSubmit = async (values: BoothProps) => {
     try {
-      values.account_id = values.attendees[0].account_id;
+      values.account_id = values?.attendees?.[0]?.account_id || "";
 
       const createResult = await createBooth({
-        booth: values,
+        booth: new Booth(values),
         showId: currentShow.show_id as string,
       }).unwrap();
 
@@ -139,7 +133,6 @@ const CreateExhibit = () => {
         });
       }
     } catch (e: any) {
-      console.log("🚀 ~ file: CreateExhibit.tsx:170 ~ handleSubmit ~ e", e);
       openSnackBar({
         message: `Booth cannot be created. ${e.error}`,
         position: {
@@ -155,7 +148,7 @@ const CreateExhibit = () => {
       <Form
         size="md"
         defaultValues={defaultValues}
-        validationSchema={exhibitionSchema}
+        validationSchema={BoothSchema}
         onSubmit={handleSubmit}
       >
         <Header>Create Exhibition Information</Header>
@@ -181,7 +174,6 @@ const CreateExhibit = () => {
           <MultiSelect
             label="Attendees"
             name="attendees"
-            // selected={attendee.days}
             options={attendees as any[]}
             selected={undefined}
           />

@@ -1,20 +1,13 @@
 import Autocomplete from "@mui/lab/Autocomplete";
-import { colors, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import { Account } from "@pci/pci-services.types.account";
 import { Contact, ContactProps } from "@pci/pci-services.types.contact";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { useAppDispatch } from "~/app/hooks";
-import { queryApi, useGetAccountByIdQuery } from "~/services/queryApi";
+import { queryApi } from "~/services/queryApi";
 
 import Error from "./Error";
 
@@ -27,10 +20,11 @@ interface MultiSelectProps {
   label: string;
   name: string;
   variant?: "standard" | "filled" | "outlined" | undefined;
-  selected: Contact | undefined;
-  options?: Contact[];
+  selected: ContactProps | undefined;
+  options?: ContactProps[];
   isDisabled?: boolean;
   error?: string;
+  manualOnChange?: (value: ContactProps | null) => void;
 }
 
 const AutoComplete = ({
@@ -40,14 +34,20 @@ const AutoComplete = ({
   selected,
   options,
   error,
+  manualOnChange,
 }: MultiSelectProps) => {
   const dispatch = useAppDispatch();
 
   const [searchResults, setSearchResults] = useState({
     options: options || [],
-    getOptionLabel: (option: Contact) => option.email,
+    getOptionLabel: (option: ContactProps) => {
+      console.log("🚀 ~ file: AutoComplete.tsx:47 ~ option", option);
+
+      return option?.email;
+    },
   });
-  const { setValue, watch } = useFormContext();
+  console.log("🚀 ~ file: AutoComplete.tsx:49 ~ options", options);
+  const { setValue, watch, control } = useFormContext();
   const selectedContact = watch(name);
 
   const getAccountName = async (accountId: string) => {
@@ -76,84 +76,114 @@ const AutoComplete = ({
     });
   };
 
-  const selectAttendeeSearch = async (value: Contact | null) => {
-    setValue(name, value as Contact);
-    await getAccountName(value?.account_id || "");
+  const selectAttendeeSearch = async (value: any | null) => {
+    if (manualOnChange) {
+      manualOnChange(value);
+      return;
+    }
+
+    // setValue(name, value as Contact);
+    if (value) {
+      if (value?.address?.facility) {
+        delete value?.address?.facility;
+      }
+      setValue(name, new Contact(value));
+      // await getAccountName(value?.account_id || "");
+    }
   };
 
   return (
-    <Autocomplete
-      filterOptions={(x) => x}
-      {...searchResults}
-      defaultValue={selectedContact}
-      renderOption={(props, option) => {
-        return (
-          <li {...props}>
-            <Box
-              style={{
-                display: "flex",
-                flex: 1,
-                flexDirection: "row",
-                width: "100%",
-                borderBottom: `1px solid `,
-                cursor: "pointer",
-              }}
-            >
-              <Box
-                sx={{
-                  overflow: "hidden",
-                  width: "100%",
-                }}
-              >
-                <Typography
-                  noWrap
-                  style={{
-                    width: "100%",
-                    lineClamp: 2,
-                    textOverflow: "ellipsis",
+    <Box sx={{ flex: 1 }}>
+      <Stack spacing={1}>
+        <Controller
+          name={name}
+          control={control}
+          render={({ fieldState: { error } }) => {
+            // console.log("🚀 ~ file: AutoComplete.tsx:177 ~ error", error);
+
+            return (
+              <>
+                <Autocomplete
+                  filterOptions={(x) => x}
+                  {...searchResults}
+                  defaultValue={selectedContact}
+                  renderOption={(props, option) => {
+                    return (
+                      <li {...props}>
+                        <Box
+                          style={{
+                            display: "flex",
+                            flex: 1,
+                            flexDirection: "row",
+                            width: "100%",
+                            borderBottom: `1px solid `,
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              overflow: "hidden",
+                              width: "100%",
+                            }}
+                          >
+                            <Typography
+                              noWrap
+                              style={{
+                                width: "100%",
+                                lineClamp: 2,
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {option.first_name} {option.last_name}
+                            </Typography>
+                            <Typography
+                              noWrap
+                              style={{
+                                width: "100%",
+                                lineClamp: 2,
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {option.email}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </li>
+                    );
                   }}
-                >
-                  {option.first_name} {option.last_name}
-                </Typography>
-                <Typography
-                  noWrap
-                  style={{
-                    width: "100%",
-                    lineClamp: 2,
-                    textOverflow: "ellipsis",
+                  onChange={(event, value) => {
+                    if (!value) {
+                      setSearchResults({
+                        options: options || [],
+                        getOptionLabel: (option) => option.email,
+                      });
+                    }
+                    selectAttendeeSearch(value);
                   }}
-                >
-                  {option.email}
-                </Typography>
-              </Box>
-            </Box>
-          </li>
-        );
-      }}
-      onChange={(event, value) => {
-        if (!value) {
-          setSearchResults({
-            options: options || [],
-            getOptionLabel: (option) => option.email,
-          });
-        }
-        selectAttendeeSearch(value);
-      }}
-      onOpen={() => {
-        handleSearchTypeAhead(selectedContact?.email || "");
-      }}
-      renderInput={(params) => {
-        return (
-          <TextField
-            name={name}
-            onChange={(event) => handleSearchTypeAhead(event.target.value)}
-            {...params}
-            label={label}
-            fullWidth
-          />
-        );
-      }}
-    />
+                  onOpen={() => {
+                    handleSearchTypeAhead(selectedContact?.email || "");
+                  }}
+                  renderInput={(params) => {
+                    return (
+                      <TextField
+                        name={name}
+                        onChange={(event) =>
+                          handleSearchTypeAhead(event.target.value)
+                        }
+                        {...params}
+                        label={label}
+                        fullWidth
+                      />
+                    );
+                  }}
+                />
+                <Error name={name} error={error?.message} />
+              </>
+            );
+          }}
+        />
+      </Stack>
+    </Box>
   );
 };
 

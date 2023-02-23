@@ -1,6 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
-import { Show } from "@pci/pci-services.types.show";
+import { Show, ShowProps, ShowSchema } from "@pci/pci-services.types.show";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -32,7 +32,6 @@ const EditShowInfo = () => {
 
   const [updateShow, results] = useUpdateShowMutation();
   const { data: show, isLoading, isError } = useGetShowByIdQuery(showId || "");
-  console.log("🚀 ~ file: EditShowInfo.tsx:35 ~ EditShowInfo ~ show", show);
   if (isError) {
     return (
       <div
@@ -65,17 +64,16 @@ const EditShowInfo = () => {
       </div>
     );
   }
-  console.log("🚀 ~ file: EditShowInfo.tsx:68 ~ EditShowInfo ~ show", show);
-  const defaultValues = new Show({ ...show.data });
+  const defaultValues = show.data;
 
-  if (!defaultValues.start_date) {
+  if (!defaultValues?.start_date) {
     defaultValues.start_date = new Date();
   }
-  if (!defaultValues.end_date) {
+  if (!defaultValues?.end_date) {
     defaultValues.end_date = new Date();
   }
 
-  if (!defaultValues.venue) {
+  if (!defaultValues?.venue) {
     defaultValues.venue = {
       city: "",
       country: "",
@@ -86,9 +84,9 @@ const EditShowInfo = () => {
     };
   }
 
-  const handleSubmit = async (values: Show) => {
+  const handleSubmit = async (values: ShowProps) => {
     try {
-      await updateShow({ show: values, id: showId || "" });
+      await updateShow({ show: new Show(values), id: showId || "" });
 
       openSnackBar({
         message: "Show successfully updated.",
@@ -116,7 +114,7 @@ const EditShowInfo = () => {
     <Form
       size="lg"
       defaultValues={defaultValues}
-      validationSchema={showSchema}
+      validationSchema={ShowSchema}
       onSubmit={handleSubmit}
     >
       <Header>Edit Show Information</Header>

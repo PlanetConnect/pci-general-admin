@@ -1,9 +1,20 @@
+import ErrorIcon from "@mui/icons-material/Error";
+import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import {
+  Abstract,
+  AbstractProps,
+  AbstractSchema,
+} from "@pci/pci-services.types.abstract";
+import { Show } from "@pci/pci-services.types.show";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
 import { PaperContent } from "~/app/templates/content/";
 import {
   Actions,
+  DateField,
   Form,
   Header,
   LookupField,
@@ -13,7 +24,20 @@ import {
   TextArea,
   TextField,
 } from "~/app/templates/formbuilder";
+import AutoComplete from "~/app/templates/formbuilder/components/AutoComplete";
+import TagsAutoComplete from "~/app/templates/formbuilder/components/TagsAutoComplete";
+import TimeField from "~/app/templates/formbuilder/components/TimeField";
 import { useSnackBar } from "~/app/templates/snackbar";
+import FieldArray from "~/features/abstract/AbstractFieldArray";
+import abstractStatus from "~/features/abstract/data/form/abstractStatus";
+import { getCurrentShow } from "~/features/persist/persistSlice";
+import {
+  useGetAbstractByShowAndIdQuery,
+  useGetAttendeeByEmailQuery,
+  useGetContactsQuery,
+  useUpdateAbstractMutation,
+  useUpdateAttendeeMutation,
+} from "~/services/queryApi";
 
 import abstractSchema from "./data/form/abstractSchema";
 
@@ -54,30 +78,163 @@ const abstract = {
 
 const EditAbstractInfo = () => {
   const { openSnackBar } = useSnackBar();
-  const handleSubmit = (values: any) => {
-    console.log(values);
-    openSnackBar({
-      message: "Account successfully updated.",
-      position: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      variant: "success",
-    });
+  const navigate = useNavigate();
+
+  const { abstractId } = useParams();
+
+  const currentShow = useSelector(getCurrentShow) as Show;
+
+  if (!currentShow) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Please select a show first</Typography>
+      </div>
+    );
+  }
+
+  const [updateAbstract, results] = useUpdateAbstractMutation();
+  const { data, isLoading, isError } = useGetAbstractByShowAndIdQuery({
+    abstractId: abstractId as string,
+    showId: currentShow?.show_id as string,
+  });
+
+  if (isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <ErrorIcon color="error" />
+        <Typography>Error Fetching Information</Typography>
+      </div>
+    );
+  }
+  if (isLoading || data === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+        <Typography>Loading...</Typography>
+      </div>
+    );
+  }
+
+  const abstract = data.data as Abstract;
+
+  const handleSubmit = async (values: AbstractProps) => {
+    try {
+      await updateAbstract({
+        abstract: new Abstract(values),
+        showId: currentShow?.show_id as string,
+        abstractId: abstractId as string,
+      }).unwrap();
+      navigate(`/abstracts`);
+      openSnackBar({
+        message: "Abstract successfully updated.",
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "success",
+      });
+    } catch (e: any) {
+      openSnackBar({
+        message: `Abstract cannot be updated. ${e.error}`,
+        position: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        variant: "error",
+      });
+    }
   };
   return (
     <PaperContent>
       <Form
         size="md"
         defaultValues={abstract}
-        validationSchema={abstractSchema}
+        validationSchema={AbstractSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Abstract Information</Header>
 
-        <Section name="General information">
-          <TextField type="text" label="Title" name="title" />
-          <LookupField />
+        <Section name="General Information">
+          <Switch label="Is Public?" name="is_public" isChecked={false} />
+          <Switch label="Is Live?" name="is_live" isChecked={false} />
+          <TextField type="text" label="Title*" name="title" />
+
+          <Select label="Status*" name="status" options={abstractStatus} />
+          <TextField type="text" label="Content*" name="content" />
+
+          <FieldArray fieldArrayName="contacts" />
+        </Section>
+        <Section name="Schedule">
+          <DateField label="Date" name="schedule.date" />
+          <TimeField label="Start Time" name="schedule.start_time" />
+          <TimeField label="End Time" name="schedule.end_time" />
+          <TextField type="text" label="Room" name="schedule.room" />
+        </Section>
+        <Section name="Other Information">
+          <TextField
+            type="text"
+            label="Area of Science"
+            name="area_of_science"
+          />
+          <TagsAutoComplete label="Keywords" name="keywords" />
+          <TextField type="text" label="Note" name="note" />
+          <TextField type="text" label="Phase" name="phase" />
+          <TextField type="text" label="Sequence Number" name="seq_no" />
+          <TextField type="text" label="Source" name="source" />
+          <TextField type="text" label="Topic" name="topic" />
+        </Section>
+
+        <Section name="Links">
+          <TextField
+            type="text"
+            label="Archive Link"
+            name="links.archive_link"
+          />
+          <TextField
+            type="text"
+            label="host Presentation Link"
+            name="links.host_presentation_link"
+          />
+          <TextField
+            type="text"
+            label="Presentation Link"
+            name="links.presentation_link"
+          />
+          <TextField
+            type="text"
+            label="Presentation PDF"
+            name="links.presentation_pdf"
+          />
+          <TextField
+            type="text"
+            label="Presentation Video"
+            name="links.presentation_video"
+          />
         </Section>
         <Actions>
           <SaveButton />

@@ -2,6 +2,11 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Account } from "@pci/pci-services.types.account";
+import {
+  Contact,
+  ContactProps,
+  ContactSchema,
+} from "@pci/pci-services.types.contact";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SaveButton } from "~/app/templates/button";
@@ -12,7 +17,6 @@ import {
   Form,
   Header,
   Section,
-  TextArea,
   TextField,
 } from "~/app/templates/formbuilder";
 import SelectAccountAutoComplete from "~/app/templates/formbuilder/components/SelectAccountAutoComplete";
@@ -22,8 +26,6 @@ import {
   useGetContactByEmailQuery,
   useUpdateContactMutation,
 } from "~/services/queryApi";
-
-import contactSchema from "./data/form/contactSchema";
 
 const EditContactInfo = () => {
   const { openSnackBar } = useSnackBar();
@@ -81,20 +83,13 @@ const EditContactInfo = () => {
     );
   }
 
-  const selectedCompany = accounts?.find(
-    (account) => account.account_id === contact?.data?.account_id
-  );
-
   const defaultValues = {
     ...contact?.data,
-    company: selectedCompany,
   };
 
-  const handleSubmit = async (values: any) => {
-    values.account_id = values.company.account_id;
-    delete values.company;
+  const handleSubmit = async (values: ContactProps) => {
     try {
-      await updateContact({ contact: values, email: email || "" });
+      await updateContact({ contact: new Contact(values), email: email || "" });
       navigate(`/contacts`);
       openSnackBar({
         message: "Contact successfully updated.",
@@ -105,10 +100,6 @@ const EditContactInfo = () => {
         variant: "success",
       });
     } catch (e: any) {
-      console.log(
-        "🚀 ~ file: EditContactInfo.tsx:115 ~ handleSubmit ~ error",
-        e
-      );
       openSnackBar({
         message: `Contact cannot be updated. ${e.data.error}`,
         position: {
@@ -125,7 +116,7 @@ const EditContactInfo = () => {
       <Form
         size="lg"
         defaultValues={defaultValues}
-        validationSchema={contactSchema}
+        validationSchema={ContactSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Contact Information</Header>
@@ -138,15 +129,13 @@ const EditContactInfo = () => {
           <TextField type="text" label="Email" name="email" />
           <SelectAccountAutoComplete
             label="Company"
-            name="company"
+            name="account_id"
             options={accounts}
-            selected={defaultValues.company}
           />
           <TextField type="text" label="Title" name="title" />
           <TextField type="text" label="Department" name="department" />
           <TextField type="text" label="Photo URL" name="photo_url" />
           <TextField type="text" label="LinkedIn URL" name="linked_in_url" />
-          <TextArea type="text" label="Bio" name="bio" />
         </Section>
 
         <Section name="Address">

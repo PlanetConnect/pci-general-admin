@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { Attendee } from "@pci/pci-services.types.attendee";
-import { Booth } from "@pci/pci-services.types.booth";
+import { Booth, BoothProps, BoothSchema } from "@pci/pci-services.types.booth";
 import { Show } from "@pci/pci-services.types.show";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -32,7 +32,6 @@ import {
 } from "~/services/queryApi";
 
 import exhibitionTypes from "../account/data/form/exhibitionTypes";
-import exhibitionSchema from "./data/form/exhibitionSchema";
 
 const EditExhibitionInfo = () => {
   const { openSnackBar } = useSnackBar();
@@ -111,12 +110,12 @@ const EditExhibitionInfo = () => {
 
   const exhibition = data?.data as Booth;
 
-  const handleSubmit = async (values: Booth) => {
+  const handleSubmit = async (values: BoothProps) => {
     console.log(values);
-    values.account_id = values.attendees[0].account_id;
+    values.account_id = values?.attendees?.[0]?.account_id || "";
     try {
       await updateBooth({
-        booth: values,
+        booth: new Booth(values),
         showId: currentShow?.show_id as string,
         boothId: exhibitionId as string,
       }).unwrap();
@@ -130,10 +129,6 @@ const EditExhibitionInfo = () => {
         variant: "success",
       });
     } catch (e: any) {
-      console.log(
-        "🚀 ~ file: EditExhibitionInfo.tsx:179 ~ handleSubmit ~ e",
-        e
-      );
       openSnackBar({
         message: `Booth cannot be updated. ${e.error}`,
         position: {
@@ -149,7 +144,7 @@ const EditExhibitionInfo = () => {
       <Form
         size="md"
         defaultValues={exhibition}
-        validationSchema={exhibitionSchema}
+        validationSchema={BoothSchema}
         onSubmit={handleSubmit}
       >
         <Header>Edit Exhibition Information</Header>

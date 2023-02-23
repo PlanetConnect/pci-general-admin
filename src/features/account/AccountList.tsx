@@ -1,7 +1,6 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, Typography } from "@mui/material";
 import { Account } from "@pci/pci-services.types.account";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { PaperContent, Title } from "~/app/templates/content/";
@@ -12,7 +11,6 @@ import {
   useGetAccountsQuery,
 } from "~/services/queryApi";
 
-import data from "./data/data";
 import accountListColumns from "./data/datatable/accountListColumns";
 
 const settings = {
@@ -25,12 +23,10 @@ const settings = {
 const AccountList = () => {
   const navigate = useNavigate();
   const { openSnackBar } = useSnackBar();
-  const { data: accounts, isLoading, isError, error } = useGetAccountsQuery();
+  const { data: accounts, isLoading, isError } = useGetAccountsQuery();
   const [createAccount, results] = useCreateAccountMutation();
 
   if (isError) {
-    console.log("🚀 ~ file: AccountList.tsx:28 ~ AccountList ~ error", error);
-
     return (
       <div
         style={{
@@ -94,7 +90,7 @@ const AccountList = () => {
 
   return (
     <PaperContent>
-      {/*</PaperContent> Title onCreate={onCreate}>Accounts</Title>*/}
+      <Title onCreate={onCreate}>Accounts</Title>
       <DataTable
         columns={accountListColumns}
         rows={filteredAccounts as any[]}

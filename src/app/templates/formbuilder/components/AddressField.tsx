@@ -46,18 +46,18 @@ const AddressField = ({
 
       <TextField
         type="text"
-        label="Address 1"
+        label="Address"
         name={address1}
         variant={variant}
         error={error}
       />
-      <TextField
+      {/* <TextField
         type="text"
         label="Address 2"
         name={address2}
         variant={variant}
         error={error}
-      />
+      /> */}
       <TextField
         type="text"
         label="City"

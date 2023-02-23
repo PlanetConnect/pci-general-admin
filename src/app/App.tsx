@@ -7,7 +7,11 @@ import { AppDispatch } from "~/app/store";
 import AuthCallback from "~/features/auth/AuthCallback";
 import ProtectedRoute from "~/features/auth/ProtectedRoute";
 
-import { AbstractList, EditAbstractInfo } from "../features/abstract";
+import {
+  AbstractList,
+  CreateAbstract,
+  EditAbstractInfo,
+} from "../features/abstract";
 import { AccountList, EditAccountInfo } from "../features/account";
 import {
   AttendeeList,
@@ -81,6 +85,14 @@ function App() {
           element={
             <ProtectedRoute>
               <EditAbstractInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="abstracts/createAbstract"
+          element={
+            <ProtectedRoute>
+              <CreateAbstract />
             </ProtectedRoute>
           }
         />

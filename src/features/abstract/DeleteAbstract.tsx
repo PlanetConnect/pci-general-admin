@@ -7,20 +7,20 @@ import { useSelector } from "react-redux";
 import { ConfirmationDialog } from "~/app/templates/dialog";
 import { useSnackBar } from "~/app/templates/snackbar";
 import { getCurrentShow } from "~/features/persist/persistSlice";
-import { useDeleteAttendeeMutation } from "~/services/queryApi";
+import { useDeleteAbstractMutation } from "~/services/queryApi";
 
-interface DeleteAttendeeProps {
-  email: string;
+interface DeleteAbstractProps {
+  abstractId: string;
 }
 
-const DeleteAttendee = (props: DeleteAttendeeProps) => {
+const DeleteAbstract = (props: DeleteAbstractProps) => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { openSnackBar } = useSnackBar();
 
-  const [deletShow, results] = useDeleteAttendeeMutation();
+  const [deletShow, results] = useDeleteAbstractMutation();
   const title = "Confirm";
-  const message = `Delete ${props.email}?`;
-  const currentShow = useSelector(getCurrentShow) as Show;
+  const message = `Delete abstract?`;
+  const currentShow = useSelector(getCurrentShow);
 
   const handleDialogOpen = () => {
     setIsConfirmDialogOpen(true);
@@ -29,12 +29,12 @@ const DeleteAttendee = (props: DeleteAttendeeProps) => {
   const handleConfirm = async () => {
     try {
       await deletShow({
-        email: props.email,
-        showId: currentShow?.show_id || "",
+        abstractId: props.abstractId,
+        showId: currentShow?.show_id,
       });
 
       openSnackBar({
-        message: "Attendee successfully deleted.",
+        message: "Abstract successfully deleted.",
         position: {
           vertical: "top",
           horizontal: "center",
@@ -44,7 +44,7 @@ const DeleteAttendee = (props: DeleteAttendeeProps) => {
       setIsConfirmDialogOpen(false);
     } catch (e: any) {
       openSnackBar({
-        message: `Attendee cannot be deleted. ${e.data.error}`,
+        message: `Abstract cannot be deleted. ${e.data.error}`,
         position: {
           vertical: "top",
           horizontal: "center",
@@ -75,4 +75,4 @@ const DeleteAttendee = (props: DeleteAttendeeProps) => {
   );
 };
 
-export default DeleteAttendee;
+export default DeleteAbstract;

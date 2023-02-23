@@ -1,9 +1,11 @@
 import Autocomplete from "@mui/lab/Autocomplete";
-import { TextField, Typography } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Account } from "@pci/pci-services.types.account";
+import { Account, AccountProps } from "@pci/pci-services.types.account";
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+
+import Error from "./Error";
 
 interface MultiSelectProps {
   label: string;
@@ -32,7 +34,7 @@ const SelectAccountAutoComplete = ({
     options: options || [],
     getOptionLabel: (option: Account) => option.name,
   });
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch, control } = useFormContext();
   const selectedAccount = watch(name);
 
   const handleSearchTypeAhead = (text: string) => {
@@ -48,66 +50,74 @@ const SelectAccountAutoComplete = ({
     });
   };
 
-  const selectAttendeeSearch = async (value: Account | null) => {
-    setValue(name, value);
+  const selectAttendeeSearch = async (value: AccountProps | null) => {
+    setValue(name, value?.account_id || "");
   };
 
   return (
-    <Autocomplete
-      filterOptions={(x) => x}
-      {...searchResults}
-      defaultValue={selectedAccount}
-      renderOption={(props, option) => {
-        return (
-          <li {...props}>
-            <Box
-              style={{
-                display: "flex",
-                flex: 1,
-                flexDirection: "row",
-                width: "100%",
-                borderBottom: `1px solid `,
-                cursor: "pointer",
+    <Box sx={{ flex: 1 }}>
+      <Stack spacing={1}>
+        <Controller
+          name={name}
+          control={control}
+          render={({ field: { value, onChange }, formState: { errors } }) => (
+            <Autocomplete
+              filterOptions={(x) => x}
+              {...searchResults}
+              // defaultValue={selectedAccount}
+              value={options?.find((option) => option.account_id === value)}
+              renderOption={(props, option) => {
+                return (
+                  <li {...props}>
+                    <Box
+                      style={{
+                        display: "flex",
+                        flex: 1,
+                        flexDirection: "row",
+                        width: "100%",
+                        borderBottom: `1px solid `,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Typography
+                        noWrap
+                        style={{
+                          width: "100%",
+                          lineClamp: 2,
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {option.name}
+                      </Typography>
+                    </Box>
+                  </li>
+                );
               }}
-            >
-              <Typography
-                noWrap
-                style={{
-                  width: "100%",
-                  lineClamp: 2,
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {option.name}
-              </Typography>
-            </Box>
-          </li>
-        );
-      }}
-      onChange={(event, value) => {
-        if (!value) {
-          setSearchResults({
-            options: options || [],
-            getOptionLabel: (option) => option.name,
-          });
-        }
-        selectAttendeeSearch(value);
-      }}
-      onOpen={() => {
-        handleSearchTypeAhead(selectedAccount?.name || "");
-      }}
-      renderInput={(params) => {
-        return (
-          <TextField
-            name={name}
-            onChange={(event) => handleSearchTypeAhead(event.target.value)}
-            {...params}
-            label={label}
-            fullWidth
-          />
-        );
-      }}
-    />
+              onChange={(event, value) => {
+                onChange(value?.account_id || "");
+              }}
+              onOpen={() => {
+                handleSearchTypeAhead(selectedAccount?.name || "");
+              }}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    name={name}
+                    onChange={(event) =>
+                      handleSearchTypeAhead(event.target.value)
+                    }
+                    {...params}
+                    label={label}
+                    fullWidth
+                  />
+                );
+              }}
+            />
+          )}
+        />
+        <Error name={name} error={error} />
+      </Stack>
+    </Box>
   );
 };
 

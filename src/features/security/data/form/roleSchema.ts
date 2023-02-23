@@ -1,11 +1,16 @@
-import * as Yup from "yup";
+import * as Joi from "joi";
 
-const roleSchema = Yup.object({
-  name: Yup.string().max(200, "Must be 200 characters or less").required(),
-  isActive: Yup.boolean().required(),
-  description: Yup.string()
-    .max(1000, "Must be 1000 characters or less")
-    .required(),
+const roleSchema = Joi.object({
+  name: Joi.string().max(200).required().messages({
+    "any.required": "Required",
+    "string.max": "Must be 200 characters or less",
+  }),
+  isActive: Joi.boolean().required().messages({ "any.required": "Required" }),
+
+  description: Joi.string().max(1000).required().messages({
+    "any.required": "Required",
+    "string.max": "Must be 1000 characters or less",
+  }),
 });
 
 export default roleSchema;

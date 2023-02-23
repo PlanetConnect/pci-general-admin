@@ -3,6 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 
+import DeleteAbstract from "~/features/abstract/DeleteAbstract";
+
 const abstractListColumns = [
   {
     field: "abstract_id",
@@ -23,13 +25,13 @@ const abstractListColumns = [
     flex: 1,
   },
   {
-    field: "show_name",
+    field: "show_id",
     headerName: "Show",
     width: 100,
     flex: 1,
   },
   {
-    field: "account_name",
+    field: "attendeeAccountName",
     headerName: "Account",
     width: 100,
     flex: 1,
@@ -91,6 +93,7 @@ const abstractListColumns = [
         >
           <EditIcon fontSize="small" />
         </IconButton>
+        <DeleteAbstract abstractId={params.row.abstract_id} />
       </Stack>
     ),
   },

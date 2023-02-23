@@ -46,7 +46,7 @@ const TagsAutoComplete = ({
         return (
           <TextField
             name={name}
-            placeholder={"Type to add a tag"}
+            placeholder={"Type to add"}
             {...params}
             label={label}
             fullWidth

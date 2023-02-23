@@ -58,10 +58,6 @@ const MultiSelect = ({
     return (
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
         {selected.map((option: any) => {
-          console.log(
-            "🚀 ~ file: MultiSelect.tsx:61 ~ {selected.map ~ option",
-            option
-          );
           const label = selectOptions.find(({ value }) => {
             if (value?.email) {
               return value.email === option?.email;
@@ -71,7 +67,7 @@ const MultiSelect = ({
 
           return (
             <Chip
-              key={option}
+              key={option?.email}
               label={label?.label}
               color="primary"
               onDelete={() => handleDelete(option)}
